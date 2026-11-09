@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f6f8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Recados">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Recados</title>
+</head>
+<body>
+  <!-- Ícones reutilizáveis -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-lista" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-sol" viewBox="0 0 24 24"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-engrenagem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-parar" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-relogio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-colar" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9" y="2" width="6" height="4" rx="1" fill="currentColor"/></symbol>
+  </svg>
+
+  <div id="tela-carregando" class="tela-centro">
+    <div class="marca"><img src="/icons/icon-192.png" alt="" width="64" height="64"></div>
+  </div>
+
+  <!-- Configuração pendente (mostra o que falta configurar na Vercel) -->
+  <section id="tela-config" class="tela-centro" hidden>
+    <div class="cartao-login">
+      <h1>Quase lá!</h1>
+      <p>O app está no ar, mas faltam estas variáveis na Vercel (Settings → Environment Variables):</p>
+      <ul id="lista-faltando" class="lista-faltando"></ul>
+      <p class="dica">Depois de adicionar, faça um novo deploy (Deployments → ⋯ → Redeploy) e abra o app de novo.</p>
+    </div>
+  </section>
+
+  <!-- Login -->
+  <section id="tela-login" class="tela-centro" hidden>
+    <form id="form-login" class="cartao-login" autocomplete="on">
+      <div class="marca"><img src="/icons/icon-192.png" alt="" width="56" height="56"></div>
+      <h1>Recados</h1>
+      <p class="sub">Seus recados de trabalho, organizados sozinhos.</p>
+      <label>E-mail
+        <input id="login-email" type="email" inputmode="email" autocomplete="username" required>
+      </label>
+      <label>Senha
+        <input id="login-senha" type="password" autocomplete="current-password" minlength="6" required>
+      </label>
+      <button class="botao primario grande" id="btn-entrar" type="submit">Entrar</button>
+      <button class="botao link" id="btn-alternar-login" type="button">Ainda não tenho conta — criar</button>
+      <p id="login-msg" class="msg" role="status"></p>
+    </form>
+  </section>
+
+  <!-- App -->
+  <div id="app" hidden>
+    <main>
+      <!-- LISTA -->
+      <section id="aba-recados" class="aba">
+        <header class="topo">
+          <h1>Recados</h1>
+          <span id="contador-pendentes" class="pilula"></span>
+        </header>
+        <div class="busca">
+          <svg><use href="#i-busca"/></svg>
+          <input id="busca" type="search" placeholder="Buscar em todos os recados" enterkeyhint="search" autocomplete="off">
+        </div>
+        <div class="filtros" role="toolbar" aria-label="Filtros">
+          <div class="segmentado" id="filtro-status">
+            <button data-valor="pendente" class="ativo">Pendentes</button>
+            <button data-valor="resolvido">Resolvidos</button>
+            <button data-valor="todos">Todos</button>
+          </div>
+          <div class="linha-filtros">
+            <select id="filtro-prioridade" aria-label="Prioridade">
+              <option value="">Toda prioridade</option>
+              <option value="alta">🔴 Alta</option>
+              <option value="media">🟡 Média</option>
+              <option value="baixa">🟢 Baixa</option>
+            </select>
+            <select id="filtro-pessoa" aria-label="Pessoa">
+              <option value="">Todas as pessoas</option>
+            </select>
+          </div>
+        </div>
+        <div id="lista"></div>
+      </section>
+
+      <!-- NOVO -->
+      <section id="aba-novo" class="aba" hidden>
+        <header class="topo"><h1>Novo recado</h1></header>
+        <div id="captura">
+          <textarea id="texto-recado" rows="6" placeholder="Cole aqui a mensagem do WhatsApp — ou toque no microfone e fale."></textarea>
+          <div class="acoes-texto">
+            <button class="botao suave" id="btn-colar" type="button"><svg><use href="#i-colar"/></svg> Colar</button>
+            <button class="botao suave" id="btn-limpar" type="button">Limpar</button>
+          </div>
+          <div class="area-mic">
+            <button id="btn-mic" class="mic" type="button" aria-label="Gravar áudio">
+              <svg class="ic-mic"><use href="#i-mic"/></svg>
+              <svg class="ic-parar"><use href="#i-parar"/></svg>
+            </button>
+            <p id="mic-status" class="mic-status">Toque para falar</p>
+          </div>
+          <button class="botao primario grande" id="btn-organizar" type="button">✨ Organizar com IA</button>
+          <button class="botao link" id="btn-manual" type="button">Preencher sem IA</button>
+        </div>
+        <div id="revisao" hidden>
+          <p class="dica">Confira e ajuste se precisar. Depois é só salvar.</p>
+          <div id="formularios"></div>
+          <div class="barra-acoes">
+            <button class="botao suave" id="btn-descartar" type="button">Descartar</button>
+            <button class="botao primario grande" id="btn-salvar" type="button">Salvar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESUMO -->
+      <section id="aba-resumo" class="aba" hidden>
+        <header class="topo empilhado">
+          <h1>Resumo do dia</h1>
+          <span id="data-hoje" class="sub"></span>
+        </header>
+        <div class="numeros">
+          <div><strong id="n-hoje">0</strong><span>recados hoje</span></div>
+          <div><strong id="n-pendentes">0</strong><span>pendentes</span></div>
+          <div><strong id="n-prazos">0</strong><span>prazos em 48h</span></div>
+        </div>
+        <div id="prazos-proximos"></div>
+        <div class="cartao">
+          <div class="cartao-topo">
+            <h2>✨ Resumo da IA</h2>
+            <button class="botao suave pequeno" id="btn-gerar-resumo" type="button">Atualizar</button>
+          </div>
+          <div id="texto-resumo" class="texto-resumo"><p class="sub">Toque em “Atualizar” para gerar.</p></div>
+        </div>
+      </section>
+
+      <!-- AJUSTES -->
+      <section id="aba-ajustes" class="aba" hidden>
+        <header class="topo"><h1>Ajustes</h1></header>
+        <div class="cartao">
+          <h2>Lembretes</h2>
+          <p class="sub" id="push-info">Receba um aviso no iPhone antes do prazo de cada recado.</p>
+          <button class="botao primario" id="btn-push" type="button">Ativar lembretes</button>
+          <button class="botao link" id="btn-push-teste" type="button" hidden>Enviar notificação de teste</button>
+        </div>
+        <div class="cartao">
+          <h2>Aparência</h2>
+          <div class="segmentado" id="tema">
+            <button data-valor="auto">Automático</button>
+            <button data-valor="claro">Claro</button>
+            <button data-valor="escuro">Escuro</button>
+          </div>
+        </div>
+        <div class="cartao" id="cartao-instalar">
+          <h2>Instalar no iPhone</h2>
+          <ol class="passos">
+            <li>Abra este endereço no <b>Safari</b>.</li>
+            <li>Toque em <b>Compartilhar</b> (quadrado com seta ↑).</li>
+            <li>Escolha <b>Adicionar à Tela de Início</b>.</li>
+            <li>Abra o app pelo ícone <b>Recados</b> e ative os lembretes.</li>
+          </ol>
+        </div>
+        <div class="cartao">
+          <h2>Conta</h2>
+          <p class="sub" id="conta-email"></p>
+          <button class="botao suave" id="btn-sair" type="button">Sair</button>
+        </div>
+      </section>
+    </main>
+
+    <nav class="barra-abas" aria-label="Navegação">
+      <button data-aba="recados" class="ativo"><svg><use href="#i-lista"/></svg><span>Recados</span></button>
+      <button data-aba="novo" class="aba-novo"><span class="bolha"><svg><use href="#i-mais"/></svg></span><span>Novo</span></button>
+      <button data-aba="resumo"><svg><use href="#i-sol"/></svg><span>Resumo</span></button>
+      <button data-aba="ajustes"><svg><use href="#i-engrenagem"/></svg><span>Ajustes</span></button>
+    </nav>
+  </div>
+
+  <!-- Editar recado -->
+  <dialog id="dlg-editar">
+    <form method="dialog" id="form-editar">
+      <div class="dlg-topo">
+        <button class="botao link" id="btn-cancelar-edicao" type="button">Cancelar</button>
+        <strong>Recado</strong>
+        <button class="botao link forte" id="btn-salvar-edicao" value="salvar" type="submit">Salvar</button>
+      </div>
+      <div id="campos-edicao"></div>
+      <details class="original">
+        <summary>Texto original</summary>
+        <p id="texto-original"></p>
+      </details>
+      <button class="botao perigo" id="btn-excluir" type="button">Excluir recado</button>
+    </form>
+  </dialog>
+
+  <datalist id="lista-pessoas"></datalist>
+  <div id="aviso" role="status" aria-live="polite"></div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
