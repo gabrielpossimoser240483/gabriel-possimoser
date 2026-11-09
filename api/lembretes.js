@@ -30,7 +30,10 @@ export default rota(
     );
 
     let avisos = 0;
+    let falhas = 0;
+    const entregues = []; // só estes são marcados como enviados; os outros são tentados de novo no próximo ciclo
     for (const r of recados) {
+      let chegou = false;
       const prazo = new Date(r.prazo);
       const vencido = prazo.getTime() <= Date.now();
       const hora = prazo.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", timeZone: process.env.FUSO || "America/Sao_Paulo" });
@@ -44,7 +47,9 @@ export default rota(
         try {
           await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 3600, urgency: "high" });
           avisos++;
+          chegou = true;
         } catch (e) {
+          falhas++;
           if (e.statusCode === 404 || e.statusCode === 410) {
             await supabaseAdmin(`push_subscriptions?endpoint=eq.${encodeURIComponent(s.endpoint)}`, { method: "DELETE" });
           } else {
@@ -52,14 +57,17 @@ export default rota(
           }
         }
       }
+      if (chegou) entregues.push(r.id);
     }
 
-    await supabaseAdmin(`recados?id=in.(${recados.map((r) => r.id).join(",")})`, {
-      method: "PATCH",
-      body: { lembrete_enviado: true },
-      prefer: "return=minimal",
-    });
-    return { recados: recados.length, avisos };
+    if (entregues.length) {
+      await supabaseAdmin(`recados?id=in.(${entregues.join(",")})`, {
+        method: "PATCH",
+        body: { lembrete_enviado: true },
+        prefer: "return=minimal",
+      });
+    }
+    return { recados: recados.length, avisos, falhas, pendentes: recados.length - entregues.length };
   },
   { metodos: ["POST", "GET"] },
 );

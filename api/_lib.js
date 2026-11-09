@@ -47,6 +47,7 @@ function statusAnthropic(e) {
   if (e instanceof Anthropic.RateLimitError) return 429;
   if (e instanceof Anthropic.AuthenticationError) return 502;
   if (e instanceof Anthropic.APIConnectionError) return 503;
+  if (e instanceof Anthropic.APIError) return 502;
   return 500;
 }
 
@@ -56,6 +57,8 @@ function mensagemErro(e, status) {
   if (e instanceof Anthropic.RateLimitError) return "Muitas requisições à IA agora. Tente de novo em instantes.";
   if (e instanceof Anthropic.APIConnectionError) return "Não foi possível falar com a IA. Tente de novo.";
   if (e instanceof Anthropic.APIError && /credit|billing/i.test(e.message)) return "Sem créditos na conta da Anthropic.";
+  if (e instanceof Anthropic.NotFoundError) return `Modelo de IA "${MODELO}" não encontrado. Confira ANTHROPIC_MODEL na Vercel.`;
+  if (e instanceof Anthropic.APIError) return `A IA devolveu um erro (${e.status || "?"}): ${String(e.message || "").slice(0, 200)}`;
   return status === 500 ? "Erro interno no servidor." : String(e.message || e);
 }
 
