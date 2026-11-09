@@ -75,10 +75,37 @@ export async function exigirUsuario(req) {
     .split(",")
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
-  if (permitidos.length && !permitidos.includes(String(usuario.email || "").toLowerCase())) {
-    throw new ErroHttp(403, "Este e-mail não tem permissão para usar a IA deste app.");
+  if (permitidos.length) {
+    if (!permitidos.includes(String(usuario.email || "").toLowerCase())) {
+      throw new ErroHttp(403, "Este e-mail não tem permissão para usar a IA deste app.");
+    }
+    return usuario;
+  }
+  // Sem ALLOWED_EMAILS: a IA fica reservada ao dono do app (a primeira conta que usar o app).
+  const dono = await garantirDono(usuario.id);
+  if (dono && dono !== usuario.id) {
+    throw new ErroHttp(403, "A IA deste app é de uso exclusivo do dono da conta.");
   }
   return usuario;
+}
+
+/** Registra o primeiro usuário como dono (uma vez só) e devolve o id do dono. */
+export async function garantirDono(idUsuario) {
+  try {
+    const atual = await supabaseAdmin("app_config?select=valor&chave=eq.dono_id");
+    if (atual.length) return atual[0].valor;
+    await supabaseAdmin("app_config?on_conflict=chave", {
+      method: "POST",
+      body: [{ chave: "dono_id", valor: idUsuario }],
+      prefer: "resolution=ignore-duplicates,return=minimal",
+    });
+    const depois = await supabaseAdmin("app_config?select=valor&chave=eq.dono_id");
+    return depois[0]?.valor || null;
+  } catch (e) {
+    // Tabela app_config ainda não criada: não bloqueia (comportamento antigo).
+    console.warn("dono indisponível:", e.message);
+    return null;
+  }
 }
 
 /** Acesso administrativo ao banco (só no servidor, usado pelos lembretes). */

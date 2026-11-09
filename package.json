@@ -8,7 +8,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "check": "node --check api/_lib.js && node --check api/config.js && node --check api/extrair.js && node --check api/resumo.js && node --check api/transcrever.js && node --check api/lembretes.js && node --check api/_auto.js && node --check public/app.js && node --check public/sw.js"
+    "check": "node --check api/_lib.js && node --check api/config.js && node --check api/extrair.js && node --check api/resumo.js && node --check api/transcrever.js && node --check api/lembretes.js && node --check api/_auto.js && node --check api/conta.js && node --check public/app.js && node --check public/sw.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.2.0",

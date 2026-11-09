@@ -864,6 +864,10 @@ async function aoMudarSessao(sessao) {
   $("#conta-email").textContent = usuario.email;
   mostrarTela("app");
   if (mudou) {
+    // Registra o dono do app (primeira conta) e avisa se esta conta não pode usar a IA.
+    api("conta", {})
+      .then((r) => r.ia === false && avisar(r.motivo))
+      .catch(() => {});
     renderTudo();
     await carregarRecados();
     abrirPelaUrl(location.href);
@@ -987,6 +991,9 @@ async function iniciar() {
     mostrarTela("config");
     return;
   }
+
+  // Com o dono já definido, esconde a opção de criar conta.
+  if (estado.config.cadastroFechado) $("#btn-alternar-login").hidden = true;
 
   estado.sb = createClient(estado.config.supabaseUrl, estado.config.supabaseKey, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
