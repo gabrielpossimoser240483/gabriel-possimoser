@@ -73,3 +73,13 @@ create policy "inscricoes do dono" on public.push_subscriptions
 
 grant select, insert, update, delete on public.recados to authenticated;
 grant select, insert, update, delete on public.push_subscriptions to authenticated;
+
+-- Configuração interna do servidor (chaves de notificação etc.). Sem políticas:
+-- só o servidor (chave secreta) consegue ler e gravar.
+create table if not exists public.app_config (
+  chave      text primary key,
+  valor      text not null,
+  updated_at timestamptz not null default now()
+);
+alter table public.app_config enable row level security;
+revoke all on public.app_config from anon, authenticated;

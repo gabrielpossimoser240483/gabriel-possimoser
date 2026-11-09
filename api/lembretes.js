@@ -2,20 +2,15 @@
 // dos recados pendentes cujo prazo está chegando.
 import webpush from "web-push";
 import { rota, supabaseAdmin, ErroHttp } from "./_lib.js";
+import { configLembretes } from "./_auto.js";
 
 export default rota(
   async (req) => {
-    const segredo = process.env.CRON_SECRET;
+    const cfg = await configLembretes();
     const enviado = String(req.headers.authorization || "").replace(/^Bearer\s+/i, "");
-    if (!segredo || enviado !== segredo) throw new ErroHttp(401, "Não autorizado.");
-    if (!process.env.VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY) {
-      throw new ErroHttp(500, "Chaves VAPID não configuradas.");
-    }
-    webpush.setVapidDetails(
-      process.env.VAPID_SUBJECT || "mailto:recados@example.com",
-      process.env.VAPID_PUBLIC_KEY,
-      process.env.VAPID_PRIVATE_KEY,
-    );
+    if (!cfg.cronSecret || enviado !== cfg.cronSecret) throw new ErroHttp(401, "Não autorizado.");
+    if (!cfg.publicKey || !cfg.privateKey) throw new ErroHttp(500, "Chaves de notificação indisponíveis.");
+    webpush.setVapidDetails(cfg.subject, cfg.publicKey, cfg.privateKey);
 
     const antecedencia = Number(process.env.LEMBRETE_ANTECEDENCIA_MIN) || 60;
     const ate = new Date(Date.now() + antecedencia * 60_000).toISOString();
