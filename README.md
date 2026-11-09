@@ -85,22 +85,14 @@ Se este código já está no seu repositório do GitHub, pule para o Passo 2.
 5. Clique em **Deploy** e espere 1 minuto. 🎉 A Vercel mostra o endereço do seu app, algo como `https://recados-seunome.vercel.app`. **Anote esse endereço.**
 6. Volte ao Supabase → **Authentication → URL Configuration** → em **Site URL** coloque o endereço do app (ex.: `https://recados-seunome.vercel.app`) e salve. Assim o link de confirmação do e-mail leva para o app.
 
-### 4.1 — Configure os lembretes (notificações push)
+### 4.1 — Ligue os lembretes (notificações push)
 
-1. No navegador, abra `https://SEU-APP.vercel.app/api/gerar-chaves`. A página mostra 3 valores novos.
-2. Na Vercel: **seu projeto → Settings → Environment Variables**, adicione:
+Não precisa criar chaves: o app gera tudo sozinho.
 
-   | Nome | Valor |
-   |---|---|
-   | `VAPID_PUBLIC_KEY` | o valor mostrado na página |
-   | `VAPID_PRIVATE_KEY` | o valor mostrado na página |
-   | `CRON_SECRET` | o valor mostrado na página |
-   | `VAPID_SUBJECT` | `mailto:` + seu e-mail, ex.: `mailto:voce@gmail.com` |
+1. No Supabase, abra **SQL Editor → New query**, cole **todo** o conteúdo de [`supabase/lembretes.sql`](supabase/lembretes.sql) e clique em **Run**. Não precisa editar nada.
+2. Abra o app uma vez (pelo endereço da Vercel). Nesse momento ele registra o próprio endereço e cria as chaves de notificação.
 
-3. Faça um novo deploy para aplicar: **Deployments** → no último, clique em **⋯ → Redeploy**.
-4. No Supabase, abra **SQL Editor → New query**, cole o conteúdo de [`supabase/lembretes-cron.sql`](supabase/lembretes-cron.sql), **troque** `SEU-APP.vercel.app` pelo seu endereço e `SEU_CRON_SECRET` pelo mesmo `CRON_SECRET` da Vercel, e clique em **Run**.
-
-   Pronto: a cada 5 minutos o Supabase pede ao app para verificar os prazos. Você recebe o aviso **1 hora antes** de cada prazo (para mudar, crie a variável `LEMBRETE_ANTECEDENCIA_MIN` na Vercel, ex.: `30`).
+Pronto: a cada 5 minutos o Supabase pede ao app para verificar os prazos. Você recebe o aviso **1 hora antes** de cada prazo (para mudar, crie a variável `LEMBRETE_ANTECEDENCIA_MIN` na Vercel, ex.: `30`).
 
 ### 4.2 — (Opcional, recomendado) Transcrição de áudio de alta qualidade
 
@@ -151,7 +143,7 @@ Depois de **criar a sua conta** no app (Passo 5), impeça que estranhos criem co
 | App mostra “Quase lá!” com uma lista de nomes | Faltam essas variáveis na Vercel. Adicione e faça **Redeploy**. |
 | “A chave da Anthropic é inválida” | Confira `ANTHROPIC_API_KEY` na Vercel (sem espaços) e faça Redeploy. |
 | “Sem créditos na conta da Anthropic” | Adicione créditos em console.anthropic.com → Billing. |
-| Não chega notificação | iOS 16.4+, app aberto pelo ícone, lembretes ativados em Ajustes, e o `lembretes-cron.sql` rodado com o endereço e o `CRON_SECRET` corretos. No Supabase rode `select status_code, content from net._http_response order by created desc limit 5;` — deve mostrar `200`. |
+| Não chega notificação | iOS 16.4+, app aberto pelo ícone, lembretes ativados em Ajustes, e o `lembretes.sql` rodado no Supabase. No Supabase rode `select status_code, content from net._http_response order by created desc limit 5;` — deve mostrar `200`. |
 | Microfone não funciona | Ajustes do iPhone → Safari/Recados → Microfone: permitir. Alternativa sempre disponível: toque no campo de texto e use o 🎤 do teclado do iPhone. Ou configure a Groq (4.2). |
 | “Email not confirmed” | Clique no link enviado por e-mail, ou desative *Confirm email* no Supabase. |
 | Projeto do Supabase “pausado” | No plano grátis, projetos sem uso por 7 dias são pausados. Entre no painel do Supabase e clique em **Restore**. Usar o app regularmente evita isso. |
@@ -177,10 +169,10 @@ api/               ← funções de servidor (Vercel, Node 20+)
   transcrever.js   ← áudio → texto (opcional, Groq Whisper)
   lembretes.js     ← envia os pushes (chamado pelo pg_cron do Supabase)
   config.js        ← entrega só configurações públicas ao app
-  gerar-chaves.js  ← gera chaves VAPID / CRON_SECRET
+  _auto.js         ← cria sozinho as chaves de notificação e o segredo do agendador
 supabase/
   schema.sql         ← tabelas + segurança (RLS)
-  lembretes-cron.sql ← agendamento a cada 5 min
+  lembretes.sql      ← agendamento a cada 5 min (sem edição)
 ```
 
 - Modelo da IA: `claude-haiku-5-5` (troque com a variável `ANTHROPIC_MODEL`).
