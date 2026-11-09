@@ -143,7 +143,15 @@ async function api(caminho, corpo) {
   try {
     json = await r.json();
   } catch {}
-  if (!r.ok) throw new Error(json.erro || `Erro ${r.status}`);
+  if (!r.ok) {
+    const padrao =
+      r.status === 504
+        ? "O servidor demorou demais para responder. Tente de novo."
+        : r.status === 413
+          ? "Conteúdo grande demais para enviar."
+          : `Erro ${r.status} no servidor.`;
+    throw new Error(json.erro || padrao);
+  }
   return json;
 }
 
@@ -156,7 +164,10 @@ async function carregarRecados() {
     .limit(3000);
   if (error) {
     if (!navigator.onLine) avisar("Sem internet — mostrando dados salvos.");
-    else console.error(error);
+    else {
+      console.error(error);
+      avisar(`Não foi possível atualizar os recados (mostrando dados salvos): ${error.message || "erro no banco de dados"}`);
+    }
     return;
   }
   estado.recados = data;
@@ -775,8 +786,20 @@ async function alternarPush() {
 }
 
 async function testarNotificacao() {
-  const reg = await navigator.serviceWorker.ready;
-  reg.showNotification("Recados", { body: "Assim aparecerão os lembretes de prazo. 👍", icon: "/icons/icon-192.png" });
+  // Testa o caminho real dos lembretes: servidor -> serviço de push -> este aparelho.
+  const btn = $("#btn-push-teste");
+  btn.disabled = true;
+  try {
+    const { enviados, erros } = await api("push-teste", {});
+    if (enviados && !erros.length) avisar("Teste enviado ✓ A notificação deve chegar em instantes.");
+    else if (enviados) avisar(`Teste enviado, mas houve falha em outro aparelho: ${erros[0]}`);
+    else avisar(`O teste falhou: ${erros[0] || "motivo desconhecido"}`);
+  } catch (e) {
+    avisar(`O teste falhou: ${e.message}`);
+  } finally {
+    btn.disabled = false;
+    atualizarPushUI();
+  }
 }
 
 // ---------- navegação ----------
