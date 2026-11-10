@@ -1,0 +1,196 @@
+[
+  {
+    "id": "a1b2c3d4e5f60001",
+    "type": "tab",
+    "label": "Teste WhatsApp",
+    "disabled": false,
+    "info": "Aba só para testar o nó whatsapp-neway-automacoes.\nAntes do Deploy: defina MEU_NUMERO nas propriedades desta aba e escolha a sua Conta nos dois nós WhatsApp.",
+    "env": [
+      {
+        "name": "MEU_NUMERO",
+        "value": "COLOQUE_SEU_NUMERO",
+        "type": "str"
+      }
+    ]
+  },
+  {
+    "id": "a1b2c3d4e5f60002",
+    "type": "comment",
+    "z": "a1b2c3d4e5f60001",
+    "name": "LEIA: 1) Propriedades da aba > MEU_NUMERO (55 + DDD + número)  2) Escolha a Conta nos 2 nós WhatsApp  3) Deploy",
+    "info": "",
+    "x": 420,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "a1b2c3d4e5f60003",
+    "type": "comment",
+    "z": "a1b2c3d4e5f60001",
+    "name": "Teste 1 - Envio: clique no botão e chega uma mensagem no seu WhatsApp",
+    "info": "",
+    "x": 330,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "a1b2c3d4e5f60004",
+    "type": "inject",
+    "z": "a1b2c3d4e5f60001",
+    "name": "Mandar teste para mim",
+    "props": [],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 170,
+    "y": 140,
+    "wires": [
+      [
+        "a1b2c3d4e5f60005"
+      ]
+    ]
+  },
+  {
+    "id": "a1b2c3d4e5f60005",
+    "type": "function",
+    "z": "a1b2c3d4e5f60001",
+    "name": "Monta mensagem de teste",
+    "func": "const meu = String(env.get(\"MEU_NUMERO\") || \"\").replace(/\\D/g, \"\");\nif (meu.length < 12) {\n    node.warn(\"Defina MEU_NUMERO nas propriedades da aba (ex.: 5541999998888)\");\n    node.status({ fill: \"red\", shape: \"ring\", text: \"MEU_NUMERO não definido\" });\n    return null;\n}\nconst agora = new Date().toLocaleString(\"pt-BR\", { timeZone: \"America/Sao_Paulo\" });\nmsg.payload = { numero: meu, mensagem: \"✅ Teste do Node-RED funcionando - \" + agora };\nnode.status({ fill: \"green\", shape: \"dot\", text: \"enviado \" + agora });\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 140,
+    "wires": [
+      [
+        "a1b2c3d4e5f60006",
+        "a1b2c3d4e5f60012"
+      ]
+    ]
+  },
+  {
+    "id": "a1b2c3d4e5f60006",
+    "type": "whatsapp-mensagem",
+    "z": "a1b2c3d4e5f60001",
+    "name": "WhatsApp envio (teste)",
+    "conta": "",
+    "tipo": "envio",
+    "numeros": [],
+    "numeroFixo": "",
+    "inputs": 1,
+    "outputs": 0,
+    "x": 690,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "a1b2c3d4e5f60007",
+    "type": "comment",
+    "z": "a1b2c3d4e5f60001",
+    "name": "Teste 2 - Recebimento: toda mensagem que chegar aparece na aba Debug",
+    "info": "",
+    "x": 330,
+    "y": 280,
+    "wires": []
+  },
+  {
+    "id": "a1b2c3d4e5f60008",
+    "type": "whatsapp-mensagem",
+    "z": "a1b2c3d4e5f60001",
+    "name": "WhatsApp recebimento (teste)",
+    "conta": "",
+    "tipo": "recebimento",
+    "numeros": [],
+    "numeroFixo": "",
+    "inputs": 0,
+    "outputs": 1,
+    "x": 170,
+    "y": 340,
+    "wires": [
+      [
+        "a1b2c3d4e5f60009",
+        "a1b2c3d4e5f60011"
+      ]
+    ]
+  },
+  {
+    "id": "a1b2c3d4e5f60009",
+    "type": "debug",
+    "z": "a1b2c3d4e5f60001",
+    "name": "Mensagem recebida",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": true,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "payload.mensagem",
+    "statusType": "msg",
+    "x": 450,
+    "y": 340,
+    "wires": []
+  },
+  {
+    "id": "a1b2c3d4e5f60010",
+    "type": "comment",
+    "z": "a1b2c3d4e5f60001",
+    "name": "Teste 3 - Comandos: mande \"ping\", \"hora\" ou \"ajuda\" para o seu próprio número",
+    "info": "",
+    "x": 350,
+    "y": 400,
+    "wires": []
+  },
+  {
+    "id": "a1b2c3d4e5f60011",
+    "type": "function",
+    "z": "a1b2c3d4e5f60001",
+    "name": "Comandos (só do meu número)",
+    "func": "const meu = String(env.get(\"MEU_NUMERO\") || \"\").replace(/\\D/g, \"\");\nif (meu.length < 12) {\n    node.warn(\"Defina MEU_NUMERO nas propriedades da aba (ex.: 5541999998888)\");\n    node.status({ fill: \"red\", shape: \"ring\", text: \"MEU_NUMERO não definido\" });\n    return null;\n}\nconst p = msg.payload || {};\nif (p.grupo) return null;                       // ignora grupos\nconst de = String(p.numero || \"\");\nif (de.slice(-8) !== meu.slice(-8)) return null; // só aceita comandos do seu número\n\nconst texto = String(p.mensagem || \"\").trim().toLowerCase();\nlet resposta = null;\nif (texto === \"ping\") resposta = \"🤖 pong\";\nelse if (texto === \"hora\") resposta = \"🤖 Agora são \" + new Date().toLocaleTimeString(\"pt-BR\", { timeZone: \"America/Sao_Paulo\" });\nelse if (texto === \"ajuda\") resposta = \"🤖 Comandos de teste: ping, hora, ajuda\";\nif (!resposta) return null;                      // não é comando: não responde (evita loop)\n\nnode.status({ fill: \"blue\", shape: \"dot\", text: \"comando: \" + texto });\nmsg.payload = { numero: meu, mensagem: resposta };\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 460,
+    "y": 440,
+    "wires": [
+      [
+        "a1b2c3d4e5f60006",
+        "a1b2c3d4e5f60012"
+      ]
+    ]
+  },
+  {
+    "id": "a1b2c3d4e5f60012",
+    "type": "debug",
+    "z": "a1b2c3d4e5f60001",
+    "name": "O que vai ser enviado",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 720,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "a1b2c3d4e5f60013",
+    "type": "comment",
+    "z": "a1b2c3d4e5f60001",
+    "name": "Depois: ligue a saída do \"WhatsApp recebimento\" na Alexa (ex.: nó de falar texto) para ouvir as mensagens",
+    "info": "",
+    "x": 420,
+    "y": 520,
+    "wires": []
+  }
+]
