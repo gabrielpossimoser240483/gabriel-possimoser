@@ -74,10 +74,7 @@ export async function exigirUsuario(req) {
   });
   if (!r.ok) throw new ErroHttp(401, "Sua sessão expirou. Faça login novamente.");
   const usuario = await r.json();
-  const permitidos = (process.env.ALLOWED_EMAILS || "")
-    .split(",")
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean);
+  const permitidos = emailsPermitidos();
   if (permitidos.length) {
     if (!permitidos.includes(String(usuario.email || "").toLowerCase())) {
       throw new ErroHttp(403, "Este e-mail não tem permissão para usar a IA deste app.");
@@ -90,6 +87,17 @@ export async function exigirUsuario(req) {
     throw new ErroHttp(403, "A IA deste app é de uso exclusivo do dono da conta.");
   }
   return usuario;
+}
+
+// E-mails que podem usar a IA. Somados aos da variável ALLOWED_EMAILS da Vercel (se houver).
+// Com esta lista preenchida, a regra do "dono" (primeira conta) deixa de valer.
+const EMAILS_LIBERADOS = ["gabrielpossimoser49@gmail.com", "gpsom1@outlook.com.br"];
+
+/** Lista final de e-mails liberados para a IA (código + ALLOWED_EMAILS), em minúsculas. */
+export function emailsPermitidos() {
+  return [...EMAILS_LIBERADOS, ...(process.env.ALLOWED_EMAILS || "").split(",")]
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
 }
 
 /** Registra o primeiro usuário como dono (uma vez só) e devolve o id do dono. */

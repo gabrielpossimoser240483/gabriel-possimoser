@@ -105,7 +105,7 @@ Sem configurar nada, o app usa o **reconhecimento de voz do próprio iPhone**. P
 
 A **primeira conta** que entrar no app vira a **dona**: só ela consegue usar a IA, e a opção "criar conta" some da tela de login. Assim ninguém gasta seus créditos da Anthropic, mesmo que descubra o endereço do app.
 
-Opcional (proteção extra): no Supabase, **Authentication → Sign In / Providers**, desative **Allow new users to sign up**. Ou, na Vercel, crie `ALLOWED_EMAILS` com os e-mails que podem usar a IA (separados por vírgula); com ela, a regra do "dono" deixa de valer.
+Opcional (proteção extra): no Supabase, **Authentication → Sign In / Providers**, desative **Allow new users to sign up**. Os e-mails liberados também ficam na lista `EMAILS_LIBERADOS` em `api/_lib.js`. Ou, na Vercel, crie `ALLOWED_EMAILS` com os e-mails que podem usar a IA (separados por vírgula); com ela, a regra do "dono" deixa de valer.
 
 > 🔐 **Segurança:** a chave da Anthropic, a secret key do Supabase e as chaves VAPID ficam apenas nas variáveis da Vercel. O app no iPhone só recebe a URL e a chave **pública** do Supabase (feita para ser pública). Cada usuário só enxerga os próprios recados graças às regras de segurança (Row Level Security) criadas no `schema.sql`. As rotas de IA exigem login válido.
 
