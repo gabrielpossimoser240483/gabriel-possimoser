@@ -3,6 +3,8 @@
 Aba **Impressora 3D** para o [Node-RED Dashboard 2](https://dashboard.flowfuse.com/) (`@flowfuse/node-red-dashboard`).
 Monitora e controla impressoras com **Klipper** (Moonraker / Mainsail / Fluidd) ou **OctoPrint**.
 
+![Aba Impressora 3D](preview.png)
+
 Arquivo para importar: **[`impressora-3d.json`](impressora-3d.json)**
 
 ## O que tem na aba
