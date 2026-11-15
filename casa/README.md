@@ -115,6 +115,29 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
   o cartão lê a cada 1 s por 20 s. O resto do atraso é da própria fechadura Zigbee (acorda e responde).
 - Para ficar instantâneo de verdade seria preciso controle **local** (sem nuvem) das lâmpadas Wi-Fi
   (elas têm `local_key`); a fechadura Zigbee continuaria pela nuvem.
+- Medição (log da Tuya, 10 aberturas em 15/11): comando sai da Tuya → fechadura responde em
+  **0,6 a 5,1 s (média ~3 s)**. É a fechadura Zigbee a pilha "dormindo" entre checagens do gateway.
+  Ajuda: Smart Gateway mais perto da porta, ou um repetidor Zigbee Tuya (tomada) perto da entrada.
+
+### Fechadura: trancar remotamente (teste 15/11/2026)
+
+- A fechadura aceita `door-operate` com `open: false` (resposta `remote_no_dp_key "AAAA"`; abrir dá `"AAAB"`).
+  No teste ela fez o ciclo `open → closed` (trinco). **Falta o Gabriel confirmar** se a 2ª tranca
+  (a que hoje só fecha levantando a maçaneta) se moveu. Se for tranca mecânica de maçaneta, motor nenhum fecha.
+- Outros comandos graváveis: `lock_motor_state` (落锁状态, "estado de trancado") e `reverse_lock`
+  (反锁, trava interna). Ainda não testados para trancar a 2ª tranca.
+
+## Interfone (aba "Cozinha e Copa", grupo "Interfone, visita no portão e refletor")
+
+Feito em outra conversa. Como está:
+- Toque do interfone detectado por uma **tomada Zigbee** (`zigbee2mqtt/copa_interfone_tomada`):
+  se a corrente passar de **0,1 A** → liga a TV da copa na câmera por 1 min (e o refletor se estiver escuro).
+  Também existe `POST /interfone` (http in) que faz o mesmo.
+- Comentário no fluxo: **"a tomada não percebe"** o toque. Por isso foi criado o substituto:
+  detector de **visita na CAM 16** (serviço local `http://127.0.0.1:8099/portao_estado`, lido a cada 3 s).
+- Hipóteses para a tomada não perceber: o toque gasta menos que 0,1 A, ou a tomada só manda a leitura
+  de corrente de tempos em tempos (e o toque é curto). Próximo passo: gravar as leituras da tomada
+  enquanto alguém toca o interfone e ajustar o limite / o intervalo de leitura no zigbee2mqtt.
 
 ---
 
