@@ -7,7 +7,7 @@
           <template v-if="e.posicao">X {{ e.posicao.x.toFixed(1) }} · Y {{ e.posicao.y.toFixed(1) }} · Z {{ e.posicao.z.toFixed(2) }}</template>
           <template v-else>posição indisponível</template>
         </div>
-        <div v-if="e.tipo !== 'octoprint'" class="i3d-linha" style="gap:4px">
+        <div v-if="e.tipo === 'moonraker'" class="i3d-linha" style="gap:4px">
           <v-chip v-for="ei in ['x','y','z']" :key="ei" size="x-small" :color="(e.homed || '').includes(ei) ? 'success' : 'grey'" variant="flat">{{ ei.toUpperCase() }}</v-chip>
         </div>
       </div>
@@ -62,7 +62,7 @@ export default {
   data() { return { passo: 10, mm: 5 } },
   computed: {
     e() { return this.msg && this.msg.payload && this.msg.payload.cfg ? this.msg.payload : null },
-    bloqueado() { return this.e.estado === 'imprimindo' },
+    bloqueado() { return this.e.estado === 'imprimindo' || this.e.estado === 'preparando' },
     travar() { return this.bloqueado || ['offline', 'conectando', 'semconfig', 'desconectada', 'erro'].includes(this.e.estado) },
     frio() { return !this.e.bico || this.e.bico.atual == null || this.e.bico.atual < 170 }
   },

@@ -15,7 +15,7 @@
       <v-btn size="x-small" variant="text" @click="limpar">Limpar</v-btn>
     </div>
     <div v-if="msg && msg.payload && msg.payload.suportaRespostas === false" class="i3d-sub" style="margin-top:6px">
-      No OctoPrint, as respostas da impressora aparecem no Terminal do próprio OctoPrint.
+      {{ msg.payload.tipo === 'bambu' ? 'A Bambu Lab não devolve respostas de G-code pela rede; os comandos são executados mesmo assim.' : 'No OctoPrint, as respostas da impressora aparecem no Terminal do próprio OctoPrint.' }}
     </div>
   </div>
 </template>

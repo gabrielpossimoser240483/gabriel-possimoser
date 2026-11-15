@@ -12,7 +12,7 @@
         <v-btn size="small" variant="tonal" :prepend-icon="ligada ? 'mdi-pause' : 'mdi-play'" @click="alternar">{{ ligada ? 'Parar câmera' : 'Ligar câmera' }}</v-btn>
         <v-btn size="small" variant="tonal" prepend-icon="mdi-fullscreen" @click="cheia = !cheia">Ampliar</v-btn>
         <v-btn size="small" variant="tonal" prepend-icon="mdi-camera" :href="foto" target="_blank">Foto</v-btn>
-        <v-btn-toggle v-model="modo" density="compact" variant="outlined" mandatory divided>
+        <v-btn-toggle v-if="e.tipo !== 'bambu'" v-model="modo" density="compact" variant="outlined" mandatory divided>
           <v-btn value="snapshot" size="small">Fotos</v-btn>
           <v-btn value="stream" size="small">Vídeo</v-btn>
         </v-btn-toggle>

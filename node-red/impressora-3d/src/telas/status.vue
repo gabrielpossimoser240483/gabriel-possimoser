@@ -7,9 +7,10 @@
           <v-chip :color="cor" variant="flat" size="small" class="font-weight-bold">{{ e.estadoTexto }}</v-chip>
           <span style="font-weight:600">{{ e.cfg.nome }}</span>
         </div>
-        <span class="i3d-sub">{{ e.tipo === 'octoprint' ? 'OctoPrint' : 'Klipper' }} · {{ hora(e.atualizadoEm, true) }}</span>
+        <span class="i3d-sub">{{ ({ octoprint: 'OctoPrint', bambu: 'Bambu Lab', moonraker: 'Klipper' })[e.tipo] }} · {{ hora(e.atualizadoEm, true) }}</span>
       </div>
 
+      <div v-for="h in (e.hms || [])" :key="h.codigo" class="i3d-msg erro">⚠️ Aviso HMS <a :href="h.url" target="_blank" rel="noopener">{{ h.codigo }}</a> (toque para ver a solução)</div>
       <div v-if="e.mensagem" class="i3d-msg" :class="{ erro: ['erro','offline','desconectada'].includes(e.estado) }">{{ e.mensagem }}</div>
 
       <div v-if="e.arquivo" class="i3d-job">
@@ -26,18 +27,28 @@
         <div class="i3d-celula"><span>Decorrido</span><b>{{ dur(e.decorrido) }}</b></div>
         <div class="i3d-celula"><span>Restante</span><b>{{ dur(e.restante) }}</b></div>
         <div class="i3d-celula"><span>Termina às</span><b>{{ hora(e.eta) }}</b></div>
-        <div class="i3d-celula"><span>Estimativa do fatiador</span><b>{{ dur(e.estimativaSlicer) }}</b></div>
+        <div v-if="e.tipo !== 'bambu'" class="i3d-celula"><span>Estimativa do fatiador</span><b>{{ dur(e.estimativaSlicer) }}</b></div>
+        <div v-if="e.filamentoAtual" class="i3d-celula"><span>Filamento em uso</span><b><span class="i3d-bolinha" :style="{ background: e.filamentoAtual.cor || '#999' }"></span>{{ e.filamentoAtual.tipo }} · {{ e.filamentoAtual.nome }}</b></div>
         <div class="i3d-celula"><span>Camada</span><b>{{ camada }}</b></div>
-        <div class="i3d-celula"><span>Altura Z</span><b>{{ e.posicao ? e.posicao.z.toFixed(2) + ' mm' : '—' }}</b></div>
+        <div v-if="e.tipo !== 'bambu'" class="i3d-celula"><span>Altura Z</span><b>{{ e.posicao ? e.posicao.z.toFixed(2) + ' mm' : '—' }}</b></div>
+        <template v-if="e.tipo !== 'bambu'">
         <div class="i3d-celula"><span>Filamento usado</span><b>{{ filamento }}</b></div>
         <div class="i3d-celula"><span>Peso</span><b>{{ peso }}</b></div>
+        </template>
         <div class="i3d-celula"><span>Bico</span><b>{{ temp(e.bico) }}</b></div>
         <div class="i3d-celula"><span>Mesa</span><b>{{ temp(e.mesa) }}</b></div>
         <div class="i3d-celula" v-for="s in (e.sensores || [])" :key="s.nome"><span>{{ s.nome }}</span><b>{{ temp(s) }}</b></div>
+        <template v-if="e.tipo === 'bambu'">
+        <div class="i3d-celula"><span>Velocidade</span><b>{{ e.nivelTexto || '—' }}</b></div>
+        <div class="i3d-celula"><span>Ventoinha</span><b>{{ e.ventoinha != null ? e.ventoinha + '%' : '—' }}</b></div>
+        <div class="i3d-celula"><span>Wi-Fi</span><b>{{ e.wifi || '—' }}</b></div>
+        </template>
+        <template v-else>
         <div class="i3d-celula"><span>Velocidade real</span><b>{{ e.velocidadeAtual != null ? e.velocidadeAtual.toFixed(0) + ' mm/s' : '—' }}</b></div>
         <div class="i3d-celula"><span>Vazão</span><b>{{ e.vazao != null ? e.vazao.toFixed(1) + ' mm³/s' : '—' }}</b></div>
         <div class="i3d-celula"><span>Ventoinha</span><b>{{ e.ventoinha != null ? e.ventoinha + '%' : '—' }}</b></div>
         <div class="i3d-celula"><span>Velocidade / fluxo</span><b>{{ e.velocidade != null ? e.velocidade + '% / ' + e.fluxo + '%' : '—' }}</b></div>
+        </template>
       </div>
     </template>
   </div>
@@ -49,7 +60,7 @@ export default {
   computed: {
     e() { return this.msg && this.msg.payload && this.msg.payload.cfg ? this.msg.payload : null },
     cor() {
-      return ({ imprimindo: 'primary', pausada: 'warning', pausando: 'warning', concluida: 'success', pronta: 'success',
+      return ({ imprimindo: 'primary', preparando: 'primary', pausada: 'warning', pausando: 'warning', concluida: 'success', pronta: 'success',
         cancelada: 'grey', cancelando: 'grey', erro: 'error', offline: 'error', desconectada: 'error' })[this.e.estado] || 'grey'
     },
     base() { return window.location.pathname.replace(/\/[^/]*\/[^/]*\/?$/, '/') },
@@ -96,5 +107,6 @@ export default {
 .i3d-job { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
 .i3d-mini { width: 72px; height: 72px; object-fit: contain; border-radius: 6px; background: rgba(var(--v-theme-on-surface), .05); flex: none; }
 .i3d-job-info { flex: 1; min-width: 0; }
+.i3d-bolinha { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 1px solid rgba(0,0,0,.2); }
 .i3d-arquivo { font-weight: 600; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>

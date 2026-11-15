@@ -1,6 +1,6 @@
 // Traduz os comandos dos botões do dashboard para a API da impressora.
 // Entrada: msg.payload = { acao: '...', ...parâmetros }
-// Saídas: 1 requisição HTTP · 2 recarregar listas · 3 aviso na tela · 4 console (eco / limpar)
+// Saídas: 1 requisição HTTP · 2 recarregar listas · 3 aviso na tela · 4 console (eco / limpar) · 5 MQTT (Bambu Lab)
 const cfg = flow.get('cfg') || {};
 const e = flow.get('estado') || {};
 const c = msg.payload || {};
@@ -10,17 +10,93 @@ const aviso = texto => [null, null, { topic: 'Impressora 3D', payload: texto }, 
 if (acao === 'atualizarListas') return [null, { topic: 'atualizar' }, null, null];
 if (acao === 'limparConsole') return [null, null, null, { topic: 'console:limpar' }];
 if (!cfg.url) return aviso('⚠️ Configure o endereço da impressora primeiro.');
+if (acao === 'reconectar') return [null, { topic: 'atualizar' }, { topic: 'Impressora 3D', payload: '🔌 Reconectando…' }, null];
 if (['offline', 'conectando'].includes(e.estado)) return aviso('⚠️ A impressora está sem conexão.');
 
 const mk = cfg.tipo !== 'octoprint';
-const imprimindo = e.estado === 'imprimindo';
-const ocupada = ['imprimindo', 'pausada', 'pausando', 'cancelando'].includes(e.estado);
+const imprimindo = e.estado === 'imprimindo' || e.estado === 'preparando';
+const ocupada = ['imprimindo', 'preparando', 'pausada', 'pausando', 'cancelando'].includes(e.estado);
 const n = (v, min, max) => Math.min(max, Math.max(min, Number(v) || 0));
 
 // Ações que não podem rodar durante a impressão
 const bloqueadas = { mover: 1, home: 1, extrudar: 1, desligarMotores: 1 };
 if (imprimindo && bloqueadas[acao]) return aviso('⛔ Não é possível fazer isso durante a impressão. Pause primeiro.');
 if (acao === 'imprimir' && ocupada) return aviso('⛔ Já existe uma impressão em andamento.');
+
+const xy = cfg.velocidadeXY || 3000, fz = cfg.velocidadeZ || 600, fe = cfg.velocidadeExtrusao || 300;
+
+// ============================================================
+//  Bambu Lab: comandos por MQTT em device/<serial>/request
+// ============================================================
+if (cfg.tipo === 'bambu') {
+    const topico = `device/${cfg.serial}/request`;
+    const seq = String(Date.now() % 1000000);
+    const ok = t => ({ topic: 'Impressora 3D', payload: '✔ ' + t });
+    const pub = (descricao, payload, avisar) => [null, null, avisar ? ok(descricao) : null, null, { topic: topico, payload, descricao }];
+    const imp = (command, extra) => ({ print: Object.assign({ sequence_id: seq, command }, extra || {}) });
+    const g = (descricao, linhas, avisar) => {
+        linhas = [].concat(linhas).map(l => String(l).trim()).filter(Boolean);
+        if (!linhas.length) return aviso('Nenhum comando para enviar.');
+        return [null, null, avisar ? ok(descricao) : null,
+            linhas.map(l => ({ topic: 'console:local', tipo: 'cmd', payload: l })),
+            { topic: topico, payload: imp('gcode_line', { param: linhas.join('\n') + '\n' }), descricao }];
+    };
+    switch (acao) {
+        case 'pausar': return pub('Pausar', imp('pause'));
+        case 'retomar': return pub('Retomar', imp('resume'));
+        case 'cancelar': return pub('Cancelar', imp('stop'));
+        case 'emergencia':
+            return [null, null, ok('Impressão parada e aquecimento desligado'), null, [
+                { topic: topico, payload: imp('stop') },
+                { topic: topico, payload: imp('gcode_line', { sequence_id: seq + '1', param: 'M104 S0\nM140 S0\n' }) }
+            ]];
+        case 'reiniciarFirmware':
+            return [null, { topic: 'atualizar' }, { topic: 'Impressora 3D', payload: '🔌 Reconectando…' }, null];
+        case 'luz':
+            return pub(c.ligar ? 'Luz ligada' : 'Luz desligada', {
+                system: { sequence_id: seq, command: 'ledctrl', led_node: 'chamber_light', led_mode: c.ligar ? 'on' : 'off',
+                    led_on_time: 500, led_off_time: 500, loop_times: 0, interval_time: 0 }
+            });
+        case 'nivelVelocidade': {
+            const nv = Math.round(n(c.nivel, 1, 4));
+            return pub('Velocidade: ' + ({ 1: 'Silencioso', 2: 'Padrão', 3: 'Esporte', 4: 'Ludicrous' })[nv], imp('print_speed', { param: String(nv) }), true);
+        }
+        case 'amsCarregar': {
+            const alvo = Math.round(n(c.bandeja, 0, 254));
+            const temp = Math.round(n(c.temp || 220, 180, cfg.bicoMax || 300));
+            return pub('Carregando filamento do AMS ' + (alvo === 254 ? 'externo' : alvo + 1), imp('ams_change_filament', { target: alvo, curr_temp: temp, tar_temp: temp }), true);
+        }
+        case 'amsDescarregar':
+            return pub('Descarregando filamento', imp('ams_change_filament', { target: 255, curr_temp: 220, tar_temp: 220 }), true);
+        case 'home': {
+            const eixos = String(c.eixos || '').toUpperCase().replace(/[^XYZ]/g, '');
+            return g('Home ' + (eixos || 'todos os eixos'), eixos ? 'G28 ' + eixos.split('').join(' ') : 'G28');
+        }
+        case 'mover': {
+            const eixo = String(c.eixo || '').toUpperCase();
+            if (!/^[XYZ]$/.test(eixo)) return aviso('Eixo inválido.');
+            const d = n(c.dist, -300, 300);
+            return g(`Mover ${eixo} ${d} mm`, ['G91', `G1 ${eixo}${d} F${eixo === 'Z' ? fz : xy}`, 'G90']);
+        }
+        case 'extrudar': {
+            const d = n(c.mm, -100, 100);
+            return g((d >= 0 ? 'Extrudar ' : 'Retrair ') + Math.abs(d) + ' mm', ['M83', `G1 E${d} F${fe}`]);
+        }
+        case 'tempBico': return g('Temperatura do bico', `M104 S${n(c.alvo, 0, cfg.bicoMax || 300)}`);
+        case 'tempMesa': return g('Temperatura da mesa', `M140 S${n(c.alvo, 0, cfg.mesaMax || 120)}`);
+        case 'preset': return g('Pré-aquecer ' + (c.nome || ''), [`M104 S${n(c.bico, 0, cfg.bicoMax || 300)}`, `M140 S${n(c.mesa, 0, cfg.mesaMax || 120)}`], true);
+        case 'desligarAquecimento': return g('Desligar aquecimento', ['M104 S0', 'M140 S0'], true);
+        case 'ventoinha': return g('Ventoinha ' + n(c.pct, 0, 100) + '%', `M106 P1 S${Math.round(n(c.pct, 0, 100) * 2.55)}`);
+        case 'desligarMotores': return g('Desligar motores', 'M18', true);
+        case 'gcode': return g('G-code', String(c.script || '').split(/\r?\n/));
+        case 'velocidade': case 'fluxo': case 'babystep':
+            return aviso('Esse ajuste não existe na Bambu Lab. Use os níveis de velocidade.');
+        case 'imprimir':
+            return aviso('Para mandar arquivos para a Bambu Lab use o Bambu Studio ou o Bambu Handy.');
+        default:
+            return aviso('Comando desconhecido: ' + acao);
+    }
+}
 
 const headers = { 'Content-Type': 'application/json' };
 if (cfg.apiKey) headers['X-Api-Key'] = cfg.apiKey;
@@ -40,8 +116,6 @@ function gcode(descricao, linhas, extra) {
     r.gcode = linhas;
     return [r, null, null, eco];
 }
-
-const xy = cfg.velocidadeXY || 3000, fz = cfg.velocidadeZ || 600, fe = cfg.velocidadeExtrusao || 300;
 
 switch (acao) {
     case 'pausar':

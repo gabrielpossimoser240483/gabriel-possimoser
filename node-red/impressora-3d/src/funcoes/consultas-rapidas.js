@@ -2,6 +2,8 @@
 // Saída 1: requisições HTTP · Saída 2: aviso de "sem configuração" para o interpretador
 const cfg = flow.get('cfg');
 if (!cfg || !cfg.url) return [null, { topic: 'semConfig' }];
+// Bambu Lab: os dados chegam sozinhos por MQTT; o tique só serve para checar se a conexão caiu
+if (cfg.tipo === 'bambu') return [null, { topic: 'bambu:tick' }];
 
 const headers = {};
 if (cfg.apiKey) headers['X-Api-Key'] = cfg.apiKey;

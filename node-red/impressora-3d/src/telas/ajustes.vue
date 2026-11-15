@@ -2,7 +2,13 @@
   <div class="i3d">
     <div v-if="!e" class="i3d-vazio">Aguardando dados…</div>
     <template v-else>
-      <div v-for="a in itens" :key="a.id" class="i3d-aj">
+      <template v-if="e.tipo === 'bambu'">
+        <div class="i3d-linha i3d-entre"><b>Velocidade</b><span class="i3d-sub">atual {{ e.nivelTexto || '—' }}{{ e.velocidade ? ' (' + e.velocidade + '%)' : '' }}</span></div>
+        <v-btn-toggle :model-value="e.nivelVelocidade" density="compact" variant="outlined" divided mandatory style="margin:6px 0 12px">
+          <v-btn v-for="n in niveis" :key="n.v" :value="n.v" size="small" :disabled="travado" @click="enviar('nivelVelocidade', { nivel: n.v })">{{ n.t }}</v-btn>
+        </v-btn-toggle>
+      </template>
+      <div v-for="a in itensVisiveis" :key="a.id" class="i3d-aj">
         <div class="i3d-linha i3d-entre">
           <b>{{ a.rotulo }}</b>
           <span class="i3d-num">
@@ -14,6 +20,7 @@
           :disabled="travado" @start="mexendo = a.id" @end="v => aplicar(a, v)"></v-slider>
       </div>
 
+      <template v-if="e.tipo !== 'bambu'">
       <div class="i3d-titulo">Ajuste fino do Z (babystep)</div>
       <div class="i3d-linha">
         <v-btn v-for="d in [-0.05, -0.01, 0.01, 0.05]" :key="d" size="small" variant="tonal" :disabled="travado"
@@ -23,6 +30,7 @@
         Offset atual: <b class="i3d-num">{{ e.zOffset != null ? (e.zOffset > 0 ? '+' : '') + e.zOffset.toFixed(3) + ' mm' : '—' }}</b>
         · negativo aproxima o bico da mesa
       </div>
+      </template>
     </template>
   </div>
 </template>
@@ -32,6 +40,7 @@ export default {
   data() {
     return {
       mexendo: null,
+      niveis: [{ v: 1, t: 'Silencioso' }, { v: 2, t: 'Padrão' }, { v: 3, t: 'Esporte' }, { v: 4, t: 'Ludicrous' }],
       valores: { velocidade: 100, fluxo: 100, ventoinha: 0 },
       itens: [
         { id: 'velocidade', rotulo: 'Velocidade', acao: 'velocidade', min: 10, max: 300, passo: 5, padrao: 100 },
@@ -42,6 +51,7 @@ export default {
   },
   computed: {
     e() { return this.msg && this.msg.payload && this.msg.payload.cfg ? this.msg.payload : null },
+    itensVisiveis() { return this.e.tipo === 'bambu' ? this.itens.filter(a => a.id === 'ventoinha') : this.itens },
     travado() { return ['offline', 'conectando', 'semconfig', 'desconectada'].includes(this.e.estado) }
   },
   watch: {

@@ -1,7 +1,7 @@
 <template>
   <div class="i3d">
     <div v-if="!p" class="i3d-vazio">Carregando histórico…</div>
-    <div v-else-if="!p.suportado" class="i3d-vazio">O histórico de impressões está disponível só com Klipper/Moonraker.</div>
+    <div v-else-if="!p.suportado" class="i3d-vazio">{{ p.tipo === 'bambu' ? 'Na Bambu Lab o histórico fica na nuvem (Bambu Handy / Bambu Studio) e não é acessível pela rede local.' : 'O histórico de impressões está disponível só com Klipper/Moonraker.' }}</div>
     <template v-else>
       <div class="i3d-grade" style="margin-top:0">
         <div class="i3d-celula"><span>Impressões</span><b>{{ t.impressoes != null ? t.impressoes : '—' }}</b></div>

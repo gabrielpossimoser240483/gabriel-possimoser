@@ -10,18 +10,21 @@
 //  6 alertas     → notificação na tela + link "Alertas da impressora 3D"
 //  7 requisições → novas consultas (metadados do arquivo em impressão)
 //  8 avisos      → resultado de comandos (erros, confirmações)
+//  9 MQTT        → publicações para a Bambu Lab (pedido de relatório completo)
 
 const cfg = flow.get('cfg') || {};
-const out = [null, null, null, null, null, null, null, null];
+const out = [null, null, null, null, null, null, null, null, null];
 const alertas = [];
 const pedidos = [];
 
 const novo = () => ({
     mk: {}, octo: {}, meta: {}, metaPedido: {}, arquivos: null, hist: null, totais: null,
     sis: {}, console: [], consoleT: null, consoleLocal: [], estadoAnt: null, marcos: {},
-    aquecendo: {}, online: null, erroConexao: '', latencia: null
+    aquecendo: {}, online: null, erroConexao: '', latencia: null,
+    bb: { print: {}, desde: Date.now(), ultimo: 0, hmsVistos: {} }
 });
 let m = context.get('m') || novo();
+if (!m.bb) m.bb = novo().bb;
 
 // ---------- utilidades ----------
 const num = v => (typeof v === 'number' && isFinite(v) ? v : null);
@@ -67,6 +70,16 @@ function alerta(nivel, titulo, texto) {
     alertas.push({ nivel, titulo, texto: texto || '', icone: icones[nivel] || '' });
 }
 
+// junta as atualizações parciais da Bambu (ela só manda o que mudou)
+function mesclar(dest, src) {
+    for (const k of Object.keys(src)) {
+        const v = src[k];
+        if (v && typeof v === 'object' && !Array.isArray(v) && dest[k] && typeof dest[k] === 'object' && !Array.isArray(dest[k])) mesclar(dest[k], v);
+        else dest[k] = v;
+    }
+    return dest;
+}
+
 // ---------- conexão ----------
 function marcarOnline(r) {
     if (m.online === false) alerta('sucesso', 'Impressora conectada novamente', cfg.nome);
@@ -92,12 +105,13 @@ function marcarOffline(r) {
 // ---------- câmera e configuração pública ----------
 function cfgPublica() {
     const auto = flow.get('webcamAuto') || {};
-    const snapshot = cfg.webcamSnapshot || auto.snapshot || resolverUrl('/webcam/?action=snapshot');
-    const stream = cfg.webcamStream || auto.stream || resolverUrl('/webcam/?action=stream');
+    const bambu = cfg.tipo === 'bambu';
+    const snapshot = bambu ? '' : (cfg.webcamSnapshot || auto.snapshot || resolverUrl('/webcam/?action=snapshot'));
+    const stream = bambu ? '' : (cfg.webcamStream || auto.stream || resolverUrl('/webcam/?action=stream'));
     flow.set('webcamSnapshotUrl', snapshot);
     return {
         nome: cfg.nome, tipo: cfg.tipo, temUrl: !!cfg.url,
-        webcamModo: cfg.webcamModo, webcamIntervalo: cfg.webcamIntervalo, webcamStream: stream,
+        webcamModo: bambu ? 'snapshot' : cfg.webcamModo, webcamIntervalo: cfg.webcamIntervalo, webcamStream: stream,
         bicoMax: cfg.bicoMax, mesaMax: cfg.mesaMax, presets: cfg.presets || []
     };
 }
@@ -255,15 +269,115 @@ function estadoOcto() {
     };
 }
 
+// ---------- estado: Bambu Lab ----------
+const ETAPAS = {
+    1: 'Nivelando a mesa', 2: 'Aquecendo a mesa', 3: 'Calibrando vibração', 4: 'Trocando o filamento',
+    5: 'Pausa (M400)', 6: 'Pausada: acabou o filamento', 7: 'Aquecendo o bico', 8: 'Calibrando a extrusão',
+    9: 'Escaneando a mesa', 10: 'Inspecionando a primeira camada', 11: 'Identificando a placa', 12: 'Calibrando o micro lidar',
+    13: 'Fazendo home', 14: 'Limpando o bico', 15: 'Verificando a temperatura do bico', 16: 'Pausada pelo usuário',
+    17: 'Pausada: tampa frontal caiu', 18: 'Calibrando o micro lidar', 19: 'Calibrando o fluxo', 20: 'Pausada: falha na temperatura do bico',
+    21: 'Pausada: falha na temperatura da mesa', 22: 'Descarregando o filamento', 23: 'Pausada: perda de passo', 24: 'Carregando o filamento',
+    25: 'Calibrando o ruído do motor', 26: 'Pausada: AMS desconectado', 27: 'Pausada: ventoinha do hotend lenta',
+    28: 'Pausada: erro no controle de temperatura da câmara', 29: 'Resfriando a câmara', 30: 'Pausada pelo G-code',
+    31: 'Demonstração de ruído do motor', 32: 'Pausada: bico coberto de filamento', 33: 'Pausada: erro no cortador',
+    34: 'Pausada: erro na primeira camada', 35: 'Pausada: bico entupido'
+};
+const NIVEIS = { 1: 'Silencioso', 2: 'Padrão', 3: 'Esporte', 4: 'Ludicrous' };
+const hex4 = n => (n >>> 0).toString(16).toUpperCase().padStart(8, '0').replace(/^(.{4})(.{4})$/, '$1_$2');
+
+function estadoBambu() {
+    const p = m.bb.print || {};
+    const MAPA = {
+        IDLE: ['pronta', 'Pronta'], PREPARE: ['preparando', 'Preparando'], SLICING: ['preparando', 'Fatiando'],
+        RUNNING: ['imprimindo', 'Imprimindo'], PAUSE: ['pausada', 'Pausada'], FINISH: ['concluida', 'Concluída'], FAILED: ['erro', 'Falhou']
+    };
+    const [estado, estadoTexto] = MAPA[p.gcode_state] || ['pronta', p.gcode_state || 'Pronta'];
+    const ativo = ['imprimindo', 'pausada', 'preparando'].includes(estado);
+    const arquivo = p.subtask_name || p.gcode_file || '';
+    const progresso = num(Number(p.mc_percent)) || 0;
+
+    // a Bambu não informa o tempo decorrido: medimos desde que vimos a impressão começar
+    if (ativo) {
+        if (m.bb.inicioArq !== arquivo || !m.bb.inicio) {
+            m.bb.inicio = Date.now(); m.bb.inicioArq = arquivo; m.bb.inicioParcial = progresso > 1;
+        }
+        m.bb.decorrido = m.bb.inicioParcial ? null : (Date.now() - m.bb.inicio) / 1000;
+    } else if (estado === 'pronta') { m.bb.inicio = null; m.bb.inicioArq = null; }
+    const restante = ativo && num(Number(p.mc_remaining_time)) !== null ? Number(p.mc_remaining_time) * 60 : null;
+
+    // AMS / AMS Lite
+    const ams = p.ams || {};
+    const trayNow = ams.tray_now != null ? Number(ams.tray_now) : null;
+    const cor = c => (c && /^[0-9A-F]{6}/i.test(c) ? '#' + c.slice(0, 6) : null);
+    const restanteBandeja = t => (num(Number(t.remain)) !== null && Number(t.remain) >= 0 ? Number(t.remain) : null);
+    const unidades = (ams.ams || []).map(u => ({
+        id: Number(u.id),
+        umidade: u.humidity != null ? Number(u.humidity) : null,
+        temp: num(Number(u.temp)),
+        bandejas: (u.tray || []).map(t => {
+            const global = Number(u.id) * 4 + Number(t.id);
+            return {
+                id: Number(t.id), global, tipo: t.tray_type || '', marca: t.tray_sub_brands || '', cor: cor(t.tray_color),
+                restante: restanteBandeja(t), vazia: !t.tray_type, ativa: trayNow === global,
+                tempMin: num(Number(t.nozzle_temp_min)), tempMax: num(Number(t.nozzle_temp_max))
+            };
+        })
+    }));
+    const vt = p.vt_tray || null;
+    const externo = vt ? { tipo: vt.tray_type || '', marca: vt.tray_sub_brands || '', cor: cor(vt.tray_color), ativa: trayNow === 254, vazia: !vt.tray_type } : null;
+    let filamentoAtual = null;
+    for (const u of unidades) for (const b of u.bandejas) if (b.ativa) filamentoAtual = { ...b, nome: 'AMS ' + (b.global + 1) };
+    if (!filamentoAtual && externo && externo.ativa) filamentoAtual = { ...externo, nome: 'Carretel externo' };
+
+    // erros e avisos (HMS)
+    const hms = (p.hms || []).map(h => {
+        const codigo = hex4(h.attr) + '_' + hex4(h.code);
+        return { codigo, url: 'https://wiki.bambulab.com/en/x1/troubleshooting/hmscode/' + codigo };
+    });
+    const etapa = num(Number(p.stg_cur));
+    let mensagem = ativo && etapa !== null && ETAPAS[etapa] ? ETAPAS[etapa] : '';
+    if (p.print_error && Number(p.print_error) !== 0) mensagem = (mensagem ? mensagem + ' · ' : '') + 'Código de erro ' + hex4(Number(p.print_error));
+
+    const luz = (p.lights_report || []).find(l => l.node === 'chamber_light');
+    const fan = num(Number(p.cooling_fan_speed));
+
+    return {
+        estado, estadoTexto, mensagem, etapa,
+        arquivo, nome: nomeCurto(arquivo), miniatura: null,
+        progresso: r1(progresso), decorrido: ativo ? m.bb.decorrido : null, restante,
+        total: ativo && m.bb.decorrido != null && restante != null ? m.bb.decorrido + restante : null,
+        estimativaSlicer: null,
+        eta: estado === 'imprimindo' && restante !== null ? Date.now() + restante * 1000 : null,
+        camada: ativo || estado === 'concluida' ? num(Number(p.layer_num)) : null,
+        camadas: num(Number(p.total_layer_num)) || null,
+        filamento: { usado: null, total: null, peso: null, pesoUsado: null },
+        bico: { atual: r1(Number(p.nozzle_temper)), alvo: num(Number(p.nozzle_target_temper)), potencia: null },
+        mesa: { atual: r1(Number(p.bed_temper)), alvo: num(Number(p.bed_target_temper)), potencia: null },
+        sensores: num(Number(p.chamber_temper)) ? [{ nome: 'câmara', atual: r1(Number(p.chamber_temper)), alvo: null }] : [],
+        posicao: null, homed: '',
+        ventoinha: fan !== null ? Math.round(fan / 15 * 100) : null,
+        velocidade: num(Number(p.spd_mag)), fluxo: null, zOffset: null,
+        nivelVelocidade: num(Number(p.spd_lvl)), nivelTexto: NIVEIS[Number(p.spd_lvl)] || '',
+        velocidadeAtual: null, vazao: null, limites: null,
+        ams: { unidades, externo, ativa: trayNow }, filamentoAtual, hms,
+        luz: luz ? luz.mode === 'on' : null,
+        wifi: p.wifi_signal || null, bicoDiametro: p.nozzle_diameter || null
+    };
+}
+
 function montarEstado() {
     const base = {
         cfg: cfgPublica(), online: m.online, tipo: cfg.tipo, atualizadoEm: Date.now(), latencia: m.latencia,
         bico: { atual: null, alvo: null, potencia: null }, mesa: { atual: null, alvo: null, potencia: null }, sensores: []
     };
-    if (!cfg.url) return { ...base, estado: 'semconfig', estadoTexto: 'Não configurada', mensagem: 'Informe o endereço da impressora no grupo "Configuração", no fim da página.' };
+    if (!cfg.url || (cfg.tipo === 'bambu' && (!cfg.serial || !cfg.apiKey))) {
+        return { ...base, estado: 'semconfig', estadoTexto: 'Não configurada', mensagem: cfg.tipo === 'bambu'
+            ? 'Informe o IP, o número de série e o código de acesso da impressora no grupo "Configuração", no fim da página.'
+            : 'Informe o endereço da impressora no grupo "Configuração", no fim da página.' };
+    }
     if (m.online === null) return { ...base, estado: 'conectando', estadoTexto: 'Conectando…' };
     if (m.online === false) return { ...base, estado: 'offline', estadoTexto: 'Sem conexão', mensagem: m.erroConexao };
-    return { ...base, ...(cfg.tipo === 'octoprint' ? estadoOcto() : estadoMk()) };
+    return { ...base, ...(cfg.tipo === 'octoprint' ? estadoOcto() : cfg.tipo === 'bambu' ? estadoBambu() : estadoMk()) };
 }
 
 function verificarAlertas(e) {
@@ -275,7 +389,7 @@ function verificarAlertas(e) {
         if (para === 'imprimindo') {
             if (de === 'pausada' || de === 'pausando') alerta('info', 'Impressão retomada', nome);
             else { alerta('info', 'Impressão iniciada', nome + (e.estimativaSlicer ? ' · estimativa ' + dur(e.estimativaSlicer) : '')); m.marcos[e.arquivo] = {}; }
-        } else if (para === 'pausada') alerta('aviso', 'Impressão pausada', nome);
+        } else if (para === 'pausada') alerta('aviso', 'Impressão pausada', nome + (e.mensagem ? ' · ' + e.mensagem : ''));
         else if (para === 'concluida' || (de === 'imprimindo' && para === 'pronta' && e.progresso >= 99)) alerta('sucesso', 'Impressão concluída', nome + (e.decorrido ? ' em ' + dur(e.decorrido) : ''));
         else if (para === 'cancelada' || (de === 'cancelando' && para === 'pronta')) alerta('aviso', 'Impressão cancelada', nome);
         else if (para === 'erro') alerta('erro', 'Erro na impressora', e.mensagem);
@@ -294,6 +408,10 @@ function verificarAlertas(e) {
             }
         }
     }
+    for (const h of e.hms || []) {
+        if (!m.bb.hmsVistos[h.codigo]) { m.bb.hmsVistos[h.codigo] = true; alerta('erro', 'Aviso da impressora (HMS ' + h.codigo + ')', h.url); }
+    }
+    if (e.hms && !e.hms.length) m.bb.hmsVistos = {};
     for (const [k, rot] of [['bico', 'Bico'], ['mesa', 'Mesa']]) {
         const h = e[k];
         if (!h || num(h.alvo) === null || num(h.atual) === null) continue;
@@ -306,14 +424,14 @@ function verificarAlertas(e) {
 
 // ---------- listas ----------
 function emitirHistorico() {
-    out[2] = { topic: 'historico', payload: { suportado: cfg.tipo !== 'octoprint', jobs: m.hist || [], totais: m.totais } };
+    out[2] = { topic: 'historico', payload: { suportado: cfg.tipo === 'moonraker', tipo: cfg.tipo, jobs: m.hist || [], totais: m.totais } };
 }
 function emitirSistema() {
     out[3] = { topic: 'sistema', payload: { tipo: cfg.tipo, online: m.online, latencia: m.latencia, ...m.sis } };
 }
 function emitirConsole() {
-    const linhas = cfg.tipo === 'octoprint' ? m.consoleLocal : m.console;
-    out[4] = { topic: 'console', payload: { linhas: linhas.slice(-150), suportaRespostas: cfg.tipo !== 'octoprint' } };
+    const linhas = cfg.tipo === 'moonraker' ? m.console : m.consoleLocal;
+    out[4] = { topic: 'console', payload: { linhas: linhas.slice(-150), suportaRespostas: cfg.tipo === 'moonraker', tipo: cfg.tipo } };
 }
 function addConsoleLocal(tipo, texto) {
     m.consoleLocal.push({ t: Date.now(), tipo, texto });
@@ -363,6 +481,46 @@ if (t === 'reset') {
     const ok = !msg.error && typeof msg.statusCode === 'number' && msg.statusCode < 400;
     const p = msg.payload && typeof msg.payload === 'object' ? msg.payload : {};
     const res = p.result;
+
+    // mensagens do nó "status" que observa a conexão MQTT
+    if (msg.status && msg.status.source) {
+        const txt = String(msg.status.text || '');
+        const antes = m.bb.conexao;
+        m.bb.conexao = /disconnected|desconectado/i.test(txt) ? 'desconectado' : (/connected|conectado/i.test(txt) && !/connecting/i.test(txt) ? 'conectado' : 'conectando');
+        if (m.bb.conexao === 'conectado' && antes !== 'conectado' && cfg.tipo === 'bambu' && cfg.serial) {
+            const t = `device/${cfg.serial}/request`;
+            out[8] = [
+                { topic: t, payload: { pushing: { sequence_id: '0', command: 'pushall', version: 1, push_target: 1 } } },
+                { topic: t, payload: { info: { sequence_id: '0', command: 'get_version' } } }
+            ];
+        }
+    } else if (/^device\/[^/]+\/report$/.test(t) && cfg.tipo === 'bambu') {
+        let r = msg.payload;
+        if (typeof r === 'string') { try { r = JSON.parse(r); } catch (err) { r = {}; } }
+        if (Buffer.isBuffer(r)) { try { r = JSON.parse(r.toString()); } catch (err) { r = {}; } }
+        if (r.print) {
+            mesclar(m.bb.print, r.print);
+            if (r.print.command === 'push_status' || r.print.gcode_state !== undefined || r.print.nozzle_temper !== undefined) {
+                m.bb.ultimo = Date.now();
+                marcarOnline(null);
+                emitir = true;
+            }
+        }
+        if (r.info && Array.isArray(r.info.module)) {
+            const ota = r.info.module.find(x => x.name === 'ota') || {};
+            m.sis.bambu = Object.assign(m.sis.bambu || {}, { firmware: ota.sw_ver, modulos: r.info.module.map(x => ({ nome: x.name, versao: x.sw_ver, serial: x.sn })) });
+            emitirSistema();
+        }
+        if (emitir && Date.now() - (m.bb.sisT || 0) > 15000) {
+            m.bb.sisT = Date.now();
+            const p = m.bb.print;
+            m.sis.bambu = Object.assign(m.sis.bambu || {}, {
+                wifi: p.wifi_signal, bico: p.nozzle_diameter ? p.nozzle_diameter + ' mm ' + (p.nozzle_type || '') : null,
+                sdcard: p.sdcard, mqtt: m.bb.conexao
+            });
+            emitirSistema();
+        }
+    }
 
     switch (t) {
         // ----- Moonraker -----
@@ -474,6 +632,20 @@ if (t === 'reset') {
             }
             if (!m.hist) { m.hist = []; emitirHistorico(); }
             break;
+
+        // ----- Bambu Lab -----
+        case 'bambu:tick': {
+            const agora = Date.now();
+            if (m.bb.ultimo && agora - m.bb.ultimo > 45000 && m.online) {
+                marcarOffline({ payload: 'A impressora parou de mandar dados há mais de 45 s (desligada ou fora da rede).' });
+            } else if (!m.bb.ultimo && m.online === null && agora - m.bb.desde > 25000) {
+                marcarOffline({ payload: m.bb.conexao === 'conectado'
+                    ? 'Conectou, mas não chegaram dados: confira o número de série.'
+                    : 'Não foi possível conectar por MQTT: confira o IP, o código de acesso e se o modo LAN / desenvolvedor está ativo na impressora.' });
+            }
+            emitir = m.online === true || m.online === false;
+            break;
+        }
         case 'octo:versao':
             if (ok) { m.sis.octoprint = { versao: p.server, api: p.api, texto: p.text }; emitirSistema(); }
             break;

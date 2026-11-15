@@ -43,6 +43,13 @@ export default {
       }
       if (p.moonraker) l.push(['Moonraker', p.moonraker.versao || '—'])
       if (p.host && p.host.conexoes != null) l.push(['Conexões abertas', p.host.conexoes])
+      if (p.bambu) {
+        if (p.bambu.firmware) l.push(['Firmware', p.bambu.firmware])
+        if (p.bambu.wifi) l.push(['Sinal Wi-Fi', p.bambu.wifi])
+        if (p.bambu.bico) l.push(['Bico instalado', p.bambu.bico])
+        if (p.bambu.sdcard != null) l.push(['Cartão de memória', p.bambu.sdcard ? 'inserido' : 'ausente'])
+        for (const mod of (p.bambu.modulos || []).filter(x => x.nome !== 'ota' && x.versao)) l.push([mod.nome, mod.versao])
+      }
       if (p.octoprint) l.push(['OctoPrint', p.octoprint.versao + ' (API ' + p.octoprint.api + ')'])
       if (p.conexao) l.push(['Conexão serial', [p.conexao.estado, p.conexao.porta, p.conexao.baud].filter(Boolean).join(' · ')])
       if (!l.length) l.push(['Informações', 'aguardando…'])

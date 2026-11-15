@@ -1,5 +1,10 @@
 <template>
   <div class="i3d">
+    <div v-if="msg && msg.payload && msg.payload.tipo === 'bambu'" class="i3d-vazio">
+      Na Bambu Lab os arquivos são enviados pelo <b>Bambu Studio</b> ou pelo <b>Bambu Handy</b>.<br>
+      A lista do cartão de memória não fica disponível pela rede local.
+    </div>
+    <template v-else>
     <div class="i3d-linha">
       <v-text-field v-model="busca" density="compact" hide-details variant="outlined" prepend-inner-icon="mdi-magnify"
         placeholder="Buscar arquivo" clearable style="flex:1; min-width:160px"></v-text-field>
@@ -29,6 +34,7 @@
         <v-btn variant="text" size="small" @click="sel = null">Fechar</v-btn>
       </div>
     </div>
+    </template>
   </div>
 </template>
 

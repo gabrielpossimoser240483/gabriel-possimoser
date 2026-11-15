@@ -42,14 +42,15 @@ const GRUPOS = [
     ['status', 'Status da impressão', 6],
     ['camera', 'Câmera', 6],
     ['temps', 'Temperaturas', 6],
-    ['grafico', 'Histórico de temperatura', 6],
+    ['ams', 'Filamentos (AMS)', 6],
     ['controle', 'Controle', 4],
     ['movimento', 'Movimento', 4],
     ['ajustes', 'Ajustes ao vivo', 4],
-    ['arquivos', 'Arquivos', 6],
+    ['grafico', 'Histórico de temperatura', 6],
     ['console', 'Console G-code', 6],
-    ['historico', 'Histórico de impressões', 8],
-    ['sistema', 'Sistema', 4],
+    ['arquivos', 'Arquivos', 6],
+    ['sistema', 'Sistema', 6],
+    ['historico', 'Histórico de impressões', 12],
     ['config', 'Configuração', 12]
 ]
 const G = {}
@@ -100,7 +101,9 @@ const I = {
     linkCmdOut: id('link:cmd-out'), linkCmdIn: id('link:cmd-in'),
     tStatus: id('tela:status'), tCamera: id('tela:camera'), tTemps: id('tela:temps'), tControle: id('tela:controle'),
     tMov: id('tela:movimento'), tAjustes: id('tela:ajustes'), tArquivos: id('tela:arquivos'), tConsole: id('tela:console'),
-    tHist: id('tela:historico'), tSis: id('tela:sistema'), tCfg: id('tela:config')
+    tHist: id('tela:historico'), tSis: id('tela:sistema'), tCfg: id('tela:config'), tAms: id('tela:ams'),
+    broker: id('mqtt:broker'), mqttIn: id('mqtt:in'), mqttOut: id('mqtt:out'), mqttStatus: id('mqtt:status'),
+    camBambu: id('fn:Câmera Bambu')
 }
 
 comment('Impressora 3D: leia-me', [
@@ -122,21 +125,37 @@ comment('2 · Leitura da impressora', '', 150, 300)
 inject('A cada 2 s', 'tick', '2', 1, 140, 340, [I.rap])
 inject('A cada 30 s', 'tick', '30', 1.5, 140, 400, [I.len])
 fn('Consultas rápidas', 'consultas-rapidas.js', 340, 340, 2, [[I.api], [I.interp]])
-fn('Consultas lentas', 'consultas-lentas.js', 340, 400, 1, [[I.api]])
+fn('Consultas lentas', 'consultas-lentas.js', 340, 400, 3, [[I.api], [I.mqttIn], [I.mqttOut]], {
+    outputLabels: ['requisições HTTP', 'conexão MQTT (Bambu)', 'publicar MQTT (Bambu)']
+})
+
+// --- Bambu Lab (MQTT local com TLS). O endereço e a senha vêm do dashboard.
+add({
+    id: I.broker, type: 'mqtt-broker', name: 'Bambu Lab (configurado pelo dashboard)', broker: 'localhost', port: '8883',
+    tls: '', clientid: '', autoConnect: false, usetls: true, verifyservercert: false, protocolVersion: '4', keepalive: '30',
+    cleansession: true, autoUnsubscribe: true, birthTopic: '', birthQos: '0', birthRetain: 'false', birthPayload: '', birthMsg: {},
+    closeTopic: '', closeQos: '0', closeRetain: 'false', closePayload: '', closeMsg: {}, willTopic: '', willQos: '0',
+    willRetain: 'false', willPayload: '', willMsg: {}, userProps: '', sessionExpiry: ''
+})
+comment('Bambu Lab: MQTT na porta 8883', 'Usuário bblp, senha = código de acesso. A conexão é feita pelo nó "Consultas lentas" com os dados salvos no dashboard (não precisa editar o nó MQTT).', 150, 470)
+add({ id: I.mqttIn, type: 'mqtt in', z: TAB, name: 'Relatórios da Bambu', topic: '', qos: '0', datatype: 'json', broker: I.broker, nl: false, rap: true, rh: 0, inputs: 1, x: 580, y: 500, wires: [[I.interp]] })
+add({ id: I.mqttOut, type: 'mqtt out', z: TAB, name: 'Comandos para a Bambu', topic: '', qos: '0', retain: 'false', respTopic: '', contentType: '', userProps: '', correl: '', expiry: '', broker: I.broker, x: 1000, y: 500, wires: [] })
+add({ id: I.mqttStatus, type: 'status', z: TAB, name: 'Conexão MQTT', scope: [I.mqttIn], x: 570, y: 540, wires: [[I.interp]] })
 httpReq('API da impressora', 'obj', true, 560, 380, [I.interp])
 add({ id: id('catch:api'), type: 'catch', z: TAB, name: 'Erros da API', scope: [I.api], uncaught: false, x: 560, y: 440, wires: [[I.interp]] })
 
 fn('Interpretar respostas', 'interpretar.js', 800, 400, 8, [
-    [I.tStatus, I.tCamera, I.tTemps, I.tControle, I.tMov, I.tAjustes, I.gBico, I.gMesa, I.graf],
+    [I.tStatus, I.tCamera, I.tTemps, I.tAms, I.tControle, I.tMov, I.tAjustes, I.gBico, I.gMesa, I.graf],
     [I.tArquivos],
     [I.tHist],
     [I.tSis],
     [I.tConsole],
     [I.notif, I.alertasOut, I.alertasDbg],
     [I.api],
-    [I.notif]
+    [I.notif],
+    [I.mqttOut]
 ], {
-    outputLabels: ['estado', 'arquivos', 'histórico', 'sistema', 'console', 'alertas', 'novas consultas', 'avisos de comandos']
+    outputLabels: ['estado', 'arquivos', 'histórico', 'sistema', 'console', 'alertas', 'novas consultas', 'avisos de comandos', 'MQTT (Bambu)']
 })
 
 // --- telas
@@ -172,6 +191,7 @@ add({
     textColor: ['#666666'], textColorDefault: true, gridColor: ['#e5e5e5'], gridColorDefault: true,
     width: '6', height: '6', className: '', interpolation: 'linear', x: 1330, y: 340, wires: [[]]
 })
+tela('ams', 'Tela: AMS', 'ams.vue', 'ams', 1, 1100, 700, [I.linkCmdOut])
 tela('controle', 'Tela: Controle', 'controle.vue', 'controle', 1, 1110, 380, [I.linkCmdOut])
 tela('movimento', 'Tela: Movimento', 'movimento.vue', 'movimento', 1, 1120, 420, [I.linkCmdOut])
 tela('ajustes', 'Tela: Ajustes ao vivo', 'ajustes.vue', 'ajustes', 1, 1130, 460, [I.linkCmdOut])
@@ -190,12 +210,12 @@ add({ id: I.linkCmdOut, type: 'link out', z: TAB, name: 'para Comandos', mode: '
 add({
     id: I.notif, type: 'ui-notification', z: TAB, ui: BASE, position: 'top right', colorDefault: true, color: '#000000',
     displayTime: '6', showCountdown: true, outputs: 0, allowDismiss: true, dismissText: 'Fechar', allowConfirm: false,
-    confirmText: 'Confirmar', raw: false, className: '', name: 'Avisos na tela', x: 1110, y: 720, wires: []
+    confirmText: 'Confirmar', raw: false, className: '', name: 'Avisos na tela', x: 1110, y: 780, wires: []
 })
-add({ id: I.alertasOut, type: 'link out', z: TAB, name: 'Alertas da impressora 3D', mode: 'link', links: [], x: 1165, y: 760, wires: [] })
+add({ id: I.alertasOut, type: 'link out', z: TAB, name: 'Alertas da impressora 3D', mode: 'link', links: [], x: 1165, y: 820, wires: [] })
 add({
     id: I.alertasDbg, type: 'debug', z: TAB, name: 'Ver alertas', active: false, tosidebar: true, console: false, tostatus: false,
-    complete: 'alerta', targetType: 'msg', statusVal: '', statusType: 'auto', x: 1110, y: 800, wires: []
+    complete: 'alerta', targetType: 'msg', statusVal: '', statusType: 'auto', x: 1110, y: 860, wires: []
 })
 comment('Alertas: ligue a um nó de Telegram, e-mail, push…', [
     'O link "Alertas da impressora 3D" recebe uma mensagem a cada evento:',
@@ -205,32 +225,36 @@ comment('Alertas: ligue a um nó de Telegram, e-mail, push…', [
     '- msg.payload: texto pronto (ex.: "✅ Impressão concluída — caneca em 2h 10min")',
     '- msg.topic: título',
     '- msg.alerta: { nivel, titulo, texto, impressora, estado, arquivo, progresso, em }'
-].join('\n'), 1420, 760)
+].join('\n'), 1420, 820)
 
 // --- comandos
-comment('4 · Comandos dos botões', '', 140, 520)
-add({ id: I.linkCmdIn, type: 'link in', z: TAB, name: 'Comandos', links: [I.linkCmdOut], x: 145, y: 560, wires: [[I.cmd]] })
-fn('Comandos', 'comandos.js', 340, 560, 4, [[I.api], [I.len], [I.notif], [I.interp]], {
-    outputLabels: ['requisição', 'recarregar listas', 'aviso', 'console']
+comment('4 · Comandos dos botões', '', 140, 580)
+add({ id: I.linkCmdIn, type: 'link in', z: TAB, name: 'Comandos', links: [I.linkCmdOut], x: 145, y: 600, wires: [[I.cmd]] })
+fn('Comandos', 'comandos.js', 340, 600, 5, [[I.api], [I.len], [I.notif], [I.interp], [I.mqttOut]], {
+    outputLabels: ['requisição', 'recarregar listas', 'aviso', 'console', 'MQTT (Bambu)']
 })
 
 // --- proxy de imagens
-comment('5 · Câmera e miniatura (o navegador busca pelo Node-RED)', '', 250, 660)
+comment('5 · Câmera e miniatura (o navegador busca pelo Node-RED)', '', 250, 680)
 const httpIn = (nome, url, x, y, wires) => add({ id: id('in:' + nome), type: 'http in', z: TAB, name: nome, url, method: 'get', upload: false, swaggerDoc: '', x, y, wires: [wires] })
 const httpRes = (nome, x, y) => add({ id: id('res:' + nome), type: 'http response', z: TAB, name: '', statusCode: '', headers: {}, x, y, wires: [] })
 
 httpIn('GET câmera', '/impressora3d/webcam', 150, 700, [id('fn:Foto da câmera')])
-fn('Foto da câmera', 'camera-url.js', 360, 700, 2, [[id('http:Buscar foto')], [id('fn:Responder foto')]])
+fn('Foto da câmera', 'camera-url.js', 360, 700, 3, [[id('http:Buscar foto')], [id('fn:Responder foto')], [I.camBambu]])
+fn('Câmera Bambu', 'camera-bambu.js', 560, 740, 1, [[id('fn:Responder foto')]], {
+    libs: [{ var: 'tls', module: 'tls' }],
+    finalize: "const c = context.get('cam');\nif (c && c.sock) c.sock.destroy();\n"
+})
 httpReq('Buscar foto', 'bin', false, 560, 700, [id('fn:Responder foto')])
 fn('Responder foto', 'responder-imagem.js', 760, 700, 1, [[id('res:foto')]])
 httpRes('foto', 930, 700)
 
-httpIn('GET miniatura', '/impressora3d/miniatura', 150, 760, [id('fn:Miniatura do arquivo')])
-fn('Miniatura do arquivo', 'miniatura-url.js', 370, 760, 2, [[id('http:Buscar miniatura')], [id('fn:Responder miniatura')]])
-httpReq('Buscar miniatura', 'bin', false, 580, 760, [id('fn:Responder miniatura')])
-fn('Responder miniatura', 'responder-imagem.js', 780, 760, 1, [[id('res:miniatura')]])
-httpRes('miniatura', 950, 760)
-add({ id: id('catch:img'), type: 'catch', z: TAB, name: 'Silenciar erros de imagem', scope: [id('http:Buscar foto'), id('http:Buscar miniatura')], uncaught: false, x: 600, y: 820, wires: [[]] })
+httpIn('GET miniatura', '/impressora3d/miniatura', 150, 800, [id('fn:Miniatura do arquivo')])
+fn('Miniatura do arquivo', 'miniatura-url.js', 370, 800, 2, [[id('http:Buscar miniatura')], [id('fn:Responder miniatura')]])
+httpReq('Buscar miniatura', 'bin', false, 580, 800, [id('fn:Responder miniatura')])
+fn('Responder miniatura', 'responder-imagem.js', 780, 800, 1, [[id('res:miniatura')]])
+httpRes('miniatura', 950, 800)
+add({ id: id('catch:img'), type: 'catch', z: TAB, name: 'Silenciar erros de imagem', scope: [id('http:Buscar foto'), id('http:Buscar miniatura')], uncaught: false, x: 600, y: 860, wires: [[]] })
 
 // Configuração e dashboard primeiro, depois a aba e os nós
 const ordem = { tab: 0 }
