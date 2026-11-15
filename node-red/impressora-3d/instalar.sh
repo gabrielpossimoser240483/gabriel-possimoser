@@ -14,21 +14,31 @@ if [ -z "$FLUXO" ]; then
 fi
 
 echo "2/4 Procurando o Node-RED em $NR ..."
+AUTH=()
 codigo=$(curl -s -o /dev/null -w "%{http_code}" "$NR/flows" || true)
 if [ "$codigo" = "401" ]; then
-  echo "ERRO: o Node-RED pede senha (adminAuth). Importe pelo editor: ☰ → Importar → Biblioteca local → impressora-3d."
-  exit 1
-elif [ "$codigo" != "200" ]; then
+  echo "    O Node-RED tem senha. Digite o mesmo usuário e senha que você usa para entrar no editor."
+  read -r -p "    Usuário: " NRUSER < /dev/tty
+  read -r -s -p "    Senha (não aparece enquanto digita): " NRPASS < /dev/tty; echo
+  TOKEN=$(curl -s "$NR/auth/token" --data-urlencode "client_id=node-red-admin" --data-urlencode "grant_type=password" \
+    --data-urlencode "scope=*" --data-urlencode "username=$NRUSER" --data-urlencode "password=$NRPASS" \
+    | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{process.stdout.write(JSON.parse(d).access_token||"")}catch(e){}})')
+  if [ -z "$TOKEN" ]; then echo "ERRO: usuário ou senha errados. Rode o comando de novo."; exit 1; fi
+  AUTH=(-H "Authorization: Bearer $TOKEN")
+  export TOKEN
+  codigo=$(curl -s -o /dev/null -w "%{http_code}" "${AUTH[@]}" "$NR/flows" || true)
+fi
+if [ "$codigo" != "200" ]; then
   echo "ERRO: o Node-RED não respondeu em $NR (código $codigo). Ele está ligado? Se usa outra porta, rode com NR=http://127.0.0.1:PORTA"
   exit 1
 fi
 
 echo "3/4 Verificando o Dashboard 2..."
-if curl -s -H "Accept: application/json" "$NR/nodes" | grep -q '"@flowfuse/node-red-dashboard"'; then
+if curl -s "${AUTH[@]}" -H "Accept: application/json" "$NR/nodes" | grep -q '"@flowfuse/node-red-dashboard"'; then
   echo "    já instalado."
 else
   echo "    instalando @flowfuse/node-red-dashboard (pode levar 1 a 3 minutos)..."
-  resp=$(curl -s -m 600 -w "\n%{http_code}" -H "Content-Type: application/json" -d '{"module":"@flowfuse/node-red-dashboard"}' "$NR/nodes")
+  resp=$(curl -s -m 600 -w "\n%{http_code}" "${AUTH[@]}" -H "Content-Type: application/json" -d '{"module":"@flowfuse/node-red-dashboard"}' "$NR/nodes")
   if [ "$(echo "$resp" | tail -n1)" != "200" ]; then
     echo "ERRO ao instalar o dashboard:"; echo "$resp" | head -n -1; exit 1
   fi
@@ -41,6 +51,7 @@ const [nr, arq] = process.argv.slice(2)
 const novos = JSON.parse(require('fs').readFileSync(arq, 'utf8'))
 ;(async () => {
   const h = { 'Node-RED-API-Version': 'v2', 'Content-Type': 'application/json' }
+  if (process.env.TOKEN) h.Authorization = 'Bearer ' + process.env.TOKEN
   const atual = await (await fetch(nr + '/flows', { headers: h })).json()
   const idsNovos = new Set(novos.map(n => n.id))
   let flows = atual.flows.filter(n => !idsNovos.has(n.id))          // remove versão antiga, se houver
