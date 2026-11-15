@@ -94,6 +94,8 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
   `POST /v1.0/smart-lock/devices/{id}/password-free/door-operate` (`{ticket_id, open: true}`).
 - O histórico fica na memória (zera se o Node-RED reiniciar).
 
+- Ordem dos cartões na Sala: **Fechadura** (ordem 9) acima do **controle da TV** (ordem 10).
+
 ### Página **Varanda** (aba "Varanda")
 
 - Cartão **Luz RGB** (blocos `rgbv…`): toque na lâmpada liga/desliga, modo Branco/Colorida, brilho,
@@ -101,8 +103,10 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
   O cartão muda na hora e confirma com a lâmpada depois. Lê a cada 30 s.
 - Cartão **LED do portão** (blocos `ledpaut…`): LED = `zigbee2mqtt/varanda_led_porta_social`
   (anda junto com a tecla L2 do interruptor da varanda, pelo "Paralelo varanda").
-  **Acende 18:30 e apaga 23:00** (relógio do Node-RED = horário de Brasília). Chave **Automático**
-  no cartão; escolha salva em `/data/led_portao_automacao.json`. Toque no LED acende/apaga na mão.
+  Horário escolhido no próprio cartão, arrastando as duas bolinhas (linha das 15h às 7h, passos de 15 min).
+  **Agora: acende 18:00 e apaga 06:00** (relógio do Node-RED = horário de Brasília). Chave **Automático**;
+  ajustes salvos em `/data/led_portao_automacao.json`. Mudou o horário ou ligou o automático dentro do
+  horário: o LED já fica como deveria. Toque no LED acende/apaga na mão. Verifica a cada minuto.
 
 ### Velocidade (15/11/2026)
 
