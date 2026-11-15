@@ -1,0 +1,1376 @@
+[
+  {
+    "id": "1cfcda60143d52bc",
+    "type": "tab",
+    "label": "Impressora 3D",
+    "disabled": false,
+    "info": "Aba \"Impressora 3D\" do Dashboard 2.\n\nConfigure o endereço da impressora no nó **⚙️ Configuração** ou no grupo **Configuração** do dashboard.\n\nCompatível com Klipper (Moonraker) e OctoPrint. Veja o README no repositório."
+  },
+  {
+    "id": "c2f2fa8ccd9bfb8e",
+    "type": "ui-base",
+    "name": "Dashboard",
+    "path": "/dashboard",
+    "appIcon": "",
+    "includeClientData": true,
+    "acceptsClientConfig": [
+      "ui-notification",
+      "ui-control"
+    ],
+    "showPathInSidebar": false,
+    "headerContent": "page",
+    "navigationStyle": "default",
+    "titleBarStyle": "default",
+    "showReconnectNotification": true,
+    "notificationDisplayTime": 1,
+    "showDisconnectNotification": true,
+    "allowInstall": false
+  },
+  {
+    "id": "a1cd1814d71139ce",
+    "type": "ui-theme",
+    "name": "Impressora 3D",
+    "colors": {
+      "surface": "#ffffff",
+      "primary": "#e8590c",
+      "bgPage": "#f3f4f6",
+      "groupBg": "#ffffff",
+      "groupOutline": "#dfe1e6"
+    },
+    "sizes": {
+      "density": "default",
+      "pagePadding": "12px",
+      "groupGap": "12px",
+      "groupBorderRadius": "8px",
+      "widgetGap": "12px"
+    }
+  },
+  {
+    "id": "ba1e0973321ddb6b",
+    "type": "ui-page",
+    "name": "Impressora 3D",
+    "ui": "c2f2fa8ccd9bfb8e",
+    "path": "/impressora-3d",
+    "icon": "printer-3d",
+    "layout": "grid",
+    "theme": "a1cd1814d71139ce",
+    "breakpoints": [
+      {
+        "name": "Default",
+        "px": "0",
+        "cols": "3"
+      },
+      {
+        "name": "Tablet",
+        "px": "576",
+        "cols": "6"
+      },
+      {
+        "name": "Small Desktop",
+        "px": "768",
+        "cols": "9"
+      },
+      {
+        "name": "Desktop",
+        "px": "1024",
+        "cols": "12"
+      }
+    ],
+    "tabs": [],
+    "order": 1,
+    "className": "",
+    "visible": "true",
+    "disabled": "false"
+  },
+  {
+    "id": "bb6c4df186f91688",
+    "type": "ui-group",
+    "name": "Status da impressão",
+    "page": "ba1e0973321ddb6b",
+    "width": "6",
+    "height": "1",
+    "order": 1,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "5a3e05719c88be22",
+    "type": "ui-group",
+    "name": "Câmera",
+    "page": "ba1e0973321ddb6b",
+    "width": "6",
+    "height": "1",
+    "order": 2,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "41962413beba6ee5",
+    "type": "ui-group",
+    "name": "Temperaturas",
+    "page": "ba1e0973321ddb6b",
+    "width": "6",
+    "height": "1",
+    "order": 3,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "59bb99df5904b266",
+    "type": "ui-group",
+    "name": "Histórico de temperatura",
+    "page": "ba1e0973321ddb6b",
+    "width": "6",
+    "height": "1",
+    "order": 4,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d02d40626d85b36d",
+    "type": "ui-group",
+    "name": "Controle",
+    "page": "ba1e0973321ddb6b",
+    "width": "4",
+    "height": "1",
+    "order": 5,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "5a1911dd4a524809",
+    "type": "ui-group",
+    "name": "Movimento",
+    "page": "ba1e0973321ddb6b",
+    "width": "4",
+    "height": "1",
+    "order": 6,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "d2519b1c9461b923",
+    "type": "ui-group",
+    "name": "Ajustes ao vivo",
+    "page": "ba1e0973321ddb6b",
+    "width": "4",
+    "height": "1",
+    "order": 7,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "73596d9dcc6e9466",
+    "type": "ui-group",
+    "name": "Arquivos",
+    "page": "ba1e0973321ddb6b",
+    "width": "6",
+    "height": "1",
+    "order": 8,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "6aba30eb967886e7",
+    "type": "ui-group",
+    "name": "Console G-code",
+    "page": "ba1e0973321ddb6b",
+    "width": "6",
+    "height": "1",
+    "order": 9,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "3819009cb4a30288",
+    "type": "ui-group",
+    "name": "Histórico de impressões",
+    "page": "ba1e0973321ddb6b",
+    "width": "8",
+    "height": "1",
+    "order": 10,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "781658ec20536223",
+    "type": "ui-group",
+    "name": "Sistema",
+    "page": "ba1e0973321ddb6b",
+    "width": "4",
+    "height": "1",
+    "order": 11,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "8b322c902c04818b",
+    "type": "ui-group",
+    "name": "Configuração",
+    "page": "ba1e0973321ddb6b",
+    "width": "12",
+    "height": "1",
+    "order": 12,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default"
+  },
+  {
+    "id": "32f74edec1d04dc1",
+    "type": "comment",
+    "z": "1cfcda60143d52bc",
+    "name": "Impressora 3D: leia-me",
+    "info": "Monitora e controla uma impressora 3D (Klipper/Moonraker ou OctoPrint) no Dashboard 2.\n\n1. Abra o nó \"⚙️ Configuração\" e preencha `url` (e `apiKey`, se precisar), ou use o grupo Configuração do dashboard.\n2. Faça Deploy e abra /dashboard/impressora-3d.\n3. Para receber avisos no celular, ligue o nó \"Alertas da impressora 3D\" a um nó de Telegram, e-mail, push etc.",
+    "x": 170,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "9ad7a64ef2421e25",
+    "type": "comment",
+    "z": "1cfcda60143d52bc",
+    "name": "1 · Configuração",
+    "info": "",
+    "x": 130,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "0cf71f276428d541",
+    "type": "inject",
+    "z": "1cfcda60143d52bc",
+    "name": "Iniciar",
+    "props": [
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": true,
+    "onceDelay": 0.3,
+    "topic": "iniciar",
+    "x": 130,
+    "y": 140,
+    "wires": [
+      [
+        "b43820705b064449"
+      ]
+    ]
+  },
+  {
+    "id": "b43820705b064449",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "⚙️ Configuração",
+    "func": "// ============================================================\n//  CONFIGURAÇÃO DA IMPRESSORA 3D\n//  Edite os valores de PADRAO abaixo, ou use o grupo\n//  \"Configuração\" no próprio dashboard (o que for salvo lá\n//  tem prioridade sobre estes valores).\n// ============================================================\nconst PADRAO = {\n    nome: 'Minha impressora',\n    tipo: 'moonraker',            // 'moonraker' (Klipper / Mainsail / Fluidd) ou 'octoprint'\n    url: '',                      // ex.: http://192.168.0.50:7125 (Moonraker) ou http://192.168.0.50 (OctoPrint)\n    apiKey: '',                   // OctoPrint: obrigatória. Moonraker: só se a autenticação estiver ativa\n    webcamModo: 'snapshot',       // 'snapshot' (fotos passando pelo Node-RED, funciona fora de casa)\n                                  // 'stream'   (vídeo direto da impressora, mais fluido, só na rede local)\n    webcamIntervalo: 2,           // segundos entre fotos no modo snapshot\n    webcamSnapshot: '',           // vazio = descobre sozinho\n    webcamStream: '',             // vazio = descobre sozinho\n    bicoMax: 300,\n    mesaMax: 120,\n    velocidadeXY: 3000,           // mm/min nos botões de movimento\n    velocidadeZ: 600,\n    velocidadeExtrusao: 300,\n    presets: [\n        { nome: 'PLA', bico: 205, mesa: 60 },\n        { nome: 'PETG', bico: 240, mesa: 80 },\n        { nome: 'ABS', bico: 250, mesa: 100 },\n        { nome: 'TPU', bico: 225, mesa: 50 }\n    ]\n};\n\n// Só estes campos podem ser alterados pelo dashboard\nconst EDITAVEIS = ['nome', 'tipo', 'url', 'apiKey', 'webcamModo', 'webcamIntervalo',\n    'webcamSnapshot', 'webcamStream', 'bicoMax', 'mesaMax', 'presets'];\nconst MASCARA = '••••••••';\n\nlet salvo = flow.get('cfgSalva') || {};\n\nif (msg.topic === 'salvar' && msg.payload && typeof msg.payload === 'object') {\n    const novo = { ...salvo };\n    for (const k of EDITAVEIS) {\n        if (msg.payload[k] === undefined) continue;\n        if (k === 'apiKey' && msg.payload[k] === MASCARA) continue; // chave não alterada\n        novo[k] = msg.payload[k];\n    }\n    if (typeof novo.url === 'string') novo.url = novo.url.trim().replace(/\\/+$/, '');\n    if (novo.url && !/^https?:\\/\\//i.test(novo.url)) novo.url = 'http://' + novo.url;\n    ['webcamIntervalo', 'bicoMax', 'mesaMax'].forEach(k => {\n        if (novo[k] !== undefined) novo[k] = Number(novo[k]) || PADRAO[k];\n    });\n    salvo = novo;\n    flow.set('cfgSalva', salvo);\n} else if (msg.topic === 'restaurar') {\n    salvo = {};\n    flow.set('cfgSalva', salvo);\n}\n\nconst cfg = { ...PADRAO, ...salvo };\ncfg.url = (cfg.url || '').replace(/\\/+$/, '');\nflow.set('cfg', cfg);\n\nnode.status(cfg.url\n    ? { fill: 'green', shape: 'dot', text: cfg.tipo + ' · ' + cfg.url }\n    : { fill: 'yellow', shape: 'ring', text: 'defina o endereço da impressora' });\n\nconst paraTela = {\n    topic: 'cfg',\n    payload: { ...cfg, apiKey: cfg.apiKey ? MASCARA : '' },\n    salvoEm: msg.topic === 'salvar' ? Date.now() : undefined\n};\n\n// 1: tela de configuração · 2: recarregar listas · 3: zerar cache do interpretador\nreturn [paraTela, { topic: 'atualizar' }, { topic: 'reset' }];\n",
+    "outputs": 3,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 340,
+    "y": 160,
+    "wires": [
+      [
+        "7db8f9ea03d85a98"
+      ],
+      [
+        "e6c249ec6aed0544"
+      ],
+      [
+        "22ad3767e9c7a2d4"
+      ]
+    ]
+  },
+  {
+    "id": "7db8f9ea03d85a98",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "8b322c902c04818b",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Configuração",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!f\" class=\"i3d-vazio\">Carregando configuração…</div>\n    <template v-else>\n      <div class=\"i3d-form\">\n        <v-text-field v-model=\"f.nome\" label=\"Nome da impressora\" density=\"compact\" variant=\"outlined\" hide-details></v-text-field>\n        <v-select v-model=\"f.tipo\" :items=\"tipos\" label=\"Tipo de servidor\" density=\"compact\" variant=\"outlined\" hide-details></v-select>\n        <v-text-field v-model=\"f.url\" label=\"Endereço\" :placeholder=\"f.tipo === 'octoprint' ? 'http://192.168.0.50' : 'http://192.168.0.50:7125'\" density=\"compact\" variant=\"outlined\" hide-details></v-text-field>\n        <v-text-field v-model=\"f.apiKey\" :label=\"f.tipo === 'octoprint' ? 'Chave de API (obrigatória)' : 'Chave de API (opcional)'\" type=\"password\" density=\"compact\" variant=\"outlined\" hide-details autocomplete=\"new-password\"></v-text-field>\n        <v-select v-model=\"f.webcamModo\" :items=\"modos\" label=\"Câmera\" density=\"compact\" variant=\"outlined\" hide-details></v-select>\n        <v-text-field v-model.number=\"f.webcamIntervalo\" type=\"number\" label=\"Intervalo entre fotos (s)\" density=\"compact\" variant=\"outlined\" hide-details></v-text-field>\n        <v-text-field v-model=\"f.webcamSnapshot\" label=\"URL da foto (vazio = automático)\" density=\"compact\" variant=\"outlined\" hide-details></v-text-field>\n        <v-text-field v-model=\"f.webcamStream\" label=\"URL do vídeo (vazio = automático)\" density=\"compact\" variant=\"outlined\" hide-details></v-text-field>\n        <v-text-field v-model.number=\"f.bicoMax\" type=\"number\" label=\"Temperatura máx. do bico (°C)\" density=\"compact\" variant=\"outlined\" hide-details></v-text-field>\n        <v-text-field v-model.number=\"f.mesaMax\" type=\"number\" label=\"Temperatura máx. da mesa (°C)\" density=\"compact\" variant=\"outlined\" hide-details></v-text-field>\n      </div>\n\n      <div class=\"i3d-titulo\">Pré-aquecimentos</div>\n      <div v-for=\"(p, i) in f.presets\" :key=\"i\" class=\"i3d-linha\" style=\"margin-bottom:6px\">\n        <v-text-field v-model=\"p.nome\" label=\"Material\" density=\"compact\" variant=\"outlined\" hide-details style=\"max-width:140px\"></v-text-field>\n        <v-text-field v-model.number=\"p.bico\" type=\"number\" label=\"Bico °C\" density=\"compact\" variant=\"outlined\" hide-details style=\"max-width:110px\"></v-text-field>\n        <v-text-field v-model.number=\"p.mesa\" type=\"number\" label=\"Mesa °C\" density=\"compact\" variant=\"outlined\" hide-details style=\"max-width:110px\"></v-text-field>\n        <v-btn size=\"small\" variant=\"text\" icon=\"mdi-delete-outline\" @click=\"f.presets.splice(i, 1)\"></v-btn>\n      </div>\n      <v-btn size=\"small\" variant=\"text\" prepend-icon=\"mdi-plus\" @click=\"f.presets.push({ nome: '', bico: 200, mesa: 60 })\">Adicionar material</v-btn>\n\n      <div class=\"i3d-linha\" style=\"margin-top:14px\">\n        <v-btn color=\"primary\" variant=\"flat\" prepend-icon=\"mdi-content-save\" @click=\"salvar\">Salvar e conectar</v-btn>\n        <v-btn variant=\"text\" @click=\"restaurar\">Voltar ao padrão do fluxo</v-btn>\n        <span v-if=\"salvo\" class=\"i3d-sub\">✔ Salvo</span>\n      </div>\n      <div class=\"i3d-sub\" style=\"margin-top:8px\">\n        Klipper: use o endereço do Moonraker (porta 7125, ou a mesma do Mainsail/Fluidd).\n        OctoPrint: crie a chave em Configurações → Application Keys (ou API).\n      </div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return {\n      f: null, salvo: false,\n      tipos: [{ title: 'Klipper (Moonraker / Mainsail / Fluidd)', value: 'moonraker' }, { title: 'OctoPrint', value: 'octoprint' }],\n      modos: [{ title: 'Fotos pelo Node-RED (funciona fora de casa)', value: 'snapshot' }, { title: 'Vídeo direto (só na rede local)', value: 'stream' }]\n    }\n  },\n  watch: {\n    msg: {\n      immediate: true,\n      handler(m) {\n        if (!m || !m.payload || m.topic !== 'cfg') return\n        this.f = JSON.parse(JSON.stringify(m.payload))\n        if (!Array.isArray(this.f.presets)) this.f.presets = []\n        if (m.salvoEm) { this.salvo = true; setTimeout(() => { this.salvo = false }, 3000) }\n      }\n    }\n  },\n  methods: {\n    salvar() {\n      const p = JSON.parse(JSON.stringify(this.f))\n      p.presets = (p.presets || []).filter(x => x.nome)\n      this.send({ topic: 'salvar', payload: p })\n    },\n    restaurar() { this.send({ topic: 'restaurar', payload: {} }) }\n  }\n}\n</script>\n\n<style>\n.i3d-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }\n</style>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 360,
+    "y": 220,
+    "wires": [
+      [
+        "b43820705b064449"
+      ]
+    ]
+  },
+  {
+    "id": "2e014c00e4505ce2",
+    "type": "comment",
+    "z": "1cfcda60143d52bc",
+    "name": "2 · Leitura da impressora",
+    "info": "",
+    "x": 150,
+    "y": 300,
+    "wires": []
+  },
+  {
+    "id": "e0132c338ed99697",
+    "type": "inject",
+    "z": "1cfcda60143d52bc",
+    "name": "A cada 2 s",
+    "props": [
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "2",
+    "crontab": "",
+    "once": true,
+    "onceDelay": 1,
+    "topic": "tick",
+    "x": 140,
+    "y": 340,
+    "wires": [
+      [
+        "e8b2699819d636ac"
+      ]
+    ]
+  },
+  {
+    "id": "3bc0a6d3b389aba3",
+    "type": "inject",
+    "z": "1cfcda60143d52bc",
+    "name": "A cada 30 s",
+    "props": [
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "30",
+    "crontab": "",
+    "once": true,
+    "onceDelay": 1.5,
+    "topic": "tick",
+    "x": 140,
+    "y": 400,
+    "wires": [
+      [
+        "e6c249ec6aed0544"
+      ]
+    ]
+  },
+  {
+    "id": "e8b2699819d636ac",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Consultas rápidas",
+    "func": "// Consultas feitas a cada poucos segundos: estado, temperaturas, posição, console.\n// Saída 1: requisições HTTP · Saída 2: aviso de \"sem configuração\" para o interpretador\nconst cfg = flow.get('cfg');\nif (!cfg || !cfg.url) return [null, { topic: 'semConfig' }];\n\nconst headers = {};\nif (cfg.apiKey) headers['X-Api-Key'] = cfg.apiKey;\nconst req = (topic, caminho) => ({\n    topic, url: cfg.url + caminho, method: 'GET', headers: { ...headers },\n    requestTimeout: 4000, enviadoEm: Date.now(), payload: ''\n});\n\nif (cfg.tipo === 'octoprint') {\n    return [[req('octo:printer', '/api/printer'), req('octo:job', '/api/job')], null];\n}\n\n// Moonraker / Klipper\nconst objetos = ['webhooks', 'print_stats', 'virtual_sdcard', 'display_status', 'extruder',\n    'heater_bed', 'toolhead', 'gcode_move', 'motion_report', 'fan', 'idle_timeout']\n    .concat(flow.get('mkSensores') || []);\nconst qs = objetos.map(o => encodeURIComponent(o)).join('&');\n\nconst pedidos = [req('mk:status', '/printer/objects/query?' + qs)];\n// console: busca as últimas linhas a cada 2 ciclos\nconst ciclo = (context.get('ciclo') || 0) + 1;\ncontext.set('ciclo', ciclo);\nif (ciclo % 2 === 0) pedidos.push(req('mk:console', '/server/gcode_store?count=80'));\nreturn [pedidos, null];\n",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 340,
+    "y": 340,
+    "wires": [
+      [
+        "7e5eb1ccaaf93662"
+      ],
+      [
+        "22ad3767e9c7a2d4"
+      ]
+    ]
+  },
+  {
+    "id": "e6c249ec6aed0544",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Consultas lentas",
+    "func": "// Consultas feitas com menos frequência: arquivos, histórico, sistema, câmeras.\nconst cfg = flow.get('cfg');\nif (!cfg || !cfg.url) return null;\n\nconst headers = {};\nif (cfg.apiKey) headers['X-Api-Key'] = cfg.apiKey;\nconst req = (topic, caminho) => ({\n    topic, url: cfg.url + caminho, method: 'GET', headers: { ...headers },\n    requestTimeout: 8000, enviadoEm: Date.now(), payload: ''\n});\n\nif (cfg.tipo === 'octoprint') {\n    return [[\n        req('octo:arquivos', '/api/files?recursive=true'),\n        req('octo:versao', '/api/version'),\n        req('octo:conexao', '/api/connection'),\n        req('octo:settings', '/api/settings')\n    ]];\n}\n\nreturn [[\n    req('mk:arquivos', '/server/files/list?root=gcodes'),\n    req('mk:historico', '/server/history/list?limit=30&order=desc'),\n    req('mk:totais', '/server/history/totals'),\n    req('mk:proc', '/machine/proc_stats'),\n    req('mk:printerinfo', '/printer/info'),\n    req('mk:serverinfo', '/server/info'),\n    req('mk:objetos', '/printer/objects/list'),\n    req('mk:webcams', '/server/webcams/list')\n]];\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 340,
+    "y": 400,
+    "wires": [
+      [
+        "7e5eb1ccaaf93662"
+      ]
+    ]
+  },
+  {
+    "id": "7e5eb1ccaaf93662",
+    "type": "http request",
+    "z": "1cfcda60143d52bc",
+    "name": "API da impressora",
+    "method": "use",
+    "ret": "obj",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": true,
+    "headers": [],
+    "x": 560,
+    "y": 380,
+    "wires": [
+      [
+        "22ad3767e9c7a2d4"
+      ]
+    ]
+  },
+  {
+    "id": "eab43cacf62fce3a",
+    "type": "catch",
+    "z": "1cfcda60143d52bc",
+    "name": "Erros da API",
+    "scope": [
+      "7e5eb1ccaaf93662"
+    ],
+    "uncaught": false,
+    "x": 560,
+    "y": 440,
+    "wires": [
+      [
+        "22ad3767e9c7a2d4"
+      ]
+    ]
+  },
+  {
+    "id": "22ad3767e9c7a2d4",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Interpretar respostas",
+    "func": "// Interpreta as respostas da impressora (Moonraker ou OctoPrint) e monta um\n// \"estado\" único, igual para os dois tipos, que alimenta todas as telas.\n//\n// Saídas:\n//  1 estado      → status, câmera, temperaturas, controle, movimento, ajustes, gráfico\n//  2 arquivos    → lista de arquivos\n//  3 histórico   → histórico de impressões\n//  4 sistema     → informações do sistema\n//  5 console     → console G-code\n//  6 alertas     → notificação na tela + link \"Alertas da impressora 3D\"\n//  7 requisições → novas consultas (metadados do arquivo em impressão)\n//  8 avisos      → resultado de comandos (erros, confirmações)\n\nconst cfg = flow.get('cfg') || {};\nconst out = [null, null, null, null, null, null, null, null];\nconst alertas = [];\nconst pedidos = [];\n\nconst novo = () => ({\n    mk: {}, octo: {}, meta: {}, metaPedido: {}, arquivos: null, hist: null, totais: null,\n    sis: {}, console: [], consoleT: null, consoleLocal: [], estadoAnt: null, marcos: {},\n    aquecendo: {}, online: null, erroConexao: '', latencia: null\n});\nlet m = context.get('m') || novo();\n\n// ---------- utilidades ----------\nconst num = v => (typeof v === 'number' && isFinite(v) ? v : null);\nconst r1 = v => (num(v) === null ? null : Math.round(v * 10) / 10);\nconst nomeCurto = a => (a || '').split('/').pop().replace(/\\.(gcode|gco|g|bgcode)$/i, '');\nconst dur = s => {\n    if (num(s) === null) return '';\n    s = Math.round(s);\n    const h = Math.floor(s / 3600), mi = Math.floor((s % 3600) / 60);\n    return h ? `${h}h ${String(mi).padStart(2, '0')}min` : `${mi}min`;\n};\nfunction req(topic, caminho, extra) {\n    const headers = {};\n    if (cfg.apiKey) headers['X-Api-Key'] = cfg.apiKey;\n    return Object.assign({\n        topic, url: cfg.url + caminho, method: 'GET', headers,\n        requestTimeout: 8000, enviadoEm: Date.now(), payload: ''\n    }, extra || {});\n}\nfunction textoErro(r) {\n    const p = r.payload;\n    if (p && typeof p === 'object') {\n        if (p.error && typeof p.error === 'object') return p.error.message || JSON.stringify(p.error);\n        if (p.error) return String(p.error);\n        if (p.message) return String(p.message);\n    }\n    if (typeof p === 'string' && p.trim()) return p.replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 200);\n    if (r.error) return r.error.message || String(r.error);\n    return 'HTTP ' + r.statusCode;\n}\n// Converte endereços relativos/locais da câmera para o endereço da impressora\nfunction resolverUrl(u) {\n    if (!u || !cfg.url) return '';\n    const mt = cfg.url.match(/^(https?:)\\/\\/([^/:]+)(:\\d+)?/i);\n    if (!mt) return u;\n    const proto = mt[1], host = mt[2], porta = mt[3] || '';\n    if (/^https?:\\/\\//i.test(u)) return u.replace(/\\/\\/(127\\.0\\.0\\.1|localhost)(?=[:/])/i, '//' + host);\n    const p = porta === ':7125' ? '' : porta; // a câmera fica na interface web (porta 80), não na API\n    return proto + '//' + host + p + (u.startsWith('/') ? u : '/' + u);\n}\nfunction alerta(nivel, titulo, texto) {\n    const icones = { sucesso: '✅', info: 'ℹ️', aviso: '⏸️', erro: '⚠️' };\n    alertas.push({ nivel, titulo, texto: texto || '', icone: icones[nivel] || '' });\n}\n\n// ---------- conexão ----------\nfunction marcarOnline(r) {\n    if (m.online === false) alerta('sucesso', 'Impressora conectada novamente', cfg.nome);\n    m.online = true;\n    m.erroConexao = '';\n    if (r && r.enviadoEm) m.latencia = Date.now() - r.enviadoEm;\n}\nfunction textoConexao(r) {\n    const t = textoErro(r);\n    if (/ECONNREFUSED/.test(t)) return 'A impressora recusou a conexão: confira o endereço e a porta, ou se o Moonraker/OctoPrint está ligado.';\n    if (/ETIMEDOUT|ESOCKETTIMEDOUT|no response|sem resposta|timeout/i.test(t)) return 'A impressora não respondeu: pode estar desligada ou fora da rede.';\n    if (/ENOTFOUND|EAI_AGAIN/.test(t)) return 'Endereço não encontrado: confira o nome/IP da impressora.';\n    if (/EHOSTUNREACH|ENETUNREACH/.test(t)) return 'Rede inalcançável: o Node-RED não enxerga a impressora.';\n    return t;\n}\nfunction marcarOffline(r) {\n    const texto = textoConexao(r);\n    if (m.online === true) alerta('erro', 'Conexão com a impressora perdida', texto);\n    m.online = false;\n    m.erroConexao = texto;\n}\n\n// ---------- câmera e configuração pública ----------\nfunction cfgPublica() {\n    const auto = flow.get('webcamAuto') || {};\n    const snapshot = cfg.webcamSnapshot || auto.snapshot || resolverUrl('/webcam/?action=snapshot');\n    const stream = cfg.webcamStream || auto.stream || resolverUrl('/webcam/?action=stream');\n    flow.set('webcamSnapshotUrl', snapshot);\n    return {\n        nome: cfg.nome, tipo: cfg.tipo, temUrl: !!cfg.url,\n        webcamModo: cfg.webcamModo, webcamIntervalo: cfg.webcamIntervalo, webcamStream: stream,\n        bicoMax: cfg.bicoMax, mesaMax: cfg.mesaMax, presets: cfg.presets || []\n    };\n}\n\n// ---------- estado: Moonraker ----------\nfunction estadoMk() {\n    const s = m.mk.status;\n    if (!s) {\n        return {\n            estado: 'erro', estadoTexto: 'Klipper indisponível',\n            mensagem: m.mk.erroKlippy || 'O Moonraker respondeu, mas o Klipper não está pronto.'\n        };\n    }\n    const wh = s.webhooks || {}, ps = s.print_stats || {}, vs = s.virtual_sdcard || {};\n    const ds = s.display_status || {}, ex = s.extruder || {}, hb = s.heater_bed || {};\n    const th = s.toolhead || {}, gm = s.gcode_move || {}, mr = s.motion_report || {}, fan = s.fan || {};\n    const MAPA = {\n        standby: ['pronta', 'Pronta'], printing: ['imprimindo', 'Imprimindo'], paused: ['pausada', 'Pausada'],\n        complete: ['concluida', 'Concluída'], cancelled: ['cancelada', 'Cancelada'], error: ['erro', 'Erro']\n    };\n    let [estado, estadoTexto] = MAPA[ps.state] || ['pronta', 'Pronta'];\n    if (wh.state && wh.state !== 'ready') {\n        estado = wh.state === 'startup' ? 'iniciando' : 'erro';\n        estadoTexto = wh.state === 'startup' ? 'Klipper iniciando' : 'Klipper: ' + wh.state;\n    }\n    const ativo = estado === 'imprimindo' || estado === 'pausada';\n    const arquivo = ps.filename || '';\n    const meta = arquivo ? m.meta[arquivo] : null;\n    if (arquivo && !m.metaPedido[arquivo]) {\n        m.metaPedido[arquivo] = true;\n        pedidos.push(req('mk:metadata', '/server/files/metadata?filename=' + encodeURIComponent(arquivo), { arquivo }));\n    }\n\n    const progresso = Math.min(100, ((ds.progress || vs.progress || 0) * 100));\n    const decorrido = num(ps.print_duration) || 0;\n    let restante = null;\n    if (ativo) {\n        const porArquivo = progresso > 0.5 ? decorrido / (progresso / 100) - decorrido : null;\n        const porSlicer = meta && meta.estimated_time ? Math.max(0, meta.estimated_time - decorrido) : null;\n        if (porArquivo !== null && porSlicer !== null) restante = progresso > 5 ? (porArquivo + porSlicer) / 2 : porSlicer;\n        else restante = porArquivo !== null ? porArquivo : porSlicer;\n    }\n\n    // camadas: usa SET_PRINT_STATS_INFO se o fatiador mandar; senão calcula pela altura Z\n    const info = ps.info || {};\n    let camada = num(info.current_layer), camadas = num(info.total_layer);\n    const zAtual = gm.gcode_position ? gm.gcode_position[2] : null;\n    if (meta && meta.layer_height) {\n        const primeira = meta.first_layer_height || meta.layer_height;\n        if (!camadas && meta.object_height) camadas = Math.ceil((meta.object_height - primeira) / meta.layer_height + 1);\n        if (camada === null && ativo && num(zAtual) !== null) {\n            camada = zAtual <= primeira + 0.001 ? 1 : Math.ceil((zAtual - primeira) / meta.layer_height + 1);\n            if (camadas) camada = Math.min(camada, camadas);\n        }\n    }\n\n    const pos = mr.live_position || th.position || [];\n    const sensores = (flow.get('mkSensores') || []).filter(n => s[n]).map(n => ({\n        nome: n.replace(/^(temperature_sensor|temperature_fan|heater_generic)\\s+/, '').replace(/_/g, ' '),\n        atual: r1(s[n].temperature), alvo: num(s[n].target)\n    }));\n\n    let miniatura = null;\n    if (meta && Array.isArray(meta.thumbnails) && meta.thumbnails.length) {\n        const t = meta.thumbnails.slice().sort((a, b) => (b.width || 0) - (a.width || 0))[0];\n        const pasta = arquivo.includes('/') ? arquivo.slice(0, arquivo.lastIndexOf('/') + 1) : '';\n        flow.set('miniaturaUrl', cfg.url + '/server/files/gcodes/' + encodeURI(pasta + t.relative_path));\n        miniatura = arquivo + '@' + (meta.modified || '');\n    }\n\n    const filUsado = num(ps.filament_used);\n    const filTotal = meta ? num(meta.filament_total) : null;\n    const pesoTotal = meta ? num(meta.filament_weight_total) : null;\n    const vazao = num(mr.live_extruder_velocity) !== null ? mr.live_extruder_velocity * Math.PI * Math.pow((ex.filament_diameter || 1.75) / 2, 2) : null;\n\n    return {\n        estado, estadoTexto,\n        mensagem: ps.message || ds.message || (wh.state !== 'ready' ? wh.state_message : '') || '',\n        arquivo, nome: nomeCurto(arquivo), miniatura,\n        progresso: r1(progresso), decorrido, restante, total: ativo ? decorrido + (restante || 0) : decorrido,\n        estimativaSlicer: meta ? num(meta.estimated_time) : null,\n        eta: estado === 'imprimindo' && restante !== null ? Date.now() + restante * 1000 : null,\n        camada, camadas,\n        filamento: { usado: filUsado, total: filTotal, peso: pesoTotal, pesoUsado: pesoTotal && filTotal && filUsado !== null ? pesoTotal * filUsado / filTotal : null },\n        bico: { atual: r1(ex.temperature), alvo: num(ex.target), potencia: num(ex.power) !== null ? Math.round(ex.power * 100) : null, podeExtrudar: ex.can_extrude },\n        mesa: { atual: r1(hb.temperature), alvo: num(hb.target), potencia: num(hb.power) !== null ? Math.round(hb.power * 100) : null },\n        sensores,\n        posicao: pos.length >= 3 ? { x: r1(pos[0]), y: r1(pos[1]), z: Math.round(pos[2] * 100) / 100 } : null,\n        homed: th.homed_axes || '',\n        ventoinha: num(fan.speed) !== null ? Math.round(fan.speed * 100) : null,\n        velocidade: num(gm.speed_factor) !== null ? Math.round(gm.speed_factor * 100) : null,\n        fluxo: num(gm.extrude_factor) !== null ? Math.round(gm.extrude_factor * 100) : null,\n        zOffset: gm.homing_origin ? Math.round(gm.homing_origin[2] * 1000) / 1000 : null,\n        velocidadeAtual: r1(mr.live_velocity),\n        vazao: r1(vazao),\n        limites: th.axis_maximum ? { x: th.axis_maximum[0], y: th.axis_maximum[1], z: th.axis_maximum[2] } : null\n    };\n}\n\n// ---------- estado: OctoPrint ----------\nfunction estadoOcto() {\n    const p = m.octo.printer, j = m.octo.job || {};\n    const job = j.job || {}, prog = j.progress || {}, file = job.file || {};\n    const arquivo = file.path || file.name || '';\n    const meta = arquivo ? m.meta[arquivo] : null;\n    if (arquivo && !m.metaPedido[arquivo]) {\n        m.metaPedido[arquivo] = true;\n        pedidos.push(req('octo:metadata', '/api/files/' + (file.origin || 'local') + '/' + arquivo.split('/').map(encodeURIComponent).join('/'), { arquivo }));\n    }\n    if (m.octo.desconectada || !p) {\n        return {\n            estado: 'desconectada', estadoTexto: 'Impressora desconectada', arquivo, nome: nomeCurto(arquivo),\n            mensagem: 'O OctoPrint está online, mas não está ligado à impressora. Use \"Reconectar\" em Controle.'\n        };\n    }\n    const f = (p.state && p.state.flags) || {};\n    let estado = 'pronta', estadoTexto = 'Pronta';\n    if (f.cancelling) [estado, estadoTexto] = ['cancelando', 'Cancelando'];\n    else if (f.pausing) [estado, estadoTexto] = ['pausando', 'Pausando'];\n    else if (f.paused) [estado, estadoTexto] = ['pausada', 'Pausada'];\n    else if (f.printing) [estado, estadoTexto] = ['imprimindo', 'Imprimindo'];\n    else if (f.error || f.closedOrError) [estado, estadoTexto] = ['erro', 'Erro'];\n    else if (arquivo && num(prog.completion) >= 99.9) [estado, estadoTexto] = ['concluida', 'Concluída'];\n    const ativo = ['imprimindo', 'pausada', 'pausando'].includes(estado);\n\n    const t = p.temperature || {};\n    const sensores = Object.keys(t).filter(k => k !== 'tool0' && k !== 'bed' && t[k] && typeof t[k] === 'object')\n        .map(k => ({ nome: k === 'chamber' ? 'câmara' : k, atual: r1(t[k].actual), alvo: num(t[k].target) }));\n    const filTotal = job.filament && job.filament.tool0 ? num(job.filament.tool0.length) : null;\n    const progresso = num(prog.completion) || 0;\n    const restante = ativo ? num(prog.printTimeLeft) : null;\n\n    let miniatura = null;\n    if (meta && meta.thumbnail) {\n        flow.set('miniaturaUrl', cfg.url + '/' + meta.thumbnail.replace(/^\\/+/, ''));\n        miniatura = arquivo + '@' + (meta.date || '');\n    }\n    const analise = (meta && meta.gcodeAnalysis) || {};\n\n    return {\n        estado, estadoTexto,\n        mensagem: (p.state && p.state.error) || '',\n        arquivo, nome: nomeCurto(file.display || arquivo), miniatura,\n        progresso: r1(progresso), decorrido: num(prog.printTime) || 0, restante,\n        total: ativo ? (num(prog.printTime) || 0) + (restante || 0) : num(prog.printTime),\n        estimativaSlicer: num(job.estimatedPrintTime) || num(analise.estimatedPrintTime),\n        eta: estado === 'imprimindo' && restante !== null ? Date.now() + restante * 1000 : null,\n        camada: null, camadas: null,\n        filamento: { usado: filTotal !== null ? filTotal * progresso / 100 : null, total: filTotal, peso: null, pesoUsado: null },\n        bico: { atual: t.tool0 ? r1(t.tool0.actual) : null, alvo: t.tool0 ? num(t.tool0.target) : null, potencia: null },\n        mesa: { atual: t.bed ? r1(t.bed.actual) : null, alvo: t.bed ? num(t.bed.target) : null, potencia: null },\n        sensores,\n        posicao: null, homed: '', ventoinha: null, velocidade: null, fluxo: null, zOffset: null,\n        velocidadeAtual: null, vazao: null, limites: null\n    };\n}\n\nfunction montarEstado() {\n    const base = {\n        cfg: cfgPublica(), online: m.online, tipo: cfg.tipo, atualizadoEm: Date.now(), latencia: m.latencia,\n        bico: { atual: null, alvo: null, potencia: null }, mesa: { atual: null, alvo: null, potencia: null }, sensores: []\n    };\n    if (!cfg.url) return { ...base, estado: 'semconfig', estadoTexto: 'Não configurada', mensagem: 'Informe o endereço da impressora no grupo \"Configuração\", no fim da página.' };\n    if (m.online === null) return { ...base, estado: 'conectando', estadoTexto: 'Conectando…' };\n    if (m.online === false) return { ...base, estado: 'offline', estadoTexto: 'Sem conexão', mensagem: m.erroConexao };\n    return { ...base, ...(cfg.tipo === 'octoprint' ? estadoOcto() : estadoMk()) };\n}\n\nfunction verificarAlertas(e) {\n    const ant = m.estadoAnt;\n    m.estadoAnt = { estado: e.estado, arquivo: e.arquivo };\n    if (!ant || ['offline', 'conectando', 'semconfig'].includes(ant.estado) || ['offline', 'conectando', 'semconfig'].includes(e.estado)) return;\n    const de = ant.estado, para = e.estado, nome = e.nome || '';\n    if (de !== para) {\n        if (para === 'imprimindo') {\n            if (de === 'pausada' || de === 'pausando') alerta('info', 'Impressão retomada', nome);\n            else { alerta('info', 'Impressão iniciada', nome + (e.estimativaSlicer ? ' · estimativa ' + dur(e.estimativaSlicer) : '')); m.marcos[e.arquivo] = {}; }\n        } else if (para === 'pausada') alerta('aviso', 'Impressão pausada', nome);\n        else if (para === 'concluida' || (de === 'imprimindo' && para === 'pronta' && e.progresso >= 99)) alerta('sucesso', 'Impressão concluída', nome + (e.decorrido ? ' em ' + dur(e.decorrido) : ''));\n        else if (para === 'cancelada' || (de === 'cancelando' && para === 'pronta')) alerta('aviso', 'Impressão cancelada', nome);\n        else if (para === 'erro') alerta('erro', 'Erro na impressora', e.mensagem);\n        else if (para === 'desconectada') alerta('erro', 'Impressora desconectada do OctoPrint', '');\n    }\n    if (para === 'imprimindo' && e.arquivo) {\n        let mk = m.marcos[e.arquivo];\n        if (!mk) { // começou a acompanhar no meio da impressão: não avisa marcos já passados\n            mk = m.marcos[e.arquivo] = {};\n            for (const p of [50, 90]) if (e.progresso >= p) mk[p] = true;\n        }\n        for (const p of [50, 90]) {\n            if (e.progresso >= p && !mk[p]) {\n                mk[p] = true;\n                alerta('info', `Impressão em ${p}%`, nome + (e.restante ? ' · faltam ' + dur(e.restante) : ''));\n            }\n        }\n    }\n    for (const [k, rot] of [['bico', 'Bico'], ['mesa', 'Mesa']]) {\n        const h = e[k];\n        if (!h || num(h.alvo) === null || num(h.atual) === null) continue;\n        if (h.alvo <= 0) { m.aquecendo[k] = false; continue; }\n        const dif = Math.abs(h.atual - h.alvo);\n        if (dif > 5) m.aquecendo[k] = true;\n        else if (m.aquecendo[k] && dif <= 2) { m.aquecendo[k] = false; alerta('info', `${rot} aquecido`, `${h.atual} °C (alvo ${h.alvo} °C)`); }\n    }\n}\n\n// ---------- listas ----------\nfunction emitirHistorico() {\n    out[2] = { topic: 'historico', payload: { suportado: cfg.tipo !== 'octoprint', jobs: m.hist || [], totais: m.totais } };\n}\nfunction emitirSistema() {\n    out[3] = { topic: 'sistema', payload: { tipo: cfg.tipo, online: m.online, latencia: m.latencia, ...m.sis } };\n}\nfunction emitirConsole() {\n    const linhas = cfg.tipo === 'octoprint' ? m.consoleLocal : m.console;\n    out[4] = { topic: 'console', payload: { linhas: linhas.slice(-150), suportaRespostas: cfg.tipo !== 'octoprint' } };\n}\nfunction addConsoleLocal(tipo, texto) {\n    m.consoleLocal.push({ t: Date.now(), tipo, texto });\n    if (m.consoleLocal.length > 150) m.consoleLocal = m.consoleLocal.slice(-150);\n}\nfunction achatarOcto(itens, lista) {\n    for (const it of itens || []) {\n        if (it.type === 'folder') achatarOcto(it.children, lista);\n        else if (it.type === 'machinecode') {\n            lista.push({\n                caminho: it.path, nome: it.display || it.name, pasta: it.path.includes('/') ? it.path.slice(0, it.path.lastIndexOf('/')) : '',\n                tamanho: it.size || 0, modificado: (it.date || 0) * 1000,\n                estimativa: it.gcodeAnalysis ? num(it.gcodeAnalysis.estimatedPrintTime) : null,\n                ultima: it.prints && it.prints.last ? (it.prints.last.success ? 'ok' : 'falhou') : null\n            });\n        }\n    }\n    return lista;\n}\n\n// ============================================================\n//  Processa a mensagem recebida\n// ============================================================\nconst t = msg.topic || '';\nlet emitir = false;\n\nif (t === 'reset') {\n    m = novo();\n    flow.set('mkSensores', []);\n    flow.set('miniaturaUrl', null);\n    flow.set('webcamAuto', {});\n    emitir = true;\n    emitirHistorico(); emitirSistema(); emitirConsole();\n    out[1] = { topic: 'arquivos', payload: { lista: [], tipo: cfg.tipo } };\n} else if (t === 'semConfig') {\n    m.online = null;\n    emitir = true;\n} else if (t === 'console:local') {\n    addConsoleLocal(msg.tipo || 'cmd', msg.payload);\n    emitirConsole();\n} else if (t === 'console:limpar') {\n    m.consoleCorte = typeof m.consoleT === 'number' ? m.consoleT : 0;\n    m.console = []; m.consoleLocal = [];\n    emitirConsole();\n} else {\n    const semConexao = !!msg.error && typeof msg.statusCode !== 'number';\n    const ok = !msg.error && typeof msg.statusCode === 'number' && msg.statusCode < 400;\n    const p = msg.payload && typeof msg.payload === 'object' ? msg.payload : {};\n    const res = p.result;\n\n    switch (t) {\n        // ----- Moonraker -----\n        case 'mk:status':\n            if (semConexao) marcarOffline(msg);\n            else if (!ok) { marcarOnline(msg); m.mk.status = null; m.mk.erroKlippy = textoErro(msg); }\n            else { marcarOnline(msg); m.mk.status = res && res.status; m.mk.erroKlippy = null; }\n            emitir = true;\n            break;\n        case 'mk:console':\n            if (ok && res && Array.isArray(res.gcode_store)) {\n                const g = res.gcode_store;\n                const ultimo = g.length ? g[g.length - 1].time : 0;\n                if (ultimo !== m.consoleT) {\n                    const corte = m.consoleCorte || 0;\n                    m.consoleT = ultimo;\n                    m.console = g.filter(l => l.time > corte).map(l => ({\n                        t: l.time * 1000,\n                        tipo: l.type === 'command' ? 'cmd' : (/^!!/.test(l.message) ? 'erro' : 'resp'),\n                        texto: String(l.message).replace(/^\\/\\/\\s?/, '')\n                    }));\n                    emitirConsole();\n                }\n            }\n            break;\n        case 'mk:arquivos':\n            if (ok && Array.isArray(res)) {\n                m.arquivos = res.filter(f => /\\.(gcode|gco|g|bgcode)$/i.test(f.path)).map(f => ({\n                    caminho: f.path, nome: nomeCurto(f.path), pasta: f.path.includes('/') ? f.path.slice(0, f.path.lastIndexOf('/')) : '',\n                    tamanho: f.size || 0, modificado: (f.modified || 0) * 1000, estimativa: null, ultima: null\n                }));\n                out[1] = { topic: 'arquivos', payload: { lista: m.arquivos, tipo: cfg.tipo } };\n            }\n            break;\n        case 'mk:historico':\n            if (ok && res && Array.isArray(res.jobs)) {\n                m.hist = res.jobs.map(j => ({\n                    id: j.job_id, arquivo: j.filename, nome: nomeCurto(j.filename), status: j.status,\n                    inicio: j.start_time ? j.start_time * 1000 : null, fim: j.end_time ? j.end_time * 1000 : null,\n                    duracao: num(j.print_duration), total: num(j.total_duration), filamento: num(j.filament_used),\n                    existe: j.exists !== false\n                }));\n                emitirHistorico();\n            }\n            break;\n        case 'mk:totais':\n            if (ok && res && res.job_totals) {\n                const jt = res.job_totals;\n                m.totais = {\n                    impressoes: jt.total_jobs, tempoTotal: jt.total_time, tempoImpressao: jt.total_print_time,\n                    filamento: jt.total_filament_used, maiorImpressao: jt.longest_print\n                };\n                emitirHistorico();\n            }\n            break;\n        case 'mk:proc':\n            if (ok && res) {\n                const mem = res.system_memory || {};\n                m.sis.host = {\n                    cpuTemp: r1(res.cpu_temp), cpu: res.system_cpu_usage ? r1(res.system_cpu_usage.cpu) : null,\n                    memUsada: mem.used || (mem.total && mem.available ? mem.total - mem.available : null), memTotal: mem.total || null,\n                    uptime: num(res.system_uptime), conexoes: num(res.websocket_connections)\n                };\n                emitirSistema();\n            }\n            break;\n        case 'mk:printerinfo':\n            if (ok && res) { m.sis.klipper = { estado: res.state, mensagem: res.state_message, hostname: res.hostname, versao: res.software_version }; emitirSistema(); }\n            break;\n        case 'mk:serverinfo':\n            if (ok && res) { m.sis.moonraker = { versao: res.moonraker_version, klippy: res.klippy_state, avisos: res.warnings || [] }; emitirSistema(); }\n            break;\n        case 'mk:objetos':\n            if (ok && res && Array.isArray(res.objects)) {\n                flow.set('mkSensores', res.objects.filter(o => /^(temperature_sensor|temperature_fan|heater_generic) /.test(o)));\n            }\n            break;\n        case 'mk:webcams':\n            if (ok && res && Array.isArray(res.webcams) && res.webcams.length) {\n                const w = res.webcams.find(c => c.enabled !== false) || res.webcams[0];\n                flow.set('webcamAuto', { snapshot: resolverUrl(w.snapshot_url), stream: resolverUrl(w.stream_url) });\n            }\n            break;\n        case 'mk:metadata':\n        case 'octo:metadata':\n            if (ok && msg.arquivo) {\n                m.meta[msg.arquivo] = t === 'mk:metadata' ? res : p;\n                const k = Object.keys(m.meta);\n                if (k.length > 20) delete m.meta[k[0]];\n                emitir = true;\n            }\n            break;\n\n        // ----- OctoPrint -----\n        case 'octo:printer':\n            if (semConexao) marcarOffline(msg);\n            else if (msg.statusCode === 409) { marcarOnline(msg); m.octo.desconectada = true; m.octo.printer = null; }\n            else if (ok) { marcarOnline(msg); m.octo.desconectada = false; m.octo.printer = p; }\n            else { marcarOnline(msg); m.octo.desconectada = true; m.octo.printer = null; }\n            emitir = true;\n            break;\n        case 'octo:job':\n            if (ok) m.octo.job = p;\n            break;\n        case 'octo:arquivos':\n            if (ok) {\n                m.arquivos = achatarOcto(p.files, []);\n                out[1] = { topic: 'arquivos', payload: { lista: m.arquivos, tipo: cfg.tipo } };\n            }\n            if (!m.hist) { m.hist = []; emitirHistorico(); }\n            break;\n        case 'octo:versao':\n            if (ok) { m.sis.octoprint = { versao: p.server, api: p.api, texto: p.text }; emitirSistema(); }\n            break;\n        case 'octo:conexao':\n            if (ok && p.current) { m.sis.conexao = { estado: p.current.state, porta: p.current.port, baud: p.current.baudrate }; emitirSistema(); }\n            break;\n        case 'octo:settings':\n            if (ok) {\n                const w = p.webcam || {};\n                const cw = (p.plugins && p.plugins.classicwebcam) || {};\n                flow.set('webcamAuto', {\n                    snapshot: resolverUrl(w.snapshotUrl || cw.snapshot || ''),\n                    stream: resolverUrl(w.streamUrl || cw.stream || '')\n                });\n            }\n            break;\n\n        // ----- resultado de comandos -----\n        case 'cmd':\n            if (!ok) {\n                const erro = textoErro(msg);\n                out[7] = { topic: 'Comando falhou', payload: `⚠️ ${msg.descricao || 'Comando'} falhou: ${erro}` };\n                if (cfg.tipo === 'octoprint' && msg.gcode) { addConsoleLocal('erro', '!! ' + erro); emitirConsole(); }\n            } else {\n                if (msg.avisarOk) out[7] = { topic: 'Comando', payload: '✔ ' + (msg.descricao || 'Comando enviado') };\n                if (cfg.tipo === 'octoprint' && msg.gcode) { addConsoleLocal('resp', 'ok'); emitirConsole(); }\n            }\n            break;\n    }\n}\n\nif (emitir) {\n    const e = montarEstado();\n    verificarAlertas(e);\n    flow.set('estado', e);\n    out[0] = { topic: 'estado', payload: e };\n    node.status(e.estado === 'imprimindo'\n        ? { fill: 'blue', shape: 'dot', text: `${e.estadoTexto} ${e.progresso}%` }\n        : { fill: ['offline', 'erro', 'desconectada'].includes(e.estado) ? 'red' : (e.estado === 'semconfig' ? 'yellow' : 'green'), shape: 'dot', text: e.estadoTexto });\n    // atualiza a lista de sistema quando a conexão muda\n    if (!out[3] && (m.online !== m.onlineEmitido)) { m.onlineEmitido = m.online; emitirSistema(); }\n}\n\nif (alertas.length) {\n    const e = flow.get('estado') || {};\n    out[5] = alertas.map(a => ({\n        topic: a.titulo,\n        payload: `${a.icone} ${a.titulo}${a.texto ? ' — ' + a.texto : ''}`,\n        alerta: { ...a, impressora: cfg.nome, estado: e.estado, arquivo: e.arquivo || '', progresso: e.progresso, em: new Date().toISOString() }\n    }));\n}\nif (pedidos.length) out[6] = pedidos;\n\ncontext.set('m', m);\nreturn out;\n",
+    "outputs": 8,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 800,
+    "y": 400,
+    "wires": [
+      [
+        "b5ca6737d9d11f6b",
+        "1581909cc82dbb3d",
+        "688664ce72669400",
+        "add52e873c7efdfb",
+        "75e60231309e22fa",
+        "ecb3b859fb16608a",
+        "ce2dad65cb45c8ae",
+        "9b746ccc0484c6db",
+        "d93b9c98e808e743"
+      ],
+      [
+        "a498113b43766230"
+      ],
+      [
+        "ecd900be4f943297"
+      ],
+      [
+        "8081e9e78d5f2d72"
+      ],
+      [
+        "b88fc080351927fa"
+      ],
+      [
+        "b8e764272b31834e",
+        "ebe35fb8836bf180",
+        "670ab0548ac8e47e"
+      ],
+      [
+        "7e5eb1ccaaf93662"
+      ],
+      [
+        "b8e764272b31834e"
+      ]
+    ],
+    "outputLabels": [
+      "estado",
+      "arquivos",
+      "histórico",
+      "sistema",
+      "console",
+      "alertas",
+      "novas consultas",
+      "avisos de comandos"
+    ]
+  },
+  {
+    "id": "0ca077b49b45858e",
+    "type": "comment",
+    "z": "1cfcda60143d52bc",
+    "name": "3 · Telas do dashboard",
+    "info": "",
+    "x": 1090,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "b5ca6737d9d11f6b",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "bb6c4df186f91688",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Status",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!e\" class=\"i3d-vazio\">Aguardando dados da impressora…</div>\n    <template v-else>\n      <div class=\"i3d-linha i3d-entre\">\n        <div class=\"i3d-linha\">\n          <v-chip :color=\"cor\" variant=\"flat\" size=\"small\" class=\"font-weight-bold\">{{ e.estadoTexto }}</v-chip>\n          <span style=\"font-weight:600\">{{ e.cfg.nome }}</span>\n        </div>\n        <span class=\"i3d-sub\">{{ e.tipo === 'octoprint' ? 'OctoPrint' : 'Klipper' }} · {{ hora(e.atualizadoEm, true) }}</span>\n      </div>\n\n      <div v-if=\"e.mensagem\" class=\"i3d-msg\" :class=\"{ erro: ['erro','offline','desconectada'].includes(e.estado) }\">{{ e.mensagem }}</div>\n\n      <div v-if=\"e.arquivo\" class=\"i3d-job\">\n        <img v-if=\"e.miniatura && !semMiniatura\" :src=\"urlMiniatura\" class=\"i3d-mini\" @error=\"semMiniatura = true\" alt=\"\">\n        <div class=\"i3d-job-info\">\n          <div class=\"i3d-arquivo\" :title=\"e.arquivo\">{{ e.nome }}</div>\n          <v-progress-linear :model-value=\"e.progresso || 0\" height=\"24\" rounded :color=\"cor\" bg-opacity=\"0.15\">\n            <strong class=\"i3d-num\">{{ (e.progresso || 0).toFixed(1) }}%</strong>\n          </v-progress-linear>\n        </div>\n      </div>\n\n      <div class=\"i3d-grade\">\n        <div class=\"i3d-celula\"><span>Decorrido</span><b>{{ dur(e.decorrido) }}</b></div>\n        <div class=\"i3d-celula\"><span>Restante</span><b>{{ dur(e.restante) }}</b></div>\n        <div class=\"i3d-celula\"><span>Termina às</span><b>{{ hora(e.eta) }}</b></div>\n        <div class=\"i3d-celula\"><span>Estimativa do fatiador</span><b>{{ dur(e.estimativaSlicer) }}</b></div>\n        <div class=\"i3d-celula\"><span>Camada</span><b>{{ camada }}</b></div>\n        <div class=\"i3d-celula\"><span>Altura Z</span><b>{{ e.posicao ? e.posicao.z.toFixed(2) + ' mm' : '—' }}</b></div>\n        <div class=\"i3d-celula\"><span>Filamento usado</span><b>{{ filamento }}</b></div>\n        <div class=\"i3d-celula\"><span>Peso</span><b>{{ peso }}</b></div>\n        <div class=\"i3d-celula\"><span>Bico</span><b>{{ temp(e.bico) }}</b></div>\n        <div class=\"i3d-celula\"><span>Mesa</span><b>{{ temp(e.mesa) }}</b></div>\n        <div class=\"i3d-celula\" v-for=\"s in (e.sensores || [])\" :key=\"s.nome\"><span>{{ s.nome }}</span><b>{{ temp(s) }}</b></div>\n        <div class=\"i3d-celula\"><span>Velocidade real</span><b>{{ e.velocidadeAtual != null ? e.velocidadeAtual.toFixed(0) + ' mm/s' : '—' }}</b></div>\n        <div class=\"i3d-celula\"><span>Vazão</span><b>{{ e.vazao != null ? e.vazao.toFixed(1) + ' mm³/s' : '—' }}</b></div>\n        <div class=\"i3d-celula\"><span>Ventoinha</span><b>{{ e.ventoinha != null ? e.ventoinha + '%' : '—' }}</b></div>\n        <div class=\"i3d-celula\"><span>Velocidade / fluxo</span><b>{{ e.velocidade != null ? e.velocidade + '% / ' + e.fluxo + '%' : '—' }}</b></div>\n      </div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() { return { semMiniatura: false } },\n  computed: {\n    e() { return this.msg && this.msg.payload && this.msg.payload.cfg ? this.msg.payload : null },\n    cor() {\n      return ({ imprimindo: 'primary', pausada: 'warning', pausando: 'warning', concluida: 'success', pronta: 'success',\n        cancelada: 'grey', cancelando: 'grey', erro: 'error', offline: 'error', desconectada: 'error' })[this.e.estado] || 'grey'\n    },\n    base() { return window.location.pathname.replace(/\\/[^/]*\\/[^/]*\\/?$/, '/') },\n    urlMiniatura() { return this.base + 'impressora3d/miniatura?v=' + encodeURIComponent(this.e.miniatura) },\n    camada() {\n      if (this.e.camada == null) return '—'\n      return this.e.camada + (this.e.camadas ? ' / ' + this.e.camadas : '')\n    },\n    filamento() {\n      const f = this.e.filamento\n      if (!f || f.usado == null) return '—'\n      return (f.usado / 1000).toFixed(2) + (f.total ? ' / ' + (f.total / 1000).toFixed(2) : '') + ' m'\n    },\n    peso() {\n      const f = this.e.filamento\n      if (!f || !f.peso) return '—'\n      return (f.pesoUsado != null ? f.pesoUsado.toFixed(1) + ' / ' : '') + f.peso.toFixed(1) + ' g'\n    }\n  },\n  watch: { 'e.miniatura'() { this.semMiniatura = false } },\n  methods: {\n    dur(s) {\n      if (s == null || !isFinite(s)) return '—'\n      s = Math.max(0, Math.round(s))\n      const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60\n      return h ? h + 'h ' + String(m).padStart(2, '0') + 'min' : (m ? m + 'min ' + String(x).padStart(2, '0') + 's' : x + 's')\n    },\n    hora(t, seg) {\n      if (!t) return '—'\n      const d = new Date(t)\n      const hoje = new Date().toDateString() === d.toDateString()\n      const h = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: seg ? '2-digit' : undefined })\n      return hoje ? h : d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' ' + h\n    },\n    temp(h) {\n      if (!h || h.atual == null) return '—'\n      return h.atual.toFixed(1) + '°' + (h.alvo ? ' / ' + h.alvo + '°' : '')\n    }\n  }\n}\n</script>\n\n<style>\n.i3d-job { display: flex; gap: 12px; align-items: center; margin-top: 12px; }\n.i3d-mini { width: 72px; height: 72px; object-fit: contain; border-radius: 6px; background: rgba(var(--v-theme-on-surface), .05); flex: none; }\n.i3d-job-info { flex: 1; min-width: 0; }\n.i3d-arquivo { font-weight: 600; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n</style>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1110,
+    "y": 140,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "1581909cc82dbb3d",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "5a3e05719c88be22",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Câmera",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!e || !e.cfg.temUrl\" class=\"i3d-vazio\">Configure a impressora para ver a câmera.</div>\n    <template v-else>\n      <div class=\"i3d-cam\" :class=\"{ cheia }\" @click=\"cheia = !cheia\" title=\"Clique para ampliar\">\n        <img v-if=\"ligada\" :key=\"modo\" :src=\"src\" @load=\"carregou\" @error=\"falhou\" alt=\"Câmera da impressora\">\n        <div v-if=\"!ligada\" class=\"i3d-cam-aviso\">Câmera pausada</div>\n        <div v-else-if=\"erro\" class=\"i3d-cam-aviso\">Câmera indisponível<br><small>{{ modo === 'stream' ? 'o navegador não alcança o vídeo' : 'verifique o endereço da câmera' }}</small></div>\n        <span v-if=\"ligada && !erro && ultimaFoto && modo !== 'stream'\" class=\"i3d-cam-hora\">{{ ultimaFoto }}</span>\n      </div>\n      <div class=\"i3d-linha\" style=\"margin-top:8px\">\n        <v-btn size=\"small\" variant=\"tonal\" :prepend-icon=\"ligada ? 'mdi-pause' : 'mdi-play'\" @click=\"alternar\">{{ ligada ? 'Parar câmera' : 'Ligar câmera' }}</v-btn>\n        <v-btn size=\"small\" variant=\"tonal\" prepend-icon=\"mdi-fullscreen\" @click=\"cheia = !cheia\">Ampliar</v-btn>\n        <v-btn size=\"small\" variant=\"tonal\" prepend-icon=\"mdi-camera\" :href=\"foto\" target=\"_blank\">Foto</v-btn>\n        <v-btn-toggle v-model=\"modo\" density=\"compact\" variant=\"outlined\" mandatory divided>\n          <v-btn value=\"snapshot\" size=\"small\">Fotos</v-btn>\n          <v-btn value=\"stream\" size=\"small\">Vídeo</v-btn>\n        </v-btn-toggle>\n      </div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() { return { ts: Date.now(), ligada: true, erro: false, cheia: false, modo: null, timer: null, ultimaFoto: '' } },\n  computed: {\n    e() { return this.msg && this.msg.payload && this.msg.payload.cfg ? this.msg.payload : null },\n    base() { return window.location.pathname.replace(/\\/[^/]*\\/[^/]*\\/?$/, '/') },\n    foto() { return this.base + 'impressora3d/webcam?t=' + this.ts },\n    src() { return this.modo === 'stream' && this.e.cfg.webcamStream ? this.e.cfg.webcamStream : this.foto }\n  },\n  watch: {\n    e(v) { if (v && !this.modo) this.modo = v.cfg.webcamModo === 'stream' ? 'stream' : 'snapshot' },\n    modo() { this.erro = false; this.agendar() }\n  },\n  mounted() { if (this.e && !this.modo) this.modo = this.e.cfg.webcamModo === 'stream' ? 'stream' : 'snapshot' },\n  unmounted() { clearTimeout(this.timer) },\n  methods: {\n    agendar() {\n      clearTimeout(this.timer)\n      if (!this.ligada || this.modo === 'stream') return\n      const s = (this.e && Number(this.e.cfg.webcamIntervalo)) || 2\n      this.timer = setTimeout(() => { if (!document.hidden) this.ts = Date.now(); else this.agendar() }, s * 1000)\n    },\n    carregou() { this.erro = false; this.ultimaFoto = new Date().toLocaleTimeString('pt-BR'); this.agendar() },\n    falhou() { this.erro = true; clearTimeout(this.timer); this.timer = setTimeout(() => { this.ts = Date.now() }, 10000) },\n    alternar() { this.ligada = !this.ligada; if (this.ligada) { this.ts = Date.now() } else clearTimeout(this.timer) }\n  }\n}\n</script>\n\n<style>\n.i3d-cam { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #111; border-radius: 6px; overflow: hidden; cursor: zoom-in; }\n.i3d-cam img { width: 100%; height: 100%; object-fit: contain; display: block; }\n.i3d-cam.cheia { position: fixed; inset: 0; z-index: 3000; aspect-ratio: auto; border-radius: 0; cursor: zoom-out; }\n.i3d-cam-aviso { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9aa0a6; text-align: center; }\n.i3d-cam-hora { position: absolute; right: 6px; bottom: 6px; font-size: 11px; color: #fff; background: rgba(0,0,0,.5); padding: 1px 6px; border-radius: 4px; }\n</style>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1110,
+    "y": 180,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ce2dad65cb45c8ae",
+    "type": "ui-gauge",
+    "z": "1cfcda60143d52bc",
+    "name": "Bico",
+    "group": "41962413beba6ee5",
+    "order": 1,
+    "width": "3",
+    "height": "3",
+    "gtype": "gauge-half",
+    "gstyle": "rounded",
+    "title": "Bico",
+    "alwaysShowTitle": false,
+    "floatingTitlePosition": "top-left",
+    "units": "°C",
+    "icon": "mdi-printer-3d-nozzle",
+    "prefix": "",
+    "suffix": "",
+    "segments": [
+      {
+        "from": "0",
+        "color": "#4dabf7"
+      },
+      {
+        "from": "50",
+        "color": "#fab005"
+      },
+      {
+        "from": "170",
+        "color": "#fd7e14"
+      },
+      {
+        "from": "260",
+        "color": "#e03131"
+      }
+    ],
+    "min": "0",
+    "max": "300",
+    "sizeThickness": 16,
+    "sizeGap": 4,
+    "sizeKeyThickness": 8,
+    "styleRounded": true,
+    "styleGlow": false,
+    "value": "payload.bico.atual",
+    "valueType": "msg",
+    "className": "",
+    "x": 1090,
+    "y": 220,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "9b746ccc0484c6db",
+    "type": "ui-gauge",
+    "z": "1cfcda60143d52bc",
+    "name": "Mesa",
+    "group": "41962413beba6ee5",
+    "order": 2,
+    "width": "3",
+    "height": "3",
+    "gtype": "gauge-half",
+    "gstyle": "rounded",
+    "title": "Mesa",
+    "alwaysShowTitle": false,
+    "floatingTitlePosition": "top-left",
+    "units": "°C",
+    "icon": "mdi-radiator",
+    "prefix": "",
+    "suffix": "",
+    "segments": [
+      {
+        "from": "0",
+        "color": "#4dabf7"
+      },
+      {
+        "from": "40",
+        "color": "#fab005"
+      },
+      {
+        "from": "70",
+        "color": "#fd7e14"
+      },
+      {
+        "from": "100",
+        "color": "#e03131"
+      }
+    ],
+    "min": "0",
+    "max": "120",
+    "sizeThickness": 16,
+    "sizeGap": 4,
+    "sizeKeyThickness": 8,
+    "styleRounded": true,
+    "styleGlow": false,
+    "value": "payload.mesa.atual",
+    "valueType": "msg",
+    "className": "",
+    "x": 1090,
+    "y": 260,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "688664ce72669400",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "41962413beba6ee5",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Temperaturas",
+    "order": 3,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!e\" class=\"i3d-vazio\">Aguardando dados…</div>\n    <template v-else>\n      <div v-for=\"h in aquecedores\" :key=\"h.id\" class=\"i3d-aq\">\n        <div class=\"i3d-linha i3d-entre\">\n          <div>\n            <b>{{ h.rotulo }}</b>\n            <span class=\"i3d-num\" style=\"margin-left:6px\">{{ fmt(e[h.id].atual) }}°C</span>\n            <span class=\"i3d-sub\"> → {{ e[h.id].alvo ? e[h.id].alvo + '°C' : 'desligado' }}</span>\n            <span v-if=\"e[h.id].potencia != null\" class=\"i3d-sub\"> · potência {{ e[h.id].potencia }}%</span>\n          </div>\n        </div>\n        <div class=\"i3d-linha\" style=\"margin-top:6px\">\n          <v-btn size=\"small\" variant=\"tonal\" icon=\"mdi-minus\" :disabled=\"travado\" @click=\"somar(h, -5)\"></v-btn>\n          <v-text-field v-model.number=\"alvos[h.id]\" type=\"number\" density=\"compact\" hide-details variant=\"outlined\"\n            style=\"max-width:110px\" suffix=\"°C\" :placeholder=\"String(e[h.id].alvo || 0)\" :disabled=\"travado\"\n            @keyup.enter=\"definir(h)\"></v-text-field>\n          <v-btn size=\"small\" variant=\"tonal\" icon=\"mdi-plus\" :disabled=\"travado\" @click=\"somar(h, 5)\"></v-btn>\n          <v-btn size=\"small\" color=\"primary\" variant=\"flat\" :disabled=\"travado || alvos[h.id] === '' || alvos[h.id] == null\" @click=\"definir(h)\">Definir</v-btn>\n          <v-btn size=\"small\" variant=\"text\" :disabled=\"travado\" @click=\"enviar(h.acao, { alvo: 0 })\">Desligar</v-btn>\n        </div>\n      </div>\n\n      <div class=\"i3d-titulo\">Pré-aquecer</div>\n      <div class=\"i3d-linha\">\n        <v-btn v-for=\"p in e.cfg.presets\" :key=\"p.nome\" size=\"small\" variant=\"tonal\" color=\"deep-orange\" :disabled=\"travado\"\n          @click=\"enviar('preset', p)\">{{ p.nome }} <span class=\"i3d-sub\" style=\"margin-left:4px\">{{ p.bico }}/{{ p.mesa }}</span></v-btn>\n        <v-btn size=\"small\" variant=\"outlined\" prepend-icon=\"mdi-snowflake\" :disabled=\"travado\" @click=\"enviar('desligarAquecimento')\">Desligar tudo</v-btn>\n      </div>\n      <div v-if=\"travado\" class=\"i3d-sub\" style=\"margin-top:8px\">Sem conexão com a impressora.</div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return {\n      alvos: { bico: '', mesa: '' },\n      aquecedores: [\n        { id: 'bico', rotulo: 'Bico', acao: 'tempBico', max: 'bicoMax' },\n        { id: 'mesa', rotulo: 'Mesa', acao: 'tempMesa', max: 'mesaMax' }\n      ]\n    }\n  },\n  computed: {\n    e() { return this.msg && this.msg.payload && this.msg.payload.bico ? this.msg.payload : null },\n    travado() { return !this.e || ['offline', 'conectando', 'semconfig', 'desconectada'].includes(this.e.estado) }\n  },\n  methods: {\n    fmt(v) { return v == null ? '—' : Number(v).toFixed(1) },\n    somar(h, d) {\n      const atual = this.alvos[h.id] === '' || this.alvos[h.id] == null ? (this.e[h.id].alvo || 0) : Number(this.alvos[h.id])\n      this.alvos[h.id] = Math.min(this.e.cfg[h.max] || 300, Math.max(0, atual + d))\n    },\n    definir(h) {\n      const v = Number(this.alvos[h.id])\n      if (!isFinite(v)) return\n      this.enviar(h.acao, { alvo: Math.min(this.e.cfg[h.max] || 300, Math.max(0, v)) })\n      this.alvos[h.id] = ''\n    },\n    enviar(acao, extra) { this.send({ topic: 'comando', payload: Object.assign({ acao }, extra || {}) }) }\n  }\n}\n</script>\n\n<style>\n.i3d-aq + .i3d-aq { margin-top: 14px; }\n</style>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1130,
+    "y": 300,
+    "wires": [
+      [
+        "ca9a7cf8bf8a933f"
+      ]
+    ]
+  },
+  {
+    "id": "d93b9c98e808e743",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Séries do gráfico",
+    "func": "// Separa as temperaturas em séries para o gráfico (uma mensagem por linha).\nconst e = msg.payload || {};\nif (!e.bico || e.online === false) return null;\nconst agora = Date.now();\nif (agora - (context.get('ultimo') || 0) < 1500) return null; // no máximo 1 ponto a cada 1,5 s\ncontext.set('ultimo', agora);\nconst s = [];\nconst add = (topic, v) => { if (typeof v === 'number') s.push({ topic, payload: v }); };\nadd('Bico', e.bico.atual);\nadd('Bico (alvo)', e.bico.alvo);\nadd('Mesa', e.mesa.atual);\nadd('Mesa (alvo)', e.mesa.alvo);\nfor (const x of e.sensores || []) add(x.nome, x.atual);\nreturn [s];\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1120,
+    "y": 340,
+    "wires": [
+      [
+        "7230d344ba30bb93"
+      ]
+    ]
+  },
+  {
+    "id": "7230d344ba30bb93",
+    "type": "ui-chart",
+    "z": "1cfcda60143d52bc",
+    "group": "59bb99df5904b266",
+    "name": "Gráfico de temperatura",
+    "label": "Últimos 30 minutos",
+    "order": 1,
+    "chartType": "line",
+    "category": "topic",
+    "categoryType": "msg",
+    "xAxisLabel": "",
+    "xAxisProperty": "",
+    "xAxisPropertyType": "timestamp",
+    "xAxisType": "time",
+    "xAxisFormat": "",
+    "xAxisFormatType": "auto",
+    "xmin": "",
+    "xmax": "",
+    "yAxisLabel": "°C",
+    "yAxisProperty": "payload",
+    "yAxisPropertyType": "msg",
+    "ymin": "0",
+    "ymax": "",
+    "bins": 10,
+    "action": "append",
+    "stackSeries": false,
+    "pointShape": "false",
+    "pointRadius": 0,
+    "showLegend": true,
+    "removeOlder": "30",
+    "removeOlderUnit": "60",
+    "removeOlderPoints": "",
+    "colors": [
+      "#e8590c",
+      "#ffa94d",
+      "#1c7ed6",
+      "#74c0fc",
+      "#2f9e44",
+      "#ae3ec9",
+      "#f03e3e",
+      "#868e96",
+      "#fcc419"
+    ],
+    "textColor": [
+      "#666666"
+    ],
+    "textColorDefault": true,
+    "gridColor": [
+      "#e5e5e5"
+    ],
+    "gridColorDefault": true,
+    "width": "6",
+    "height": "6",
+    "className": "",
+    "interpolation": "linear",
+    "x": 1330,
+    "y": 340,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "add52e873c7efdfb",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "d02d40626d85b36d",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Controle",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!e\" class=\"i3d-vazio\">Aguardando dados…</div>\n    <template v-else>\n      <div class=\"i3d-linha\">\n        <v-btn v-if=\"e.estado === 'imprimindo'\" color=\"warning\" variant=\"flat\" prepend-icon=\"mdi-pause\" @click=\"enviar('pausar')\">Pausar</v-btn>\n        <v-btn v-if=\"['pausada','pausando'].includes(e.estado)\" color=\"primary\" variant=\"flat\" prepend-icon=\"mdi-play\" @click=\"enviar('retomar')\">Retomar</v-btn>\n        <v-btn v-if=\"ativa\" color=\"error\" variant=\"tonal\" prepend-icon=\"mdi-stop\" @click=\"pedir('cancelar')\">Cancelar</v-btn>\n        <span v-if=\"!ativa\" class=\"i3d-sub\">Nenhuma impressão em andamento.</span>\n      </div>\n\n      <div class=\"i3d-titulo\">Máquina</div>\n      <div class=\"i3d-linha\">\n        <v-btn size=\"small\" variant=\"tonal\" prepend-icon=\"mdi-engine-off-outline\" :disabled=\"e.estado === 'imprimindo' || travado\" @click=\"pedir('desligarMotores')\">Desligar motores</v-btn>\n        <v-btn size=\"small\" variant=\"tonal\" prepend-icon=\"mdi-snowflake\" :disabled=\"travado\" @click=\"enviar('desligarAquecimento')\">Desligar aquecimento</v-btn>\n        <v-btn size=\"small\" variant=\"tonal\" prepend-icon=\"mdi-restart\" :disabled=\"['offline','conectando','semconfig'].includes(e.estado)\" @click=\"pedir('reiniciarFirmware')\">{{ e.tipo === 'octoprint' ? 'Reconectar' : 'Reiniciar firmware' }}</v-btn>\n      </div>\n      <div class=\"i3d-linha\" style=\"margin-top:12px\">\n        <v-btn block color=\"error\" variant=\"flat\" prepend-icon=\"mdi-alert-octagon\" :disabled=\"travado\" @click=\"pedir('emergencia')\">Parada de emergência</v-btn>\n      </div>\n\n      <div v-if=\"confirmar\" class=\"i3d-confirma\">\n        <div style=\"margin-bottom:8px\"><b>{{ textos[confirmar].titulo }}</b><br><span class=\"i3d-sub\">{{ textos[confirmar].texto }}</span></div>\n        <div class=\"i3d-linha\">\n          <v-btn color=\"error\" variant=\"flat\" size=\"small\" @click=\"enviar(confirmar); confirmar = null\">Sim, {{ textos[confirmar].verbo }}</v-btn>\n          <v-btn variant=\"text\" size=\"small\" @click=\"confirmar = null\">Voltar</v-btn>\n        </div>\n      </div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return {\n      confirmar: null,\n      textos: {\n        cancelar: { titulo: 'Cancelar a impressão?', texto: 'A peça atual será perdida.', verbo: 'cancelar' },\n        emergencia: { titulo: 'Parada de emergência?', texto: 'Desliga motores e aquecedores na hora. Depois é preciso reiniciar o firmware.', verbo: 'parar agora' },\n        reiniciarFirmware: { titulo: 'Reiniciar / reconectar?', texto: 'A conexão com a placa da impressora será refeita.', verbo: 'reiniciar' },\n        desligarMotores: { titulo: 'Desligar os motores?', texto: 'Os eixos perdem a referência (home) e ficam soltos.', verbo: 'desligar' }\n      }\n    }\n  },\n  computed: {\n    e() { return this.msg && this.msg.payload && this.msg.payload.cfg ? this.msg.payload : null },\n    ativa() { return ['imprimindo', 'pausada', 'pausando'].includes(this.e.estado) },\n    travado() { return ['offline', 'conectando', 'semconfig', 'desconectada'].includes(this.e.estado) }\n  },\n  methods: {\n    pedir(acao) { this.confirmar = acao },\n    enviar(acao) { this.send({ topic: 'comando', payload: { acao } }) }\n  }\n}\n</script>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1110,
+    "y": 380,
+    "wires": [
+      [
+        "ca9a7cf8bf8a933f"
+      ]
+    ]
+  },
+  {
+    "id": "75e60231309e22fa",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "5a1911dd4a524809",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Movimento",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!e\" class=\"i3d-vazio\">Aguardando dados…</div>\n    <template v-else>\n      <div class=\"i3d-linha i3d-entre\">\n        <div class=\"i3d-num i3d-mono\" style=\"font-size:13px\">\n          <template v-if=\"e.posicao\">X {{ e.posicao.x.toFixed(1) }} · Y {{ e.posicao.y.toFixed(1) }} · Z {{ e.posicao.z.toFixed(2) }}</template>\n          <template v-else>posição indisponível</template>\n        </div>\n        <div v-if=\"e.tipo !== 'octoprint'\" class=\"i3d-linha\" style=\"gap:4px\">\n          <v-chip v-for=\"ei in ['x','y','z']\" :key=\"ei\" size=\"x-small\" :color=\"(e.homed || '').includes(ei) ? 'success' : 'grey'\" variant=\"flat\">{{ ei.toUpperCase() }}</v-chip>\n        </div>\n      </div>\n\n      <div v-if=\"bloqueado\" class=\"i3d-msg\">Movimento bloqueado durante a impressão. Pause para mover.</div>\n\n      <div class=\"i3d-titulo\">Passo (mm)</div>\n      <v-btn-toggle v-model=\"passo\" density=\"compact\" variant=\"outlined\" mandatory divided>\n        <v-btn v-for=\"p in [0.1, 1, 10, 50]\" :key=\"p\" :value=\"p\" size=\"small\">{{ p }}</v-btn>\n      </v-btn-toggle>\n\n      <div class=\"i3d-mov\">\n        <div class=\"i3d-pad\">\n          <span></span>\n          <v-btn :disabled=\"travar\" variant=\"tonal\" @click=\"mover('Y', 1)\">Y+</v-btn>\n          <span></span>\n          <v-btn :disabled=\"travar\" variant=\"tonal\" @click=\"mover('X', -1)\">X−</v-btn>\n          <v-btn :disabled=\"travar\" variant=\"flat\" color=\"primary\" icon=\"mdi-home\" title=\"Home X e Y\" @click=\"enviar('home', { eixos: 'XY' })\"></v-btn>\n          <v-btn :disabled=\"travar\" variant=\"tonal\" @click=\"mover('X', 1)\">X+</v-btn>\n          <span></span>\n          <v-btn :disabled=\"travar\" variant=\"tonal\" @click=\"mover('Y', -1)\">Y−</v-btn>\n          <span></span>\n        </div>\n        <div class=\"i3d-z\">\n          <v-btn :disabled=\"travar\" variant=\"tonal\" @click=\"mover('Z', 1)\">Z+</v-btn>\n          <v-btn :disabled=\"travar\" variant=\"flat\" color=\"primary\" icon=\"mdi-home\" title=\"Home Z\" @click=\"enviar('home', { eixos: 'Z' })\"></v-btn>\n          <v-btn :disabled=\"travar\" variant=\"tonal\" @click=\"mover('Z', -1)\">Z−</v-btn>\n        </div>\n      </div>\n      <div class=\"i3d-linha\" style=\"margin-top:8px\">\n        <v-btn size=\"small\" color=\"primary\" variant=\"tonal\" prepend-icon=\"mdi-home-import-outline\" :disabled=\"travar\" @click=\"enviar('home', { eixos: '' })\">Home de todos</v-btn>\n        <span class=\"i3d-sub\">Z anda no máximo 10 mm por clique.</span>\n      </div>\n\n      <div class=\"i3d-titulo\">Extrusora</div>\n      <div class=\"i3d-linha\">\n        <v-btn-toggle v-model=\"mm\" density=\"compact\" variant=\"outlined\" mandatory divided>\n          <v-btn v-for=\"v in [1, 5, 10, 50]\" :key=\"v\" :value=\"v\" size=\"small\">{{ v }} mm</v-btn>\n        </v-btn-toggle>\n      </div>\n      <div class=\"i3d-linha\" style=\"margin-top:8px\">\n        <v-btn size=\"small\" variant=\"tonal\" prepend-icon=\"mdi-arrow-down-bold\" :disabled=\"travar || frio\" @click=\"enviar('extrudar', { mm: mm })\">Extrudar</v-btn>\n        <v-btn size=\"small\" variant=\"tonal\" prepend-icon=\"mdi-arrow-up-bold\" :disabled=\"travar || frio\" @click=\"enviar('extrudar', { mm: -mm })\">Retrair</v-btn>\n        <span v-if=\"frio\" class=\"i3d-sub\">Aqueça o bico a 170 °C ou mais.</span>\n      </div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() { return { passo: 10, mm: 5 } },\n  computed: {\n    e() { return this.msg && this.msg.payload && this.msg.payload.cfg ? this.msg.payload : null },\n    bloqueado() { return this.e.estado === 'imprimindo' },\n    travar() { return this.bloqueado || ['offline', 'conectando', 'semconfig', 'desconectada', 'erro'].includes(this.e.estado) },\n    frio() { return !this.e.bico || this.e.bico.atual == null || this.e.bico.atual < 170 }\n  },\n  methods: {\n    mover(eixo, sinal) {\n      const d = eixo === 'Z' ? Math.min(this.passo, 10) : this.passo\n      this.enviar('mover', { eixo, dist: sinal * d })\n    },\n    enviar(acao, extra) { this.send({ topic: 'comando', payload: Object.assign({ acao }, extra || {}) }) }\n  }\n}\n</script>\n\n<style>\n.i3d-mov { display: flex; gap: 18px; align-items: center; margin-top: 12px; flex-wrap: wrap; }\n.i3d-pad { display: grid; grid-template-columns: repeat(3, 56px); grid-auto-rows: 44px; gap: 6px; }\n.i3d-pad .v-btn, .i3d-z .v-btn { min-width: 0 !important; width: 56px; height: 44px !important; }\n.i3d-z { display: grid; grid-auto-rows: 44px; gap: 6px; }\n</style>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1120,
+    "y": 420,
+    "wires": [
+      [
+        "ca9a7cf8bf8a933f"
+      ]
+    ]
+  },
+  {
+    "id": "ecb3b859fb16608a",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "d2519b1c9461b923",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Ajustes ao vivo",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!e\" class=\"i3d-vazio\">Aguardando dados…</div>\n    <template v-else>\n      <div v-for=\"a in itens\" :key=\"a.id\" class=\"i3d-aj\">\n        <div class=\"i3d-linha i3d-entre\">\n          <b>{{ a.rotulo }}</b>\n          <span class=\"i3d-num\">\n            <span class=\"i3d-sub\">atual</span> {{ e[a.id] != null ? e[a.id] + '%' : '—' }}\n            <v-btn size=\"x-small\" variant=\"text\" :disabled=\"travado\" @click=\"aplicar(a, a.padrao)\">{{ a.padrao }}%</v-btn>\n          </span>\n        </div>\n        <v-slider v-model=\"valores[a.id]\" :min=\"a.min\" :max=\"a.max\" :step=\"a.passo\" hide-details thumb-label color=\"primary\"\n          :disabled=\"travado\" @start=\"mexendo = a.id\" @end=\"v => aplicar(a, v)\"></v-slider>\n      </div>\n\n      <div class=\"i3d-titulo\">Ajuste fino do Z (babystep)</div>\n      <div class=\"i3d-linha\">\n        <v-btn v-for=\"d in [-0.05, -0.01, 0.01, 0.05]\" :key=\"d\" size=\"small\" variant=\"tonal\" :disabled=\"travado\"\n          @click=\"enviar('babystep', { mm: d })\">{{ d > 0 ? '+' : '' }}{{ d }}</v-btn>\n      </div>\n      <div class=\"i3d-sub\" style=\"margin-top:6px\">\n        Offset atual: <b class=\"i3d-num\">{{ e.zOffset != null ? (e.zOffset > 0 ? '+' : '') + e.zOffset.toFixed(3) + ' mm' : '—' }}</b>\n        · negativo aproxima o bico da mesa\n      </div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return {\n      mexendo: null,\n      valores: { velocidade: 100, fluxo: 100, ventoinha: 0 },\n      itens: [\n        { id: 'velocidade', rotulo: 'Velocidade', acao: 'velocidade', min: 10, max: 300, passo: 5, padrao: 100 },\n        { id: 'fluxo', rotulo: 'Fluxo de extrusão', acao: 'fluxo', min: 50, max: 150, passo: 1, padrao: 100 },\n        { id: 'ventoinha', rotulo: 'Ventoinha da peça', acao: 'ventoinha', min: 0, max: 100, passo: 5, padrao: 100 }\n      ]\n    }\n  },\n  computed: {\n    e() { return this.msg && this.msg.payload && this.msg.payload.cfg ? this.msg.payload : null },\n    travado() { return ['offline', 'conectando', 'semconfig', 'desconectada'].includes(this.e.estado) }\n  },\n  watch: {\n    e(v) {\n      if (!v) return\n      for (const a of this.itens) if (this.mexendo !== a.id && v[a.id] != null) this.valores[a.id] = v[a.id]\n    }\n  },\n  methods: {\n    aplicar(a, v) {\n      this.mexendo = null\n      this.valores[a.id] = v\n      this.enviar(a.acao, { pct: v })\n    },\n    enviar(acao, extra) { this.send({ topic: 'comando', payload: Object.assign({ acao }, extra || {}) }) }\n  }\n}\n</script>\n\n<style>\n.i3d-aj + .i3d-aj { margin-top: 6px; }\n</style>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1130,
+    "y": 460,
+    "wires": [
+      [
+        "ca9a7cf8bf8a933f"
+      ]
+    ]
+  },
+  {
+    "id": "a498113b43766230",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "73596d9dcc6e9466",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Arquivos",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div class=\"i3d-linha\">\n      <v-text-field v-model=\"busca\" density=\"compact\" hide-details variant=\"outlined\" prepend-inner-icon=\"mdi-magnify\"\n        placeholder=\"Buscar arquivo\" clearable style=\"flex:1; min-width:160px\"></v-text-field>\n      <v-btn size=\"small\" variant=\"tonal\" icon=\"mdi-refresh\" title=\"Atualizar lista\" @click=\"enviar('atualizarListas')\"></v-btn>\n    </div>\n    <div class=\"i3d-sub\" style=\"margin:6px 0\">{{ filtrados.length }} de {{ lista.length }} arquivos · clique para selecionar</div>\n\n    <div class=\"i3d-rolagem\" style=\"max-height:320px\">\n      <table class=\"i3d-tabela\">\n        <thead><tr><th>Arquivo</th><th>Tamanho</th><th>Data</th><th v-if=\"temEstimativa\">Tempo</th></tr></thead>\n        <tbody>\n          <tr v-for=\"a in filtrados.slice(0, 300)\" :key=\"a.caminho\" class=\"clicavel\" :class=\"{ sel: sel && sel.caminho === a.caminho }\" @click=\"escolher(a)\">\n            <td><div class=\"i3d-elipse\" :title=\"a.caminho\">{{ a.nome }}</div><div v-if=\"a.pasta\" class=\"i3d-sub\">{{ a.pasta }}</div></td>\n            <td class=\"i3d-num\" style=\"white-space:nowrap\">{{ tamanho(a.tamanho) }}</td>\n            <td class=\"i3d-num\" style=\"white-space:nowrap\">{{ data(a.modificado) }}</td>\n            <td v-if=\"temEstimativa\" class=\"i3d-num\" style=\"white-space:nowrap\">{{ dur(a.estimativa) }}</td>\n          </tr>\n          <tr v-if=\"!filtrados.length\"><td colspan=\"4\" class=\"i3d-vazio\">Nenhum arquivo.</td></tr>\n        </tbody>\n      </table>\n    </div>\n\n    <div v-if=\"sel\" class=\"i3d-confirma\" style=\"border-color: rgba(var(--v-theme-primary), .5); background: rgba(var(--v-theme-primary), .06)\">\n      <div style=\"margin-bottom:8px\"><b>{{ sel.nome }}</b><br><span class=\"i3d-sub\">{{ sel.caminho }} · {{ tamanho(sel.tamanho) }}</span></div>\n      <div class=\"i3d-linha\">\n        <v-btn color=\"primary\" variant=\"flat\" size=\"small\" prepend-icon=\"mdi-printer-3d\" @click=\"imprimir\">Imprimir</v-btn>\n        <v-btn variant=\"text\" size=\"small\" @click=\"sel = null\">Fechar</v-btn>\n      </div>\n    </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() { return { busca: '', sel: null } },\n  computed: {\n    lista() { return (this.msg && this.msg.payload && this.msg.payload.lista) || [] },\n    temEstimativa() { return this.lista.some(a => a.estimativa) },\n    filtrados() {\n      const b = (this.busca || '').toLowerCase()\n      return this.lista.filter(a => !b || a.caminho.toLowerCase().includes(b)).sort((x, y) => y.modificado - x.modificado)\n    }\n  },\n  methods: {\n    escolher(a) { this.sel = this.sel && this.sel.caminho === a.caminho ? null : a },\n    imprimir() { this.send({ topic: 'comando', payload: { acao: 'imprimir', arquivo: this.sel.caminho } }); this.sel = null },\n    enviar(acao) { this.send({ topic: 'comando', payload: { acao } }) },\n    tamanho(b) { return !b ? '—' : b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.round(b / 1024) + ' KB' },\n    data(t) { return t ? new Date(t).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—' },\n    dur(s) { if (!s) return '—'; const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h ? h + 'h' + String(m).padStart(2, '0') : m + 'min' }\n  }\n}\n</script>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1110,
+    "y": 500,
+    "wires": [
+      [
+        "ca9a7cf8bf8a933f"
+      ]
+    ]
+  },
+  {
+    "id": "ecd900be4f943297",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "3819009cb4a30288",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Histórico",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!p\" class=\"i3d-vazio\">Carregando histórico…</div>\n    <div v-else-if=\"!p.suportado\" class=\"i3d-vazio\">O histórico de impressões está disponível só com Klipper/Moonraker.</div>\n    <template v-else>\n      <div class=\"i3d-grade\" style=\"margin-top:0\">\n        <div class=\"i3d-celula\"><span>Impressões</span><b>{{ t.impressoes != null ? t.impressoes : '—' }}</b></div>\n        <div class=\"i3d-celula\"><span>Tempo imprimindo</span><b>{{ horas(t.tempoImpressao) }}</b></div>\n        <div class=\"i3d-celula\"><span>Filamento total</span><b>{{ t.filamento != null ? (t.filamento / 1000).toFixed(1) + ' m' : '—' }}</b></div>\n        <div class=\"i3d-celula\"><span>Maior impressão</span><b>{{ horas(t.maiorImpressao) }}</b></div>\n        <div class=\"i3d-celula\"><span>Taxa de sucesso*</span><b>{{ taxa }}</b></div>\n      </div>\n      <div class=\"i3d-sub\" style=\"margin:6px 0 10px\">* nas últimas {{ jobs.length }} impressões</div>\n\n      <div class=\"i3d-rolagem\">\n        <table class=\"i3d-tabela\">\n          <thead><tr><th>Arquivo</th><th>Resultado</th><th>Início</th><th>Duração</th><th>Filamento</th><th></th></tr></thead>\n          <tbody>\n            <tr v-for=\"j in jobs\" :key=\"j.id\">\n              <td><div class=\"i3d-elipse\" :title=\"j.arquivo\">{{ j.nome }}</div></td>\n              <td><v-chip size=\"x-small\" :color=\"cores[j.status] || 'grey'\" variant=\"flat\">{{ nomes[j.status] || j.status }}</v-chip></td>\n              <td class=\"i3d-num\" style=\"white-space:nowrap\">{{ data(j.inicio) }}</td>\n              <td class=\"i3d-num\" style=\"white-space:nowrap\">{{ dur(j.duracao) }}</td>\n              <td class=\"i3d-num\" style=\"white-space:nowrap\">{{ j.filamento != null ? (j.filamento / 1000).toFixed(2) + ' m' : '—' }}</td>\n              <td><v-btn v-if=\"j.existe\" size=\"x-small\" variant=\"text\" icon=\"mdi-replay\" title=\"Imprimir de novo\" @click=\"repetir = j\"></v-btn></td>\n            </tr>\n            <tr v-if=\"!jobs.length\"><td colspan=\"6\" class=\"i3d-vazio\">Nenhuma impressão registrada.</td></tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div v-if=\"repetir\" class=\"i3d-confirma\" style=\"border-color: rgba(var(--v-theme-primary), .5); background: rgba(var(--v-theme-primary), .06)\">\n        <div style=\"margin-bottom:8px\">Imprimir de novo <b>{{ repetir.nome }}</b>?</div>\n        <div class=\"i3d-linha\">\n          <v-btn color=\"primary\" variant=\"flat\" size=\"small\" @click=\"imprimir\">Imprimir</v-btn>\n          <v-btn variant=\"text\" size=\"small\" @click=\"repetir = null\">Voltar</v-btn>\n        </div>\n      </div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return {\n      repetir: null,\n      cores: { completed: 'success', cancelled: 'grey', error: 'error', klippy_shutdown: 'error', klippy_disconnect: 'error', interrupted: 'warning', server_exit: 'warning', in_progress: 'primary' },\n      nomes: { completed: 'Concluída', cancelled: 'Cancelada', error: 'Erro', klippy_shutdown: 'Desligou', klippy_disconnect: 'Desconectou', interrupted: 'Interrompida', server_exit: 'Interrompida', in_progress: 'Imprimindo' }\n    }\n  },\n  computed: {\n    p() { return this.msg && this.msg.payload },\n    t() { return (this.p && this.p.totais) || {} },\n    jobs() { return (this.p && this.p.jobs) || [] },\n    taxa() {\n      const fim = this.jobs.filter(j => j.status !== 'in_progress')\n      if (!fim.length) return '—'\n      return Math.round(100 * fim.filter(j => j.status === 'completed').length / fim.length) + '%'\n    }\n  },\n  methods: {\n    imprimir() { this.send({ topic: 'comando', payload: { acao: 'imprimir', arquivo: this.repetir.arquivo } }); this.repetir = null },\n    horas(s) { if (s == null) return '—'; const h = s / 3600; return h >= 1 ? h.toFixed(h >= 100 ? 0 : 1) + ' h' : Math.round(s / 60) + ' min' },\n    dur(s) { if (s == null) return '—'; s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60); return h ? h + 'h' + String(m).padStart(2, '0') : m + 'min' },\n    data(t) { return t ? new Date(t).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—' }\n  }\n}\n</script>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1120,
+    "y": 540,
+    "wires": [
+      [
+        "ca9a7cf8bf8a933f"
+      ]
+    ]
+  },
+  {
+    "id": "8081e9e78d5f2d72",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "781658ec20536223",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Sistema",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div v-if=\"!p\" class=\"i3d-vazio\">Carregando…</div>\n    <template v-else>\n      <div class=\"i3d-linha\" style=\"margin-bottom:8px\">\n        <v-chip size=\"small\" variant=\"flat\" :color=\"p.online ? 'success' : (p.online === false ? 'error' : 'grey')\">{{ p.online ? 'Conectada' : (p.online === false ? 'Sem conexão' : '—') }}</v-chip>\n        <span v-if=\"p.latencia != null\" class=\"i3d-sub\">resposta em {{ p.latencia }} ms</span>\n      </div>\n\n      <template v-if=\"p.host\">\n        <div class=\"i3d-titulo\">Computador da impressora</div>\n        <div class=\"i3d-linha\"><span style=\"width:110px\" class=\"i3d-sub\">CPU</span><v-progress-linear :model-value=\"p.host.cpu || 0\" height=\"14\" rounded color=\"primary\" style=\"flex:1\"><small>{{ p.host.cpu != null ? p.host.cpu.toFixed(0) + '%' : '—' }}</small></v-progress-linear></div>\n        <div class=\"i3d-linha\"><span style=\"width:110px\" class=\"i3d-sub\">Memória</span><v-progress-linear :model-value=\"mem\" height=\"14\" rounded color=\"primary\" style=\"flex:1\"><small>{{ memTexto }}</small></v-progress-linear></div>\n        <div class=\"i3d-grade\">\n          <div class=\"i3d-celula\"><span>Temp. CPU</span><b>{{ p.host.cpuTemp != null ? p.host.cpuTemp.toFixed(1) + '°C' : '—' }}</b></div>\n          <div class=\"i3d-celula\"><span>Ligado há</span><b>{{ uptime(p.host.uptime) }}</b></div>\n        </div>\n      </template>\n\n      <div class=\"i3d-titulo\">Software</div>\n      <table class=\"i3d-tabela\">\n        <tbody>\n          <tr v-for=\"l in linhas\" :key=\"l[0]\"><td class=\"i3d-sub\" style=\"width:40%\">{{ l[0] }}</td><td style=\"word-break:break-all\">{{ l[1] }}</td></tr>\n        </tbody>\n      </table>\n      <div v-for=\"a in avisos\" :key=\"a\" class=\"i3d-msg\">{{ a }}</div>\n    </template>\n  </div>\n</template>\n\n<script>\nexport default {\n  computed: {\n    p() { return this.msg && this.msg.payload },\n    mem() { const h = this.p.host; return h && h.memTotal ? 100 * h.memUsada / h.memTotal : 0 },\n    memTexto() { const h = this.p.host; return h && h.memTotal ? (h.memUsada / 1048576).toFixed(2) + ' / ' + (h.memTotal / 1048576).toFixed(2) + ' GB' : '—' },\n    linhas() {\n      const p = this.p, l = []\n      if (p.klipper) {\n        l.push(['Klipper', p.klipper.versao || '—'])\n        l.push(['Estado do Klipper', p.klipper.estado || '—'])\n        if (p.klipper.hostname) l.push(['Nome do host', p.klipper.hostname])\n      }\n      if (p.moonraker) l.push(['Moonraker', p.moonraker.versao || '—'])\n      if (p.host && p.host.conexoes != null) l.push(['Conexões abertas', p.host.conexoes])\n      if (p.octoprint) l.push(['OctoPrint', p.octoprint.versao + ' (API ' + p.octoprint.api + ')'])\n      if (p.conexao) l.push(['Conexão serial', [p.conexao.estado, p.conexao.porta, p.conexao.baud].filter(Boolean).join(' · ')])\n      if (!l.length) l.push(['Informações', 'aguardando…'])\n      return l\n    },\n    avisos() { return (this.p.moonraker && this.p.moonraker.avisos) || [] }\n  },\n  methods: {\n    uptime(s) {\n      if (s == null) return '—'\n      const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60)\n      return d ? d + 'd ' + h + 'h' : h ? h + 'h ' + m + 'min' : m + 'min'\n    }\n  }\n}\n</script>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1110,
+    "y": 580,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "b88fc080351927fa",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "6aba30eb967886e7",
+    "page": "",
+    "ui": "",
+    "name": "Tela: Console",
+    "order": 1,
+    "width": "0",
+    "height": "0",
+    "head": "",
+    "format": "<template>\n  <div class=\"i3d\">\n    <div ref=\"log\" class=\"i3d-log i3d-mono\">\n      <div v-if=\"!linhas.length\" class=\"i3d-sub\">Nada por aqui ainda.</div>\n      <div v-for=\"(l, i) in linhas\" :key=\"i\" :class=\"'l-' + l.tipo\"><span class=\"i3d-hora\">{{ hora(l.t) }}</span>{{ l.tipo === 'cmd' ? '> ' : '' }}{{ l.texto }}</div>\n    </div>\n    <div class=\"i3d-linha\" style=\"margin-top:8px\">\n      <v-text-field v-model=\"texto\" density=\"compact\" hide-details variant=\"outlined\" class=\"i3d-mono\" placeholder=\"Digite um G-code (ex.: G28) e Enter\"\n        style=\"flex:1; min-width:160px\" @keyup.enter=\"mandar\" @keydown.up.prevent=\"historico(-1)\" @keydown.down.prevent=\"historico(1)\"></v-text-field>\n      <v-btn color=\"primary\" variant=\"flat\" size=\"small\" @click=\"mandar\">Enviar</v-btn>\n    </div>\n    <div class=\"i3d-linha\" style=\"margin-top:8px\">\n      <v-btn v-for=\"r in rapidos\" :key=\"r.g\" size=\"x-small\" variant=\"tonal\" :title=\"r.d\" @click=\"enviar(r.g)\">{{ r.g }}</v-btn>\n      <v-spacer></v-spacer>\n      <v-btn size=\"x-small\" variant=\"text\" @click=\"limpar\">Limpar</v-btn>\n    </div>\n    <div v-if=\"msg && msg.payload && msg.payload.suportaRespostas === false\" class=\"i3d-sub\" style=\"margin-top:6px\">\n      No OctoPrint, as respostas da impressora aparecem no Terminal do próprio OctoPrint.\n    </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return {\n      texto: '', hist: [], pos: -1,\n      rapidos: [\n        { g: 'G28', d: 'Home de todos os eixos' }, { g: 'M114', d: 'Mostrar posição' }, { g: 'M105', d: 'Mostrar temperaturas' },\n        { g: 'M84', d: 'Desligar motores' }, { g: 'M106 S255', d: 'Ventoinha 100%' }, { g: 'M107', d: 'Ventoinha desligada' }\n      ]\n    }\n  },\n  computed: { linhas() { return (this.msg && this.msg.payload && this.msg.payload.linhas) || [] } },\n  watch: { linhas() { this.$nextTick(() => { const el = this.$refs.log; if (el) el.scrollTop = el.scrollHeight }) } },\n  methods: {\n    mandar() {\n      const t = (this.texto || '').trim()\n      if (!t) return\n      this.hist.push(t); this.pos = -1; this.texto = ''\n      this.enviar(t)\n    },\n    historico(d) {\n      if (!this.hist.length) return\n      this.pos = this.pos === -1 ? (d < 0 ? this.hist.length - 1 : -1) : this.pos + d\n      if (this.pos < 0 || this.pos >= this.hist.length) { this.pos = -1; this.texto = ''; return }\n      this.texto = this.hist[this.pos]\n    },\n    enviar(script) { this.send({ topic: 'comando', payload: { acao: 'gcode', script } }) },\n    limpar() { this.send({ topic: 'comando', payload: { acao: 'limparConsole' } }) },\n    hora(t) { return t ? new Date(t).toLocaleTimeString('pt-BR') + '  ' : '' }\n  }\n}\n</script>\n\n<style>\n.i3d-log { height: 260px; overflow: auto; padding: 8px; border-radius: 6px; background: #0d1117; color: #c9d1d9; white-space: pre-wrap; word-break: break-word; }\n.i3d-log .l-cmd { color: #79c0ff; }\n.i3d-log .l-erro { color: #ff7b72; }\n.i3d-log .i3d-hora { color: #6e7681; }\n</style>\n",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1110,
+    "y": 620,
+    "wires": [
+      [
+        "ca9a7cf8bf8a933f"
+      ]
+    ]
+  },
+  {
+    "id": "19b33340b12dc15b",
+    "type": "ui-template",
+    "z": "1cfcda60143d52bc",
+    "group": "",
+    "page": "ba1e0973321ddb6b",
+    "ui": "",
+    "name": "Estilo da página",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "head": "",
+    "format": "/* Estilos compartilhados da página Impressora 3D */\n.i3d { font-size: 14px; line-height: 1.35; width: 100%; }\n.i3d * { box-sizing: border-box; }\n.i3d-vazio { padding: 16px; text-align: center; opacity: .65; }\n.i3d-linha { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }\n.i3d-linha + .i3d-linha { margin-top: 10px; }\n.i3d-entre { justify-content: space-between; }\n.i3d-sub { font-size: 12px; opacity: .65; }\n.i3d-titulo { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; opacity: .6; margin: 14px 0 6px; }\n.i3d-titulo:first-child { margin-top: 0; }\n.i3d-msg { margin: 8px 0; padding: 8px 10px; border-radius: 6px; background: rgba(var(--v-theme-warning), .12); font-size: 13px; word-break: break-word; }\n.i3d-msg.erro { background: rgba(var(--v-theme-error), .12); }\n.i3d-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-top: 12px; }\n.i3d-celula { padding: 8px 10px; border-radius: 6px; background: rgba(var(--v-theme-on-surface), .04); min-width: 0; }\n.i3d-celula span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .03em; opacity: .6; }\n.i3d-celula b { display: block; font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }\n.i3d-num { font-variant-numeric: tabular-nums; }\n.i3d-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }\n.i3d-confirma { margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid rgba(var(--v-theme-error), .5); background: rgba(var(--v-theme-error), .06); }\n.i3d-tabela { width: 100%; border-collapse: collapse; font-size: 13px; }\n.i3d-tabela th { text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; opacity: .6; padding: 6px 8px; border-bottom: 1px solid rgba(var(--v-theme-on-surface), .12); position: sticky; top: 0; background: rgb(var(--v-theme-surface)); }\n.i3d-tabela td { padding: 6px 8px; border-bottom: 1px solid rgba(var(--v-theme-on-surface), .06); vertical-align: middle; }\n.i3d-tabela tr.sel td { background: rgba(var(--v-theme-primary), .1); }\n.i3d-tabela tr.clicavel { cursor: pointer; }\n.i3d-tabela tr.clicavel:hover td { background: rgba(var(--v-theme-on-surface), .04); }\n.i3d-rolagem { max-height: 380px; overflow: auto; }\n.i3d-elipse { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n",
+    "storeOutMessages": true,
+    "passthru": true,
+    "resendOnRefresh": true,
+    "templateScope": "page:style",
+    "className": "",
+    "x": 1120,
+    "y": 660,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ca9a7cf8bf8a933f",
+    "type": "link out",
+    "z": "1cfcda60143d52bc",
+    "name": "para Comandos",
+    "mode": "link",
+    "links": [
+      "3b1417bd79da442a"
+    ],
+    "x": 1365,
+    "y": 460,
+    "wires": []
+  },
+  {
+    "id": "b8e764272b31834e",
+    "type": "ui-notification",
+    "z": "1cfcda60143d52bc",
+    "ui": "c2f2fa8ccd9bfb8e",
+    "position": "top right",
+    "colorDefault": true,
+    "color": "#000000",
+    "displayTime": "6",
+    "showCountdown": true,
+    "outputs": 0,
+    "allowDismiss": true,
+    "dismissText": "Fechar",
+    "allowConfirm": false,
+    "confirmText": "Confirmar",
+    "raw": false,
+    "className": "",
+    "name": "Avisos na tela",
+    "x": 1110,
+    "y": 720,
+    "wires": []
+  },
+  {
+    "id": "ebe35fb8836bf180",
+    "type": "link out",
+    "z": "1cfcda60143d52bc",
+    "name": "Alertas da impressora 3D",
+    "mode": "link",
+    "links": [],
+    "x": 1165,
+    "y": 760,
+    "wires": []
+  },
+  {
+    "id": "670ab0548ac8e47e",
+    "type": "debug",
+    "z": "1cfcda60143d52bc",
+    "name": "Ver alertas",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "alerta",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1110,
+    "y": 800,
+    "wires": []
+  },
+  {
+    "id": "dde6c071c9d53f6c",
+    "type": "comment",
+    "z": "1cfcda60143d52bc",
+    "name": "Alertas: ligue a um nó de Telegram, e-mail, push…",
+    "info": "O link \"Alertas da impressora 3D\" recebe uma mensagem a cada evento:\nimpressão iniciada, pausada, retomada, 50%, 90%, concluída, cancelada, erro,\nbico/mesa aquecidos e conexão perdida/restabelecida.\n\n- msg.payload: texto pronto (ex.: \"✅ Impressão concluída — caneca em 2h 10min\")\n- msg.topic: título\n- msg.alerta: { nivel, titulo, texto, impressora, estado, arquivo, progresso, em }",
+    "x": 1420,
+    "y": 760,
+    "wires": []
+  },
+  {
+    "id": "74ea3c1dad3a3b1d",
+    "type": "comment",
+    "z": "1cfcda60143d52bc",
+    "name": "4 · Comandos dos botões",
+    "info": "",
+    "x": 140,
+    "y": 520,
+    "wires": []
+  },
+  {
+    "id": "3b1417bd79da442a",
+    "type": "link in",
+    "z": "1cfcda60143d52bc",
+    "name": "Comandos",
+    "links": [
+      "ca9a7cf8bf8a933f"
+    ],
+    "x": 145,
+    "y": 560,
+    "wires": [
+      [
+        "dc256fd2fc09029f"
+      ]
+    ]
+  },
+  {
+    "id": "dc256fd2fc09029f",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Comandos",
+    "func": "// Traduz os comandos dos botões do dashboard para a API da impressora.\n// Entrada: msg.payload = { acao: '...', ...parâmetros }\n// Saídas: 1 requisição HTTP · 2 recarregar listas · 3 aviso na tela · 4 console (eco / limpar)\nconst cfg = flow.get('cfg') || {};\nconst e = flow.get('estado') || {};\nconst c = msg.payload || {};\nconst acao = c.acao;\nconst aviso = texto => [null, null, { topic: 'Impressora 3D', payload: texto }, null];\n\nif (acao === 'atualizarListas') return [null, { topic: 'atualizar' }, null, null];\nif (acao === 'limparConsole') return [null, null, null, { topic: 'console:limpar' }];\nif (!cfg.url) return aviso('⚠️ Configure o endereço da impressora primeiro.');\nif (['offline', 'conectando'].includes(e.estado)) return aviso('⚠️ A impressora está sem conexão.');\n\nconst mk = cfg.tipo !== 'octoprint';\nconst imprimindo = e.estado === 'imprimindo';\nconst ocupada = ['imprimindo', 'pausada', 'pausando', 'cancelando'].includes(e.estado);\nconst n = (v, min, max) => Math.min(max, Math.max(min, Number(v) || 0));\n\n// Ações que não podem rodar durante a impressão\nconst bloqueadas = { mover: 1, home: 1, extrudar: 1, desligarMotores: 1 };\nif (imprimindo && bloqueadas[acao]) return aviso('⛔ Não é possível fazer isso durante a impressão. Pause primeiro.');\nif (acao === 'imprimir' && ocupada) return aviso('⛔ Já existe uma impressão em andamento.');\n\nconst headers = { 'Content-Type': 'application/json' };\nif (cfg.apiKey) headers['X-Api-Key'] = cfg.apiKey;\nconst pedido = (descricao, caminho, payload, extra) => Object.assign({\n    topic: 'cmd', acao, descricao, url: cfg.url + caminho, method: 'POST', headers: { ...headers },\n    payload: payload === undefined ? (mk ? '' : {}) : payload, requestTimeout: 120000, enviadoEm: Date.now()\n}, extra || {});\n\n// Envia G-code (cada item é uma linha)\nfunction gcode(descricao, linhas, extra) {\n    linhas = [].concat(linhas).map(l => String(l).trim()).filter(Boolean);\n    if (!linhas.length) return aviso('Nenhum comando para enviar.');\n    const eco = mk ? null : linhas.map(l => ({ topic: 'console:local', tipo: 'cmd', payload: l }));\n    const r = mk\n        ? pedido(descricao, '/printer/gcode/script?script=' + encodeURIComponent(linhas.join('\\n')), '', extra)\n        : pedido(descricao, '/api/printer/command', { commands: linhas }, extra);\n    r.gcode = linhas;\n    return [r, null, null, eco];\n}\n\nconst xy = cfg.velocidadeXY || 3000, fz = cfg.velocidadeZ || 600, fe = cfg.velocidadeExtrusao || 300;\n\nswitch (acao) {\n    case 'pausar':\n        return [mk ? pedido('Pausar', '/printer/print/pause') : pedido('Pausar', '/api/job', { command: 'pause', action: 'pause' }), null, null, null];\n    case 'retomar':\n        return [mk ? pedido('Retomar', '/printer/print/resume') : pedido('Retomar', '/api/job', { command: 'pause', action: 'resume' }), null, null, null];\n    case 'cancelar':\n        return [mk ? pedido('Cancelar', '/printer/print/cancel') : pedido('Cancelar', '/api/job', { command: 'cancel' }), null, null, null];\n    case 'emergencia':\n        return [mk ? pedido('Parada de emergência', '/printer/emergency_stop', '', { avisarOk: true })\n            : pedido('Parada de emergência', '/api/printer/command', { commands: ['M112'] }, { avisarOk: true }), null, null, null];\n    case 'reiniciarFirmware':\n        return [mk ? pedido('Reiniciar firmware', '/printer/firmware_restart', '', { avisarOk: true })\n            : pedido('Reconectar', '/api/connection', { command: 'connect' }, { avisarOk: true }), null, null, null];\n    case 'imprimir': {\n        const arq = String(c.arquivo || '');\n        if (!arq) return aviso('Escolha um arquivo.');\n        return [mk ? pedido('Imprimir ' + arq, '/printer/print/start?filename=' + encodeURIComponent(arq), '', { avisarOk: true })\n            : pedido('Imprimir ' + arq, '/api/files/local/' + arq.split('/').map(encodeURIComponent).join('/'), { command: 'select', print: true }, { avisarOk: true }), null, null, null];\n    }\n    case 'home': {\n        const eixos = String(c.eixos || '').toUpperCase().replace(/[^XYZ]/g, '');\n        return gcode('Home ' + (eixos || 'todos os eixos'), eixos ? 'G28 ' + eixos.split('').join(' ') : 'G28');\n    }\n    case 'mover': {\n        const eixo = String(c.eixo || '').toUpperCase();\n        if (!/^[XYZ]$/.test(eixo)) return aviso('Eixo inválido.');\n        const d = n(c.dist, -300, 300);\n        const mov = ['G91', `G1 ${eixo}${d} F${eixo === 'Z' ? fz : xy}`];\n        return gcode(`Mover ${eixo} ${d} mm`, mk ? ['SAVE_GCODE_STATE NAME=_i3d', ...mov, 'RESTORE_GCODE_STATE NAME=_i3d'] : [...mov, 'G90']);\n    }\n    case 'extrudar': {\n        const d = n(c.mm, -100, 100);\n        const ext = ['M83', `G1 E${d} F${fe}`];\n        return gcode((d >= 0 ? 'Extrudar ' : 'Retrair ') + Math.abs(d) + ' mm', mk ? ['SAVE_GCODE_STATE NAME=_i3d', ...ext, 'RESTORE_GCODE_STATE NAME=_i3d'] : [...ext, 'M82']);\n    }\n    case 'tempBico':\n        return gcode('Temperatura do bico', `M104 S${n(c.alvo, 0, cfg.bicoMax || 300)}`);\n    case 'tempMesa':\n        return gcode('Temperatura da mesa', `M140 S${n(c.alvo, 0, cfg.mesaMax || 120)}`);\n    case 'preset':\n        return gcode('Pré-aquecer ' + (c.nome || ''), [`M104 S${n(c.bico, 0, cfg.bicoMax || 300)}`, `M140 S${n(c.mesa, 0, cfg.mesaMax || 120)}`], { avisarOk: true });\n    case 'desligarAquecimento':\n        return gcode('Desligar aquecimento', ['M104 S0', 'M140 S0'], { avisarOk: true });\n    case 'ventoinha': {\n        const p = n(c.pct, 0, 100);\n        return gcode('Ventoinha ' + p + '%', p > 0 ? `M106 S${Math.round(p * 2.55)}` : 'M107');\n    }\n    case 'velocidade':\n        return gcode('Velocidade ' + n(c.pct, 10, 500) + '%', `M220 S${n(c.pct, 10, 500)}`);\n    case 'fluxo':\n        return gcode('Fluxo ' + n(c.pct, 50, 200) + '%', `M221 S${n(c.pct, 50, 200)}`);\n    case 'babystep': {\n        const d = n(c.mm, -1, 1);\n        return gcode(`Ajuste Z ${d > 0 ? '+' : ''}${d} mm`, mk ? `SET_GCODE_OFFSET Z_ADJUST=${d} MOVE=1` : `M290 Z${d}`);\n    }\n    case 'desligarMotores':\n        return gcode('Desligar motores', 'M84', { avisarOk: true });\n    case 'gcode': {\n        const linhas = String(c.script || '').split(/\\r?\\n/);\n        if (!mk && linhas.some(l => /^\\s*M112\\b/i.test(l))) return gcode('G-code', linhas, { avisarOk: true });\n        return gcode('G-code', linhas);\n    }\n    default:\n        return aviso('Comando desconhecido: ' + acao);\n}\n",
+    "outputs": 4,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 340,
+    "y": 560,
+    "wires": [
+      [
+        "7e5eb1ccaaf93662"
+      ],
+      [
+        "e6c249ec6aed0544"
+      ],
+      [
+        "b8e764272b31834e"
+      ],
+      [
+        "22ad3767e9c7a2d4"
+      ]
+    ],
+    "outputLabels": [
+      "requisição",
+      "recarregar listas",
+      "aviso",
+      "console"
+    ]
+  },
+  {
+    "id": "1436f83e5737b274",
+    "type": "comment",
+    "z": "1cfcda60143d52bc",
+    "name": "5 · Câmera e miniatura (o navegador busca pelo Node-RED)",
+    "info": "",
+    "x": 250,
+    "y": 660,
+    "wires": []
+  },
+  {
+    "id": "196bb306318a8750",
+    "type": "http in",
+    "z": "1cfcda60143d52bc",
+    "name": "GET câmera",
+    "url": "/impressora3d/webcam",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 150,
+    "y": 700,
+    "wires": [
+      [
+        "3db79b9f995141d1"
+      ]
+    ]
+  },
+  {
+    "id": "3db79b9f995141d1",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Foto da câmera",
+    "func": "// Prepara a busca da foto da câmera (o navegador pede ao Node-RED, que pede à impressora).\nconst url = flow.get('webcamSnapshotUrl');\nif (!url) {\n    msg.statusCode = 404;\n    msg.textoVazio = 'Câmera não configurada';\n    return [null, msg];\n}\nmsg.url = url;\nmsg.textoVazio = 'Câmera indisponível';\nmsg.method = 'GET';\nmsg.headers = {};\nmsg.requestTimeout = 5000;\nmsg.payload = '';\nreturn [msg, null];\n",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 360,
+    "y": 700,
+    "wires": [
+      [
+        "c824fcda7f453d2c"
+      ],
+      [
+        "467e027454a6ac73"
+      ]
+    ]
+  },
+  {
+    "id": "c824fcda7f453d2c",
+    "type": "http request",
+    "z": "1cfcda60143d52bc",
+    "name": "Buscar foto",
+    "method": "use",
+    "ret": "bin",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 560,
+    "y": 700,
+    "wires": [
+      [
+        "467e027454a6ac73"
+      ]
+    ]
+  },
+  {
+    "id": "467e027454a6ac73",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Responder foto",
+    "func": "// Devolve a imagem ao navegador, ou um aviso em SVG se não conseguiu buscar.\nconst ok = typeof msg.statusCode === 'number' && msg.statusCode < 400 && Buffer.isBuffer(msg.payload) && msg.payload.length > 0;\nconst tipo = ok ? ((msg.headers && msg.headers['content-type']) || 'image/jpeg') : 'image/svg+xml';\nif (!ok) {\n    const texto = msg.textoVazio || 'Imagem indisponível';\n    msg.payload = `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"360\" viewBox=\"0 0 640 360\"><rect width=\"640\" height=\"360\" fill=\"#1f2328\"/><text x=\"320\" y=\"185\" fill=\"#8b949e\" font-family=\"sans-serif\" font-size=\"22\" text-anchor=\"middle\">${texto}</text></svg>`;\n    msg.statusCode = 200; // o aviso em si é uma imagem válida\n}\nmsg.headers = { 'Content-Type': tipo, 'Cache-Control': 'no-store, max-age=0' };\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 760,
+    "y": 700,
+    "wires": [
+      [
+        "589c38659780d888"
+      ]
+    ]
+  },
+  {
+    "id": "589c38659780d888",
+    "type": "http response",
+    "z": "1cfcda60143d52bc",
+    "name": "",
+    "statusCode": "",
+    "headers": {},
+    "x": 930,
+    "y": 700,
+    "wires": []
+  },
+  {
+    "id": "afb044926530504e",
+    "type": "http in",
+    "z": "1cfcda60143d52bc",
+    "name": "GET miniatura",
+    "url": "/impressora3d/miniatura",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 150,
+    "y": 760,
+    "wires": [
+      [
+        "53948952fb9eccb9"
+      ]
+    ]
+  },
+  {
+    "id": "53948952fb9eccb9",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Miniatura do arquivo",
+    "func": "// Prepara a busca da miniatura do arquivo que está sendo impresso.\nconst url = flow.get('miniaturaUrl');\nconst cfg = flow.get('cfg') || {};\nif (!url) {\n    msg.statusCode = 404;\n    msg.textoVazio = 'Sem miniatura';\n    return [null, msg];\n}\nmsg.url = url;\nmsg.textoVazio = 'Sem miniatura';\nmsg.method = 'GET';\nmsg.headers = cfg.apiKey ? { 'X-Api-Key': cfg.apiKey } : {};\nmsg.requestTimeout = 5000;\nmsg.payload = '';\nreturn [msg, null];\n",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 370,
+    "y": 760,
+    "wires": [
+      [
+        "124c93bc75b303d4"
+      ],
+      [
+        "cb46e1ba98dc7d31"
+      ]
+    ]
+  },
+  {
+    "id": "124c93bc75b303d4",
+    "type": "http request",
+    "z": "1cfcda60143d52bc",
+    "name": "Buscar miniatura",
+    "method": "use",
+    "ret": "bin",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 580,
+    "y": 760,
+    "wires": [
+      [
+        "cb46e1ba98dc7d31"
+      ]
+    ]
+  },
+  {
+    "id": "cb46e1ba98dc7d31",
+    "type": "function",
+    "z": "1cfcda60143d52bc",
+    "name": "Responder miniatura",
+    "func": "// Devolve a imagem ao navegador, ou um aviso em SVG se não conseguiu buscar.\nconst ok = typeof msg.statusCode === 'number' && msg.statusCode < 400 && Buffer.isBuffer(msg.payload) && msg.payload.length > 0;\nconst tipo = ok ? ((msg.headers && msg.headers['content-type']) || 'image/jpeg') : 'image/svg+xml';\nif (!ok) {\n    const texto = msg.textoVazio || 'Imagem indisponível';\n    msg.payload = `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"360\" viewBox=\"0 0 640 360\"><rect width=\"640\" height=\"360\" fill=\"#1f2328\"/><text x=\"320\" y=\"185\" fill=\"#8b949e\" font-family=\"sans-serif\" font-size=\"22\" text-anchor=\"middle\">${texto}</text></svg>`;\n    msg.statusCode = 200; // o aviso em si é uma imagem válida\n}\nmsg.headers = { 'Content-Type': tipo, 'Cache-Control': 'no-store, max-age=0' };\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 780,
+    "y": 760,
+    "wires": [
+      [
+        "b758ef0950d36eb6"
+      ]
+    ]
+  },
+  {
+    "id": "b758ef0950d36eb6",
+    "type": "http response",
+    "z": "1cfcda60143d52bc",
+    "name": "",
+    "statusCode": "",
+    "headers": {},
+    "x": 950,
+    "y": 760,
+    "wires": []
+  },
+  {
+    "id": "cb1f7b1c119ede9f",
+    "type": "catch",
+    "z": "1cfcda60143d52bc",
+    "name": "Silenciar erros de imagem",
+    "scope": [
+      "c824fcda7f453d2c",
+      "124c93bc75b303d4"
+    ],
+    "uncaught": false,
+    "x": 600,
+    "y": 820,
+    "wires": [
+      []
+    ]
+  }
+]

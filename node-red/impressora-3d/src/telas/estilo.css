@@ -1,0 +1,27 @@
+/* Estilos compartilhados da página Impressora 3D */
+.i3d { font-size: 14px; line-height: 1.35; width: 100%; }
+.i3d * { box-sizing: border-box; }
+.i3d-vazio { padding: 16px; text-align: center; opacity: .65; }
+.i3d-linha { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.i3d-linha + .i3d-linha { margin-top: 10px; }
+.i3d-entre { justify-content: space-between; }
+.i3d-sub { font-size: 12px; opacity: .65; }
+.i3d-titulo { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; opacity: .6; margin: 14px 0 6px; }
+.i3d-titulo:first-child { margin-top: 0; }
+.i3d-msg { margin: 8px 0; padding: 8px 10px; border-radius: 6px; background: rgba(var(--v-theme-warning), .12); font-size: 13px; word-break: break-word; }
+.i3d-msg.erro { background: rgba(var(--v-theme-error), .12); }
+.i3d-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-top: 12px; }
+.i3d-celula { padding: 8px 10px; border-radius: 6px; background: rgba(var(--v-theme-on-surface), .04); min-width: 0; }
+.i3d-celula span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .03em; opacity: .6; }
+.i3d-celula b { display: block; font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.i3d-num { font-variant-numeric: tabular-nums; }
+.i3d-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+.i3d-confirma { margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid rgba(var(--v-theme-error), .5); background: rgba(var(--v-theme-error), .06); }
+.i3d-tabela { width: 100%; border-collapse: collapse; font-size: 13px; }
+.i3d-tabela th { text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; opacity: .6; padding: 6px 8px; border-bottom: 1px solid rgba(var(--v-theme-on-surface), .12); position: sticky; top: 0; background: rgb(var(--v-theme-surface)); }
+.i3d-tabela td { padding: 6px 8px; border-bottom: 1px solid rgba(var(--v-theme-on-surface), .06); vertical-align: middle; }
+.i3d-tabela tr.sel td { background: rgba(var(--v-theme-primary), .1); }
+.i3d-tabela tr.clicavel { cursor: pointer; }
+.i3d-tabela tr.clicavel:hover td { background: rgba(var(--v-theme-on-surface), .04); }
+.i3d-rolagem { max-height: 380px; overflow: auto; }
+.i3d-elipse { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
