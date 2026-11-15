@@ -1,0 +1,19 @@
+/* ===== MENU: ROLAGEM NO CELULAR (15/11/2026) =====
+   O menu lateral travava ao arrastar no iPhone. Aqui: o menu rola sozinho (sem puxar a página de trás)
+   e, só no celular, o fundo de madeira deixa de ser "preso na tela" (no iPhone isso pesa e trava a rolagem).
+   Para desfazer: apagar este bloco (ui-template "Menu: rolagem no celular"). */
+.v-navigation-drawer__content {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y !important;
+}
+.v-navigation-drawer .v-list-item,
+.v-navigation-drawer .v-list-item * {
+    touch-action: pan-y !important;
+}
+@media (hover: none), (pointer: coarse) {
+    .v-main {
+        background-attachment: scroll !important;
+    }
+}

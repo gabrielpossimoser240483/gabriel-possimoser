@@ -127,6 +127,13 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
 - Outros comandos graváveis: `lock_motor_state` (落锁状态, "estado de trancado") e `reverse_lock`
   (反锁, trava interna). Ainda não testados para trancar a 2ª tranca.
 
+## Menu lateral no celular (15/11/2026)
+
+- O menu travava ao arrastar no iPhone. Criado o ui-template de site **"Menu: rolagem no celular"**
+  (`menurolagem01`, código em `node-red/menu-rolagem-celular.css`): o menu rola sozinho
+  (`overscroll-behavior: contain`, `touch-action: pan-y`) e, só no celular, o fundo de madeira deixa de
+  ser `background-attachment: fixed` (pesa e trava no iPhone). Para desfazer: apagar esse ui-template.
+
 ## Interfone (aba "Cozinha e Copa", grupo "Interfone, visita no portão e refletor")
 
 Feito em outra conversa. Como está:
