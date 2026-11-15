@@ -56,6 +56,10 @@ Fechadura: abertura remota **sem senha** está permitida na fechadura (`remoteUn
 
 ## Node-RED (servidor Debian `10.0.0.104`, Node-RED 5.0.9, Dashboard 2.0)
 
+O Node-RED roda em **Docker** (usuário `node-red`). Ele só enxerga a pasta do servidor
+`/opt/node-red`, que aparece dentro dele como `/data`. Por isso ele **não alcança** o cofre do
+Obsidian ("caderno") nem outras pastas do servidor.
+
 O Node-RED não tinha ligação com a Tuya: tudo é feito por blocos *function* que chamam a nuvem
 da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](node-red/).
 
@@ -69,7 +73,8 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
   - 6h às 22h: frio, 100%
   - Apaga quando o corredor fica vazio (só se foi a automação que acendeu).
   - Ajustes (liga/desliga, brilho e quente/frio de noite e de dia) ficam no dashboard e são
-    salvos em `~/.node-red/jimmy_automacao.json` e `~/.node-red/dimmer_corredor2_automacao.json`.
+    salvos em `/data/jimmy_automacao.json` e `/data/dimmer_corredor2_automacao.json`
+    (no servidor: `/opt/node-red/`). Antes de 15/11 01:40 eles não estavam sendo salvos.
 - **Luz antiga do corredor** (interruptor Zigbee `corredor_interruptor_luzes`, tecla L2):
   - A automação pelo sensor foi **desativada** (bloco *link out* "→ corredor L2", id `4614135e9de04f82`).
   - Bloco **"mantém luz do corredor (L2) sempre ligada"** (`corl2guardfn1`): religa a L2 em 2 s se
@@ -77,8 +82,11 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
 
 ### Página **Sala** (aba "Sala")
 
-- Cartão **Fechadura** (blocos `fech…`): porta aberta/fechada, bateria, trava interna, últimos eventos,
-  botão **ABRIR A PORTA** (com confirmação), chave de avisos, trava interna, som da campainha.
+- Cartão **Fechadura** (blocos `fech…`), modelo "vidro neon": cadeado grande (verde trancada, laranja aberta),
+  **segurar o cadeado 1,5 s abre a porta**, porta/bateria/trava, últimos eventos com ícones coloridos,
+  chave de avisos, trava interna, som da campainha.
+- **Abrir pelo dashboard funciona** (testado em 15/11 01:19–01:20).
+- O **som da campainha** é aceito pela Tuya mas a fechadura não aplica (fica em `ding_0`); ficou no cartão a pedido.
 - Lê a fechadura a cada 5 s (`/v2.0/cloud/thing/{id}/shadow/properties`, detecta eventos pela hora de cada dado).
 - Avisos no **Pushover** (mesmo envio dos portões): abertura (digital/senha/cartão + nº do usuário),
   campainha, alarmes (digital/senha errada, arrombamento, impacto...), coação, bateria ≤ 20%.
@@ -90,10 +98,9 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
 
 ## Pendências
 
-- [ ] Confirmar que o botão **ABRIR A PORTA** destranca de verdade (ainda não testado em 15/11).
 - [ ] Confirmar que os avisos da fechadura chegam no celular.
 - [ ] Confirmar as duas lâmpadas acendendo pelo sensor do corredor.
 - [ ] Trocar a senha do Node-RED (ela foi escrita no chat em 15/11/2026).
-- [ ] Melhorar o visual do cartão da fechadura (pedido em 15/11/2026).
+- [ ] Salvar esta nota no Obsidian ("caderno", no servidor): o Node-RED não alcança a pasta.
 - [ ] Dar nome às pessoas da fechadura (usuário 1, 2... → nomes).
 - [ ] Pedido antigo, ainda não feito: no **quarto**, primeiro clique do botão da fechadura liga o ventilador.

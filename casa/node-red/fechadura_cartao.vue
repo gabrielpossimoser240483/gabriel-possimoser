@@ -1,72 +1,107 @@
 <template>
-  <div class="fx-erro" v-if="msg && msg.payload && msg.payload.erro">{{ msg.payload.erro }}</div>
-  <div class="fx" v-if="msg && msg.payload && msg.payload.porta">
-    <div v-if="!confirmar" class="fx-abrir" @click="confirmar = true"><v-icon icon="mdi-lock-open-variant" size="26"></v-icon> ABRIR A PORTA</div>
-    <div v-else class="fx-confirma">
-      <span>Abrir a porta agora?</span>
-      <button class="fx-sim" @click="abrir">SIM, ABRIR</button>
-      <button class="fx-nao" @click="confirmar = false">Cancelar</button>
-    </div>
-    <div v-if="enviado" class="fx-vazio">Abrindo...</div>
-    <div class="fx-topo">
-      <div class="fx-item" :class="msg.payload.porta === 'Fechada' ? 'ok' : 'alerta'">
-        <v-icon :icon="msg.payload.porta === 'Fechada' ? 'mdi-door-closed-lock' : 'mdi-door-open'" size="34"></v-icon>
-        <span>Porta</span><b>{{ msg.payload.porta }}</b>
-      </div>
-      <div class="fx-item" :class="(msg.payload.bateria || 0) > 20 ? 'ok' : 'alerta'">
-        <v-icon :icon="bateriaIcone" size="34"></v-icon>
-        <span>Bateria</span><b>{{ msg.payload.bateria ? msg.payload.bateria + '%' : '—' }}</b>
-      </div>
-      <div class="fx-item" :class="msg.payload.travaInterna ? 'ok' : ''">
-        <v-icon icon="mdi-shield-lock" size="34"></v-icon>
-        <span>Trava interna</span><b>{{ msg.payload.travaInterna ? 'Ligada' : 'Desligada' }}</b>
+  <div class="fx" v-if="d">
+    <div v-if="d.erro" class="fx-erro">{{ d.erro }}</div>
+
+    <div class="fx-anel" :class="cor" @pointerdown.prevent="segurar" @pointerup="soltar" @pointerleave="soltar" @pointercancel="soltar">
+      <svg class="fx-prog" viewBox="0 0 210 210">
+        <circle cx="105" cy="105" r="100" class="fx-trilho" />
+        <circle cx="105" cy="105" r="100" class="fx-barra" :style="{ strokeDashoffset: 628 - 628 * progresso, opacity: progresso > 0 ? 1 : 0 }" />
+      </svg>
+      <div class="fx-ic">
+        <svg v-if="!aberta" width="70" height="78" viewBox="0 0 24 26"><path d="M7 11V7a5 5 0 0 1 10 0v4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="3.5" y="11" width="17" height="13" rx="3" class="fx-corpo" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="17" r="2" fill="currentColor"/></svg>
+        <svg v-else width="70" height="78" viewBox="0 0 24 26"><path d="M7 11V7a5 5 0 0 1 9.6-2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="3.5" y="11" width="17" height="13" rx="3" class="fx-corpo" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="17" r="2" fill="currentColor"/></svg>
+        <div class="fx-estado">{{ textoEstado }}</div>
       </div>
     </div>
+    <div class="fx-dica">{{ dica }}</div>
+
+    <div class="fx-chips">
+      <div class="fx-chip"><span>🚪 Porta</span><b>{{ d.porta }}</b></div>
+      <div class="fx-chip"><span>🔋 Bateria</span><b>{{ d.bateria ? d.bateria + '%' : '—' }}</b></div>
+      <div class="fx-chip"><span>🛡️ Trava</span><b>{{ d.travaInterna ? 'Ligada' : 'Desligada' }}</b></div>
+    </div>
+
     <div class="fx-hist-tit">Últimos eventos</div>
-    <div v-if="!msg.payload.historico.length" class="fx-vazio">Nenhum evento ainda</div>
-    <div v-for="(e, i) in msg.payload.historico" :key="i" class="fx-linha">
-      <span class="fx-hora">{{ e.quando }}</span><span>{{ e.txt }}</span>
+    <div v-if="!d.historico.length" class="fx-vazio">Nenhum evento ainda</div>
+    <div v-for="(e, i) in d.historico" :key="i" class="fx-ev">
+      <span class="fx-bx" :style="{ background: estilo(e).cor }">{{ estilo(e).ic }}</span>
+      <span class="fx-txt">{{ limpa(e.txt) }}</span>
+      <span class="fx-hora">{{ e.quando }}</span>
     </div>
   </div>
-  <div v-else-if="!(msg && msg.payload && msg.payload.erro)" class="fx-vazio">Lendo a fechadura...</div>
+  <div v-else class="fx-vazio">Lendo a fechadura...</div>
 </template>
 
 <script>
 export default {
-  data() { return { confirmar: false, enviado: false } },
-  watch: { msg() { this.enviado = false } },
-  methods: {
-    abrir() { this.confirmar = false; this.enviado = true; this.send({ topic: 'abrir', payload: true }); }
-  },
+  data() { return { progresso: 0, timer: null, abrindo: false } },
+  watch: { msg() { if (this.abrindo && this.d && (this.d.erro || this.d.porta === 'Aberta')) this.abrindo = false } },
   computed: {
-    bateriaIcone() {
-      const b = (this.msg && this.msg.payload && this.msg.payload.bateria) || 0;
-      if (!b) return 'mdi-battery-unknown';
-      return b > 80 ? 'mdi-battery' : b > 50 ? 'mdi-battery-70' : b > 20 ? 'mdi-battery-40' : 'mdi-battery-alert';
+    d() { return this.msg && this.msg.payload && this.msg.payload.porta ? this.msg.payload : null },
+    aberta() { return this.abrindo || (this.d && this.d.porta === 'Aberta') },
+    cor() { return this.abrindo ? 'abrindo' : this.aberta ? 'aberta' : 'trancada' },
+    textoEstado() { return this.abrindo ? 'ABRINDO...' : this.aberta ? 'ABERTA' : 'TRANCADA' },
+    dica() { return this.abrindo ? 'Enviando para a fechadura...' : this.progresso > 0 ? 'Continue segurando...' : 'Segure o cadeado para abrir' }
+  },
+  methods: {
+    segurar() {
+      if (this.abrindo) return;
+      const inicio = Date.now();
+      clearInterval(this.timer);
+      this.timer = setInterval(() => {
+        this.progresso = Math.min(1, (Date.now() - inicio) / 1500);
+        if (this.progresso >= 1) {
+          clearInterval(this.timer); this.timer = null;
+          this.abrindo = true; this.progresso = 0;
+          if (navigator.vibrate) navigator.vibrate(80);
+          this.send({ topic: 'abrir', payload: true });
+          setTimeout(() => { this.abrindo = false }, 15000);
+        }
+      }, 30);
+    },
+    soltar() { if (this.timer) { clearInterval(this.timer); this.timer = null; } this.progresso = 0; },
+    limpa(t) { return String(t || '').replace(/^\S+\s/, '') },
+    estilo(e) {
+      const t = String(e.txt || '');
+      if (/coação|ARROMBAMENTO|Alarme|Bateria/i.test(t)) return { ic: '⚠️', cor: '#b71c1c' };
+      if (/campainha/i.test(t)) return { ic: '🔔', cor: '#0d47a1' };
+      if (/Aberta por|dashboard|entrou/i.test(t)) return { ic: '🔓', cor: '#1b5e20' };
+      if (/Porta aberta/i.test(t)) return { ic: '🚪', cor: '#e65100' };
+      return { ic: '🚪', cor: '#37474f' };
     }
-  }
+  },
+  unmounted() { clearInterval(this.timer) }
 }
 </script>
 
 <style>
-.fx { width: 100%; }
-.fx-abrir { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; margin-bottom: 10px; border-radius: 12px;
-  background: #1e6b34; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer; user-select: none; }
-.fx-abrir:active { filter: brightness(1.3); }
-.fx-confirma { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px; margin-bottom: 10px; border-radius: 12px; background: rgba(255,152,0,.15); }
-.fx-confirma span { flex: 1 1 100%; font-weight: bold; }
-.fx-sim { flex: 1; padding: 10px; border-radius: 10px; background: #2e7d32; color: #fff; font-weight: bold; }
-.fx-nao { flex: 1; padding: 10px; border-radius: 10px; background: rgba(255,255,255,.12); color: #fff; }
-.fx-erro { color: #ff8a80; font-size: 13px; padding: 6px 0; }
-.fx-topo { display: flex; gap: 8px; }
-.fx-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 4px; border-radius: 12px;
-  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); }
-.fx-item span { font-size: 12px; opacity: .7; margin-top: 4px; }
-.fx-item b { font-size: 15px; }
-.fx-item.ok { color: #4caf50; }
-.fx-item.alerta { color: #ff9800; }
-.fx-hist-tit { margin: 14px 0 6px; font-size: 13px; opacity: .7; }
-.fx-linha { display: flex; gap: 10px; font-size: 13px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
-.fx-hora { opacity: .6; white-space: nowrap; }
-.fx-vazio { opacity: .6; font-size: 13px; padding: 6px 0; }
+.fx { width: 100%; color: #eee; }
+.fx-erro { color: #ff8a80; font-size: 14px; font-weight: 600; padding: 6px 0 10px; text-align: center; }
+.fx-anel { width: 190px; height: 190px; margin: 6px auto 6px; border-radius: 50%; position: relative; cursor: pointer;
+  user-select: none; -webkit-user-select: none; touch-action: none; transition: box-shadow .3s, background .3s; }
+.fx-anel.trancada { color: #69f0ae; background: radial-gradient(circle at 50% 40%, rgba(76,175,80,.25), rgba(0,0,0,.2) 70%);
+  box-shadow: 0 0 0 3px rgba(76,175,80,.35), 0 0 30px rgba(76,175,80,.45), inset 0 0 25px rgba(76,175,80,.25); }
+.fx-anel.aberta, .fx-anel.abrindo { color: #ffb74d; background: radial-gradient(circle at 50% 40%, rgba(255,152,0,.25), rgba(0,0,0,.2) 70%);
+  box-shadow: 0 0 0 3px rgba(255,152,0,.4), 0 0 30px rgba(255,152,0,.5), inset 0 0 25px rgba(255,152,0,.25); }
+.fx-anel.trancada .fx-corpo { fill: #1b5e20; }
+.fx-anel.aberta .fx-corpo, .fx-anel.abrindo .fx-corpo { fill: #6d3d00; }
+.fx-anel:active { transform: scale(.98); }
+.fx-prog { position: absolute; inset: -10px; width: 210px; height: 210px; transform: rotate(-90deg); pointer-events: none; }
+.fx-trilho { fill: none; stroke: transparent; stroke-width: 5; }
+.fx-barra { fill: none; stroke: currentColor; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 628; }
+.fx-ic { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+.fx-estado { font-size: 22px; font-weight: 800; margin-top: 6px; letter-spacing: 1px; text-shadow: 0 0 12px currentColor; }
+.fx-dica { text-align: center; font-size: 14px; color: #bbb; margin-bottom: 14px; }
+.fx-chips { display: flex; gap: 8px; margin-bottom: 16px; }
+.fx-chip { flex: 1; border-radius: 12px; padding: 9px 4px; text-align: center; background: linear-gradient(160deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.1); }
+.fx-chip span { display: block; font-size: 12px; color: #aaa; }
+.fx-chip b { display: block; font-size: 15px; color: #fff; margin-top: 2px; }
+.fx-hist-tit { font-size: 14px; color: #aaa; margin-bottom: 4px; font-weight: 600; }
+.fx-ev { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.07);
+  font-family: "Segoe UI", Roboto, Arial, sans-serif; font-size: 15px; color: #fff; -webkit-font-smoothing: antialiased; }
+.fx-bx { width: 30px; height: 30px; flex: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.fx-txt { flex: 1; line-height: 1.25; }
+.fx-hora { color: #9e9e9e; font-size: 13px; white-space: nowrap; }
+.fx-vazio { color: #aaa; font-size: 14px; padding: 6px 0; }
 </style>

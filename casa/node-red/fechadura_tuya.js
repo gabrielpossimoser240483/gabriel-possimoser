@@ -41,7 +41,7 @@ async function chamar(method, path, body) {
 }
 
 const METODO = { unlock_fingerprint: 'digital', unlock_password: 'senha', unlock_card: 'cartão', unlock_temporary: 'senha temporária',
-    unlock_dynamic: 'senha dinâmica', unlock_remote: 'abertura remota', unlock_voice_remote: 'comando de voz' };
+    unlock_dynamic: 'senha dinâmica', unlock_remote: 'app (remoto)', unlock_voice_remote: 'comando de voz' };
 const ALARME = { wrong_finger: 'digital errada', wrong_password: 'senha errada', wrong_card: 'cartão não reconhecido', wrong_face: 'rosto não reconhecido',
     tongue_bad: 'trinco com defeito', too_hot: 'temperatura alta', tongue_not_out: 'trinco não fechou', pry: 'TENTATIVA DE ARROMBAMENTO', key_in: 'chave na fechadura',
     power_off: 'sem bateria', shock: 'impacto na porta', unclosed_time: 'porta aberta há muito tempo', low_battery: 'bateria fraca', defense: 'alarme de proteção' };
@@ -88,7 +88,8 @@ try {
     const eventos = [];
     if (ant) {
         const novo = c => p[c] && p[c].time && p[c].time !== ant[c];
-        for (const c in METODO) if (novo(c) && p[c].value) eventos.push({ t: p[c].time, txt: `🔓 Aberta por ${METODO[c]} (usuário ${p[c].value})`, push: 'abriu' });
+        const peloDash = Date.now() - (context.get('ultAbrir') || 0) < 60000;   // a abertura remota do dashboard já foi anotada
+        for (const c in METODO) if (novo(c) && p[c].value && !(peloDash && c === 'unlock_remote')) eventos.push({ t: p[c].time, txt: `🔓 Aberta por ${METODO[c]} (usuário ${p[c].value})`, push: 'abriu' });
         if (novo('closed_opened')) eventos.push({ t: p.closed_opened.time, txt: p.closed_opened.value === 'closed' ? '🚪 Porta fechada' : '🚪 Porta aberta', push: null });
         if (novo('doorbell') && p.doorbell.value) eventos.push({ t: p.doorbell.time, txt: '🔔 Tocaram a campainha', push: 'campainha' });
         if (novo('alarm_lock')) eventos.push({ t: p.alarm_lock.time, txt: '⚠️ Alarme: ' + (ALARME[p.alarm_lock.value] || p.alarm_lock.value), push: 'alarme' });
@@ -114,7 +115,8 @@ try {
     const c = cartao(p);
     if (msg.topic === 'ler' && !eventos.length && JSON.stringify(c.payload) === context.get('ultCartao')) return null; // nada mudou
     context.set('ultCartao', JSON.stringify(c.payload));
-    return [pushes.length ? pushes : null, c, { payload: !!p.reverse_lock.value }, { payload: p.doorbell_song.value }, { payload: global.get('avisa_fechadura2') !== false }];
+    const somMudou = p.doorbell_song.value !== context.get('ultSom'); context.set('ultSom', p.doorbell_song.value);
+    return [pushes.length ? pushes : null, c, { payload: !!p.reverse_lock.value }, somMudou ? { payload: p.doorbell_song.value } : null, { payload: global.get('avisa_fechadura2') !== false }];
 } catch (e) {
     node.status({ fill: 'red', shape: 'dot', text: String(e.message).slice(0, 40) });
     if (msg.topic === 'abrir') { context.set('erro', { t: Date.now(), txt: 'Não abriu: ' + e.message }); context.set('ultCartao', null); return [null, { payload: { erro: 'Não abriu: ' + e.message } }, null, null, null]; }

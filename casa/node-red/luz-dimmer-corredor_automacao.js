@@ -3,10 +3,10 @@
 //   das 22h às 6h  -> modo NOITE (padrão: quente, 20%)
 //   resto do dia   -> modo DIA   (padrão: frio, 100%)
 // Ninguém mais no banheiro -> apaga (só se foi a automação que acendeu).
-// Os valores são ajustados no dashboard (grupo "Automação Jimmy") e ficam salvos em ~/.node-red/jimmy_automacao.json
+// Os valores são ajustados no dashboard (grupo "Automação Jimmy") e ficam salvos em /data/jimmy_automacao.json
 const LUX_MINIMO = 80;
 const NOITE_INICIO = 22, NOITE_FIM = 6;
-const ARQ = path.join(os.homedir(), '.node-red', 'jimmy_automacao.json');
+const ARQ = path.join('/data', 'jimmy_automacao.json');
 const PADRAO = { ligada: true, noite_brilho: 20, noite_temp: 0, dia_brilho: 100, dia_temp: 100 };
 
 let cfg = context.get('cfg');
