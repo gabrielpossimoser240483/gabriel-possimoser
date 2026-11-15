@@ -9,6 +9,12 @@ Caderno do que foi feito na casa pelo Claude, para continuar depois sem perder n
 
 ---
 
+## Onde esta nota também está
+
+- **Obsidian ("Caderno da Casa")**: `/srv/arquivos/caderno/Caderno da Casa/Projetos/Casa - Automação Tuya e Node-RED.md`
+  (cópia de 15/11/2026; o Node-RED não alcança essa pasta, a cópia é feita no terminal do servidor com `cp`).
+  Uma cópia também fica em `/opt/node-red/` (pasta do Node-RED).
+
 ## Como reconectar (para pedir coisas novas ao Claude)
 
 O Claude roda fora de casa e só alcança o Node-RED (`10.0.0.104:1880`) por um **túnel temporário**.
@@ -163,7 +169,6 @@ Feito em outra conversa. Como está:
 - [ ] Confirmar que os avisos da fechadura chegam no celular.
 - [ ] Confirmar as duas lâmpadas acendendo pelo sensor do corredor.
 - [ ] Trocar a senha do Node-RED (ela foi escrita no chat em 15/11/2026).
-- [ ] Salvar esta nota no Obsidian ("caderno", no servidor): o Node-RED não alcança a pasta.
 - [ ] Dar nome às pessoas da fechadura (usuário 1, 2... → nomes).
 - [ ] Automação da Luz RGB da varanda: falta o usuário escolher a regra (sensor, horário, portão, alerta).
 - [ ] Pedido antigo, ainda não feito: no **quarto**, primeiro clique do botão da fechadura liga o ventilador.
