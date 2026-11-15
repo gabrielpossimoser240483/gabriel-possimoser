@@ -134,6 +134,16 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
   (`overscroll-behavior: contain`, `touch-action: pan-y`) e, só no celular, o fundo de madeira deixa de
   ser `background-attachment: fixed` (pesa e trava no iPhone). Para desfazer: apagar esse ui-template.
 
+## Impressora 3D (página "Impressora 3D", aba "Impressora 3D")
+
+- Instalada por outra conversa (Dashboard 2, suporta Bambu/Moonraker/OctoPrint). Impressora: **Bambu Lab A1**,
+  IP **10.0.0.114**, SN **03919D590700274**, conectada pela rede local (MQTT 8883, usuário `bblp`).
+  O **código de acesso** fica na tela da impressora (Configurações → Somente LAN) e está salvo no cartão
+  "Configuração" do dashboard (não fica neste arquivo). **Modo somente LAN continua desligado** (Handy funciona).
+- Conferido em 15/11/2026 04:43: conectada, mostra impressão, temperaturas, AMS (4 rolos), câmera e firmware.
+- Detalhes a ajustar: "Câmara 5.0°" (a A1 não tem sensor de câmara) e "Decorrido —".
+- Não há tomada inteligente na impressora: ligar/desligar a energia pelo dashboard exigiria uma.
+
 ## Interfone (aba "Cozinha e Copa", grupo "Interfone, visita no portão e refletor")
 
 Feito em outra conversa. Como está:
