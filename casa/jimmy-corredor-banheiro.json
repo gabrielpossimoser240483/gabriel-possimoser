@@ -1,0 +1,20 @@
+[
+  {"id":"jimmy_tab","type":"tab","label":"Jimmy - Corredor e Banheiro","disabled":false,"info":"Controles da lâmpada Jimmy na página Corredor e Banheiro do dashboard."},
+
+  {"id":"jimmy_base","type":"ui-base","name":"Dashboard","path":"/dashboard"},
+  {"id":"jimmy_theme","type":"ui-theme","name":"Padrão","colors":{"surface":"#ffffff","primary":"#0094CE","bgPage":"#eeeeee","groupBg":"#ffffff","groupOutline":"#cccccc"}},
+  {"id":"jimmy_page","type":"ui-page","name":"Corredor e Banheiro","ui":"jimmy_base","path":"/corredor-banheiro","icon":"lightbulb","layout":"grid","theme":"jimmy_theme","order":99,"className":"","visible":"true","disabled":"false"},
+  {"id":"jimmy_group","type":"ui-group","name":"Lâmpada Jimmy","page":"jimmy_page","width":"6","height":"1","order":1,"showTitle":true,"className":"","visible":"true","disabled":"false"},
+
+  {"id":"jimmy_sw","type":"ui-switch","z":"jimmy_tab","name":"Ligar/Desligar","label":"Jimmy","group":"jimmy_group","order":1,"width":0,"height":0,"passthru":false,"decouple":false,"topic":"onoff","topicType":"str","style":"","className":"","layout":"row-spread","clickableArea":"switch","onvalue":"true","onvalueType":"bool","onicon":"","oncolor":"","offvalue":"false","offvalueType":"bool","officon":"","offcolor":"","x":160,"y":80,"wires":[["jimmy_fn"]]},
+
+  {"id":"jimmy_bri","type":"ui-slider","z":"jimmy_tab","group":"jimmy_group","name":"Brilho","label":"Brilho (%)","tooltip":"","order":2,"width":0,"height":0,"passthru":false,"outs":"end","topic":"brilho","topicType":"str","thumbLabel":"true","showTicks":"false","min":"1","max":"100","step":"1","className":"","iconPrepend":"","iconAppend":"","color":"","colorTrack":"","colorThumb":"","showTextField":false,"x":150,"y":140,"wires":[["jimmy_fn"]]},
+
+  {"id":"jimmy_ct","type":"ui-slider","z":"jimmy_tab","group":"jimmy_group","name":"Quente/Frio","label":"Quente ← → Frio","tooltip":"","order":3,"width":0,"height":0,"passthru":false,"outs":"end","topic":"temperatura","topicType":"str","thumbLabel":"true","showTicks":"false","min":"2700","max":"6500","step":"100","className":"","iconPrepend":"","iconAppend":"","color":"","colorTrack":"","colorThumb":"","showTextField":false,"x":160,"y":200,"wires":[["jimmy_fn"]]},
+
+  {"id":"jimmy_fn","type":"function","z":"jimmy_tab","name":"Monta comando","func":"// Troque aqui se a entidade da Jimmy tiver outro nome no Home Assistant\nconst entidade = 'light.jimmy';\nconst alvo = { entity_id: [entidade] };\n\nif (msg.topic === 'onoff') {\n    msg.payload = { action: msg.payload ? 'light.turn_on' : 'light.turn_off', target: alvo, data: {} };\n} else if (msg.topic === 'brilho') {\n    msg.payload = { action: 'light.turn_on', target: alvo, data: { brightness_pct: Number(msg.payload) } };\n} else if (msg.topic === 'temperatura') {\n    msg.payload = { action: 'light.turn_on', target: alvo, data: { color_temp_kelvin: Number(msg.payload) } };\n} else {\n    return null;\n}\nreturn msg;","outputs":1,"timeout":0,"noerr":0,"initialize":"","finalize":"","libs":[],"x":390,"y":140,"wires":[["jimmy_ha","jimmy_dbg"]]},
+
+  {"id":"jimmy_ha","type":"api-call-service","z":"jimmy_tab","name":"Enviar para a Jimmy","server":"","version":7,"debugenabled":false,"action":"light.turn_on","floorId":[],"areaId":[],"deviceId":[],"entityId":["light.jimmy"],"labelId":[],"data":"","dataType":"jsonata","mergeContext":"","mustacheAltTags":false,"outputProperties":[],"queue":"none","blockInputOverrides":false,"domain":"light","service":"turn_on","x":620,"y":140,"wires":[[]]},
+
+  {"id":"jimmy_dbg","type":"debug","z":"jimmy_tab","name":"Ver comando","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":600,"y":200,"wires":[]}
+]
