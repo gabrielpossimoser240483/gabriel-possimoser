@@ -13,7 +13,7 @@ Arquivo para importar: **[`impressora-3d.json`](impressora-3d.json)**
 |---|---|
 | Status da impressão | estado, arquivo, miniatura, % concluído, tempo decorrido e restante, hora prevista de término, estimativa do fatiador, camada atual/total, altura Z, filamento usado (m e g), temperaturas, sensores extras (câmara, Raspberry…), velocidade real, vazão (mm³/s), ventoinha, velocidade/fluxo |
 | Câmera | fotos a cada N s passando pelo Node-RED (funciona fora de casa) ou vídeo direto; ampliar em tela cheia; salvar foto |
-| Filamentos (AMS) | os 4 rolos do AMS / AMS Lite com cor, tipo, marca, % restante e qual está em uso; carregar ou descarregar um rolo (Bambu Lab) |
+| Filamentos (AMS) | os 4 rolos do AMS / AMS Lite com cor, tipo, marca, % restante e qual está em uso; dar um **nome/etiqueta e uma observação** a cada rolo, informar tipo e cor para a impressora (rolos sem RFID), carregar ou descarregar (Bambu Lab) |
 | Temperaturas | medidores do bico e da mesa, definir alvo, ±5 °C, desligar, pré-aquecimento por material (PLA, PETG, ABS, TPU, editáveis) |
 | Histórico de temperatura | gráfico dos últimos 30 min (bico, mesa, alvos e sensores extras) |
 | Controle | pausar, retomar, cancelar (com confirmação), desligar motores, desligar aquecimento, reiniciar firmware / reconectar, parada de emergência |

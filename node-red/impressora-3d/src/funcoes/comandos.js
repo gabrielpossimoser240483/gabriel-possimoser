@@ -9,6 +9,30 @@ const aviso = texto => [null, null, { topic: 'Impressora 3D', payload: texto }, 
 
 if (acao === 'atualizarListas') return [null, { topic: 'atualizar' }, null, null];
 if (acao === 'limparConsole') return [null, null, null, { topic: 'console:limpar' }];
+
+// Etiqueta de um rolo do AMS (guardada no Node-RED) e, se pedido, tipo/cor enviados à impressora
+if (acao === 'amsEtiqueta') {
+    const g = Math.round(Number(c.bandeja));
+    if (!(g >= 0 && g < 16)) return aviso('Rolo inválido.');
+    const etiquetas = flow.get('amsEtiquetas') || {};
+    const nome = String(c.nome || '').trim().slice(0, 60), nota = String(c.nota || '').trim().slice(0, 200);
+    if (nome || nota) etiquetas[g] = { nome, nota, em: Date.now() };
+    else delete etiquetas[g];
+    flow.set('amsEtiquetas', etiquetas);
+    const saida = [null, null, { topic: 'Impressora 3D', payload: '✔ Rolo ' + (g + 1) + ' salvo' }, { topic: 'etiquetas' }, null];
+    if (c.atualizarImpressora && cfg.tipo === 'bambu' && cfg.serial && c.tipo) {
+        const PERFIS = { PLA: ['GFL99', 190, 230], PETG: ['GFG99', 220, 260], ABS: ['GFB99', 240, 270], ASA: ['GFB98', 240, 270],
+            TPU: ['GFU99', 200, 250], PC: ['GFC99', 260, 280], PA: ['GFN99', 260, 290], PVA: ['GFS99', 190, 210] };
+        const perfil = PERFIS[c.tipo] || PERFIS.PLA;
+        const cor = String(c.cor || '#FFFFFF').replace('#', '').toUpperCase().slice(0, 6).padEnd(6, 'F') + 'FF';
+        saida[4] = { topic: `device/${cfg.serial}/request`, payload: { print: {
+            sequence_id: String(Date.now() % 1000000), command: 'ams_filament_setting', ams_id: Math.floor(g / 4), tray_id: g % 4,
+            tray_info_idx: perfil[0], tray_type: c.tipo, tray_color: cor, nozzle_temp_min: perfil[1], nozzle_temp_max: perfil[2]
+        } } };
+        saida[2].payload += ' e enviado para a impressora';
+    }
+    return saida;
+}
 if (!cfg.url) return aviso('⚠️ Configure o endereço da impressora primeiro.');
 if (acao === 'reconectar') return [null, { topic: 'atualizar' }, { topic: 'Impressora 3D', payload: '🔌 Reconectando…' }, null];
 if (['offline', 'conectando'].includes(e.estado)) return aviso('⚠️ A impressora está sem conexão.');

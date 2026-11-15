@@ -310,6 +310,7 @@ function estadoBambu() {
     const trayNow = ams.tray_now != null ? Number(ams.tray_now) : null;
     const cor = c => (c && /^[0-9A-F]{6}/i.test(c) ? '#' + c.slice(0, 6) : null);
     const restanteBandeja = t => (num(Number(t.remain)) !== null && Number(t.remain) >= 0 ? Number(t.remain) : null);
+    const etiquetas = flow.get('amsEtiquetas') || {};
     const unidades = (ams.ams || []).map(u => ({
         id: Number(u.id),
         umidade: u.humidity != null ? Number(u.humidity) : null,
@@ -318,7 +319,7 @@ function estadoBambu() {
             const global = Number(u.id) * 4 + Number(t.id);
             return {
                 id: Number(t.id), global, tipo: t.tray_type || '', marca: t.tray_sub_brands || '', cor: cor(t.tray_color),
-                restante: restanteBandeja(t), vazia: !t.tray_type, ativa: trayNow === global,
+                restante: restanteBandeja(t), vazia: !t.tray_type, ativa: trayNow === global, etiqueta: etiquetas[global] || null,
                 tempMin: num(Number(t.nozzle_temp_min)), tempMax: num(Number(t.nozzle_temp_max))
             };
         })
@@ -466,6 +467,8 @@ if (t === 'reset') {
     emitir = true;
     emitirHistorico(); emitirSistema(); emitirConsole();
     out[1] = { topic: 'arquivos', payload: { lista: [], tipo: cfg.tipo } };
+} else if (t === 'etiquetas') {
+    emitir = true;
 } else if (t === 'semConfig') {
     m.online = null;
     emitir = true;

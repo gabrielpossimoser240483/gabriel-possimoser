@@ -70,6 +70,10 @@ aedes.on('publish', (pkt, client) => {
     if (c.command === 'stop') { p.gcode_state = 'FAILED'; p.stg_cur = 0 }
     if (c.command === 'print_speed') { p.spd_lvl = Number(c.param); p.spd_mag = { 1: 50, 2: 100, 3: 124, 4: 166 }[p.spd_lvl] }
     if (c.command === 'ams_change_filament') p.ams.tray_now = String(c.target)
+    if (c.command === 'ams_filament_setting') {
+        const t = p.ams.ams[c.ams_id].tray[c.tray_id]
+        Object.assign(t, { tray_type: c.tray_type, tray_color: c.tray_color, tray_sub_brands: 'Genérico', nozzle_temp_min: String(c.nozzle_temp_min), nozzle_temp_max: String(c.nozzle_temp_max), remain: -1 })
+    }
     if (c.command === 'gcode_line') {
         for (const l of String(c.param).split('\n')) {
             let m
