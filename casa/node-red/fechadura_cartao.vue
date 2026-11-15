@@ -49,7 +49,7 @@ export default {
       const inicio = Date.now();
       clearInterval(this.timer);
       this.timer = setInterval(() => {
-        this.progresso = Math.min(1, (Date.now() - inicio) / 1500);
+        this.progresso = Math.min(1, (Date.now() - inicio) / 1000);
         if (this.progresso >= 1) {
           clearInterval(this.timer); this.timer = null;
           this.abrindo = true; this.progresso = 0;

@@ -9,6 +9,9 @@ const DEVICE_ID = 'ebc777d960783fb572mjea';
 const HOST = 'openapi.tuyaus.com';
 const PUSH = { token: 'TOKEN_PUSHOVER', user: 'USER_PUSHOVER' };
 
+
+// conexão sempre aberta com a Tuya (evita refazer a conexão segura a cada comando)
+function AGENTE() { let a = context.get('agente'); if (!a) { a = new https.Agent({ keepAlive: true, maxSockets: 4 }); context.set('agente', a); } return a; }
 function req(method, path, body, token) {
     return new Promise((resolve, reject) => {
         const t = Date.now().toString();
@@ -17,7 +20,7 @@ function req(method, path, body, token) {
         const sign = crypto.createHmac('sha256', ACCESS_SECRET).update(ACCESS_ID + (token || '') + t + sts).digest('hex').toUpperCase();
         const headers = { client_id: ACCESS_ID, sign, t, sign_method: 'HMAC-SHA256', 'Content-Type': 'application/json' };
         if (token) headers.access_token = token;
-        const r = https.request({ host: HOST, path, method, headers, timeout: 15000 }, res => {
+        const r = https.request({ host: HOST, path, method, headers, timeout: 15000, agent: AGENTE() }, res => {
             let d = ''; res.on('data', c => d += c);
             res.on('end', () => { try { resolve(JSON.parse(d)); } catch (e) { reject(e); } });
         });
@@ -40,6 +43,11 @@ async function chamar(method, path, body) {
     return r.result;
 }
 
+async function novoTicket() {
+    const r = await chamar('POST', `/v1.0/devices/${DEVICE_ID}/door-lock/password-ticket`);
+    return { id: r.ticket_id, exp: Date.now() + (r.expire_time - 30) * 1000 };
+}
+
 const METODO = { unlock_fingerprint: 'digital', unlock_password: 'senha', unlock_card: 'cartão', unlock_temporary: 'senha temporária',
     unlock_dynamic: 'senha dinâmica', unlock_remote: 'app (remoto)', unlock_voice_remote: 'comando de voz' };
 const ALARME = { wrong_finger: 'digital errada', wrong_password: 'senha errada', wrong_card: 'cartão não reconhecido', wrong_face: 'rosto não reconhecido',
@@ -59,26 +67,40 @@ function cartao(p) {
     } };
 }
 
+// depois de abrir, lê a cada 1 s por 20 s (para o cartão mostrar "ABERTA" logo)
+if (msg.topic === 'ler_rapido') {
+    if (Date.now() > (context.get('rapidoAte') || 0)) return null;
+    msg.topic = 'ler';
+}
+
 try {
     // Comandos vindos do dashboard
     if (msg.topic === 'abrir') {
         const ult = context.get('ultAbrir') || 0;
         if (Date.now() - ult < 5000) return null;          // evita abrir duas vezes seguidas
         context.set('ultAbrir', Date.now());
-        const tk = await chamar('POST', `/v1.0/devices/${DEVICE_ID}/door-lock/password-ticket`);
-        await chamar('POST', `/v1.0/smart-lock/devices/${DEVICE_ID}/password-free/door-operate`, { ticket_id: tk.ticket_id, open: true });
+        // usa a "senha de abertura" já guardada (economiza uma ida à Tuya); se não tiver, pede na hora
+        let tk = context.get('ticket');
+        context.set('ticket', null);
+        if (!tk || tk.exp < Date.now()) tk = await novoTicket();
+        await chamar('POST', `/v1.0/smart-lock/devices/${DEVICE_ID}/password-free/door-operate`, { ticket_id: tk.id, open: true });
+        novoTicket().then(t => context.set('ticket', t)).catch(() => { });   // já deixa a próxima pronta
         const hist = global.get('hist_fechadura') || [];
         hist.unshift({ quando: hora(Date.now()), txt: '🔓 Aberta pelo dashboard' });
         global.set('hist_fechadura', hist.slice(0, 50));
         context.set('erro', null);
+        context.set('rapidoAte', Date.now() + 20000);
         node.status({ fill: 'yellow', shape: 'dot', text: 'abriu pelo dashboard ' + new Date().toLocaleTimeString('pt-BR') });
-        await new Promise(r => setTimeout(r, 2500));
+        await new Promise(r => setTimeout(r, 800));
     }
     else if (msg.topic === 'avisos') { global.set('avisa_fechadura2', !!msg.payload); }
     else if (msg.topic === 'reverse_lock' || msg.topic === 'doorbell_song') {
         await chamar('POST', `/v1.0/iot-03/devices/${DEVICE_ID}/commands`, { commands: [{ code: msg.topic, value: msg.payload }] });
         await new Promise(r => setTimeout(r, 1500));
     }
+
+    const tkp = context.get('ticket');
+    if (!tkp || tkp.exp < Date.now()) novoTicket().then(t => context.set('ticket', t)).catch(() => { });
 
     const res = await chamar('GET', `/v2.0/cloud/thing/${DEVICE_ID}/shadow/properties`);
     const p = Object.fromEntries(res.properties.map(x => [x.code, { value: x.value, time: x.time }]));

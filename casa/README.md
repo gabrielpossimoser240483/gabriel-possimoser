@@ -47,7 +47,7 @@ Deploy: `POST /flows` com `Node-RED-API-Version: v2` e `Node-RED-Deployment-Type
 | EKAZA Fechadura Digital Zigbee | `ebc777d960783fb572mjea` | fechadura (via Smart Gateway) |
 | Smart Gateway | — | gateway Zigbee da Tuya |
 | Bombas (EKAZA Interruptor Touch 2 Botão) | — | interruptor |
-| RGB TESTE | `eb59af9ff60d7c7abcfgfj` | lâmpada (offline) |
+| RGB TESTE (luz RGB da varanda) | `eb59af9ff60d7c7abcfgfj` | lâmpada RGB + branco (não faz UV de verdade) |
 
 Lâmpadas: `bright_value_v2` 10–1000, `temp_value_v2` 0 (quente) a 1000 (frio).
 Fechadura: abertura remota **sem senha** está permitida na fechadura (`remoteUnlockWithoutPwd`).
@@ -94,6 +94,24 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
   `POST /v1.0/smart-lock/devices/{id}/password-free/door-operate` (`{ticket_id, open: true}`).
 - O histórico fica na memória (zera se o Node-RED reiniciar).
 
+### Página **Varanda** (aba "Varanda")
+
+- Cartão **Luz RGB** (blocos `rgbv…`): toque na lâmpada liga/desliga, modo Branco/Colorida, brilho,
+  quente/frio, 9 cores rápidas, cor livre (🎨) e botão **Violeta (efeito UV)** (`#5200ff`).
+  O cartão muda na hora e confirma com a lâmpada depois. Lê a cada 30 s.
+- Cartão **LED do portão** (blocos `ledpaut…`): LED = `zigbee2mqtt/varanda_led_porta_social`
+  (anda junto com a tecla L2 do interruptor da varanda, pelo "Paralelo varanda").
+  **Acende 18:30 e apaga 23:00** (relógio do Node-RED = horário de Brasília). Chave **Automático**
+  no cartão; escolha salva em `/data/led_portao_automacao.json`. Toque no LED acende/apaga na mão.
+
+### Velocidade (15/11/2026)
+
+- Um comando na nuvem da Tuya leva ~0,4–0,9 s. Os blocos Tuya usam conexão sempre aberta (keep-alive).
+- Fechadura: segurar **1 s** abre; a "senha de abertura" (ticket) fica pronta antes; depois de abrir
+  o cartão lê a cada 1 s por 20 s. O resto do atraso é da própria fechadura Zigbee (acorda e responde).
+- Para ficar instantâneo de verdade seria preciso controle **local** (sem nuvem) das lâmpadas Wi-Fi
+  (elas têm `local_key`); a fechadura Zigbee continuaria pela nuvem.
+
 ---
 
 ## Pendências
@@ -103,4 +121,5 @@ da Tuya (módulos `crypto` e `https`). Código de referência em [`node-red/`](n
 - [ ] Trocar a senha do Node-RED (ela foi escrita no chat em 15/11/2026).
 - [ ] Salvar esta nota no Obsidian ("caderno", no servidor): o Node-RED não alcança a pasta.
 - [ ] Dar nome às pessoas da fechadura (usuário 1, 2... → nomes).
+- [ ] Automação da Luz RGB da varanda: falta o usuário escolher a regra (sensor, horário, portão, alerta).
 - [ ] Pedido antigo, ainda não feito: no **quarto**, primeiro clique do botão da fechadura liga o ventilador.
